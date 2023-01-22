@@ -1,5 +1,7 @@
-import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const Detailpage = () => {
-  return <div>Detailpage</div>;
+  const { state } = useLocation();
+
+  return <div>{state[0].statNm}</div>;
 };
