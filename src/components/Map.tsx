@@ -1,21 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRef, useEffect, useState } from 'react';
-import { Data, GeoResult, Item } from '../types/MapInterface';
+import { Data, GeoResult, Item, Location } from '../types/MapInterface';
 import { useNavigate } from 'react-router-dom';
 
 const { kakao } = window;
 
 interface Props {
   data: Data | undefined;
-  myLocation: any;
-  setLocation: any;
-  setMyLocation: any;
+  myLocation: Location;
+  setLocation: (location: Location) => void;
+  setMyLocation: React.Dispatch<
+    React.SetStateAction<{
+      lat: number | string;
+      lng: number | string;
+    }>
+  >;
 }
 
 const Map = ({ data, myLocation, setLocation, setMyLocation }: Props) => {
   const navigate = useNavigate();
   const mapRef = useRef(null);
-  const [mapA, setMap] = useState<any>('');
+  const [map, setMap] = useState<any>("");
 
   useEffect(() => {
     const arrUnique = data?.items.item.filter(
@@ -25,9 +30,10 @@ const Map = ({ data, myLocation, setLocation, setMyLocation }: Props) => {
         );
       },
     );
+    const location = new kakao.maps.LatLng(myLocation.lat, myLocation.lng);
 
     const options = {
-      center: myLocation,
+      center: location,
       level: 2,
     };
 
@@ -43,7 +49,7 @@ const Map = ({ data, myLocation, setLocation, setMyLocation }: Props) => {
     const imageSize = new kakao.maps.Size(48, 48);
     new kakao.maps.Marker({
       map: map,
-      position: myLocation,
+      position: location,
       clickable: true,
     });
     const thunderImage = new kakao.maps.MarkerImage(thunderimageSrc, imageSize);
@@ -92,21 +98,17 @@ const Map = ({ data, myLocation, setLocation, setMyLocation }: Props) => {
 
     geocoder.addressSearch(text, (result: GeoResult[], status: string) => {
       if (status === kakao.maps.services.Status.OK) {
+        console.log(result[0]);
         let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-        let marker = new kakao.maps.Marker({
-          map: mapA,
+        new kakao.maps.Marker({
+          map: map,
           position: coords,
         });
 
-        let infowindow = new kakao.maps.InfoWindow({
-          content: `<div style="width:150px;text-align:center;padding:6px 0;">검색위치</div>`,
-        });
-        infowindow.open(mapA, marker);
-
-        mapA.setCenter(coords);
-        setLocation(coords);
-        setMyLocation(coords);
+        map.setCenter(coords);
+        setLocation({ lat: result[0].y, lng: result[0].x });
+        setMyLocation({ lat: result[0].y, lng: result[0].x });
       }
     });
   };

@@ -1,13 +1,18 @@
 import { useQuery } from 'react-query';
 import Map from '../../components/Map';
 import { getData } from '../../common/api';
-import { Data } from '../../types/MapInterface';
+import { Data, Location } from '../../types/MapInterface';
 import { useAppSelector } from '../../hooks/useRedux';
 
 interface Props {
-  myLocation: any;
-  setLocation: any;
-  setMyLocation: any;
+  myLocation: Location;
+  setLocation: (location: Location) => void;
+  setMyLocation: React.Dispatch<
+    React.SetStateAction<{
+      lat: number | string;
+      lng: number | string;
+    }>
+  >;
 }
 
 export const MainPage = ({ myLocation, setLocation, setMyLocation }: Props) => {

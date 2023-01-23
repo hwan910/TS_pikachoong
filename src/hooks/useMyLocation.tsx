@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Result } from "../types/MapInterface";
+import { Location, Result } from "../types/MapInterface";
 import * as Z from "../common/zcode";
 
 const { kakao } = window;
@@ -72,13 +72,14 @@ const useMyLocation = () => {
     }
   };
 
-  const setLocation: any = (location: any) => {
-    if (location) {
-      geocoder.coord2Address(location.getLng(), location.getLat(), callback);
+  const setLocation = (location: Location) => {
+    const loc = new kakao.maps.LatLng(location.lat, location.lng)
+    if (loc) {
+      geocoder.coord2Address(loc.getLng(), loc.getLat(), callback);
     }
   };
 
-  return [zcode, zscode, setLocation];
+  return [zcode, zscode, setLocation] as const
 };
 
 export default useMyLocation;

@@ -9,6 +9,11 @@ export interface Data {
   };
 }
 
+export interface Location {
+  lat: number | string;
+  lng: number | string;
+}
+
 export interface Result {
   address: Address;
   road_address: string | null;

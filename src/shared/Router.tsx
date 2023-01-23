@@ -8,14 +8,15 @@ import { useEffect, useState } from 'react';
 import useMyLocation from '../hooks/useMyLocation';
 import { useAppDispatch } from '../hooks/useRedux';
 import { addMyLocation } from '../redux/modules/locationSlice';
-
-const { kakao } = window;
+import { Location } from '../types/MapInterface';
 
 const Router = () => {
   const dispatch = useAppDispatch();
-  const [myLocation, setMyLocation] = useState(
-    new kakao.maps.LatLng(37.49810223154336, 127.0327612337389),
-  );
+  const [myLocation, setMyLocation] = useState<Location>({
+    lat: 37.49810223154336,
+    lng: 127.0327612337389,
+  });
+
   const [zcode, zscode, setLocation] = useMyLocation();
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Router = () => {
       navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        setMyLocation(new kakao.maps.LatLng(lat, lng));
+        setMyLocation({ lat, lng });
       });
     } else {
       window.alert('위치정보를 불러올 수 없습니다.');
