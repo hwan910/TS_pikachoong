@@ -20,7 +20,7 @@ interface Props {
 const Map = ({ data, myLocation, setLocation, setMyLocation }: Props) => {
   const navigate = useNavigate();
   const mapRef = useRef(null);
-  const [map, setMap] = useState<any>("");
+  const [map, setMap] = useState<any>('');
 
   useEffect(() => {
     const arrUnique = data?.items.item.filter(
@@ -90,7 +90,7 @@ const Map = ({ data, myLocation, setLocation, setMyLocation }: Props) => {
 
     var circle = new kakao.maps.Circle({
       map: map,
-      center: new kakao.maps.LatLng(myLocation.Ma, myLocation.La),
+      // center: new kakao.maps.LatLng(myLocation.Ma, myLocation.La),
       radius: 1000,
       strokeWeight: 2,
       strokeColor: '#FF00FF',
