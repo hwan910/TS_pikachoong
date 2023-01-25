@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Profile = () => {
   return (
     <StyledProfileDiv>
-      <StyledImg src="img/character.jpeg" alt="" />
+      <StyledImg src="img/girl.png" alt="" />
       <StyledTextDiv>
         <StyledTextH4>최원장</StyledTextH4>
         <StyledTextP>sparta@gmail.com</StyledTextP>

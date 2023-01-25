@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ children }) => {
+const Button = ({ children, onClick }) => {
   return (
     <div>
-      <StyledButton>{children}</StyledButton>
+      <StyledButton onClick={onClick}>{children}</StyledButton>
     </div>
   );
 };
