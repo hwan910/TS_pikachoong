@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { COLOR } from '../styles/color';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getData } from '../common/api';
+import { COLOR } from '../common/color';
 
 // interface LocationType {
 //   latitude: number;

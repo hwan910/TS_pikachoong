@@ -6,28 +6,40 @@ import {
   HeaderBtnBox,
   HeaderBtn,
   SearchBox,
-  SearchInput,
   SearchBtn,
   LogoText,
   LogoBox,
   SearchSelect,
 } from './style';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import LoginModal from '../LoginModal/LoginModal';
 import { IoSearchCircle } from 'react-icons/io5';
-import { getChargerinfo, zscode, zcode } from '../../../common/api';
+import { szcode, szscode } from '../../../common/zcode';
+import { useQuery } from 'react-query';
+import { Data } from '../../../types/MapInterface';
+import { getChargerinfo, getData } from '../../../common/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { switchSearchResult } from '../../../redux/modules/searchSlice';
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [z1List, setZ1List] = useState<string[]>([]);
   const [z1, setZ1] = useState('');
   const [z2List, setZ2List] = useState<string[]>([]);
   const [z2, setZ2] = useState('');
 
+  const searchResult = useSelector((state: any) => state.search);
+
+  const searchResultHandler = () => {
+    dispatch(switchSearchResult([z1, z2]));
+    navigate('/search');
+  };
+
   useEffect(() => {
     const arr = [];
-    for (const [key, value] of Object.entries(zcode)) {
+    for (const [key, value] of Object.entries(szcode)) {
       arr.push(`${key}:${value}`);
     }
     setZ1List(arr);
@@ -36,7 +48,7 @@ const Header = () => {
   const z2ListHandler = (e: any) => {
     setZ1(e.target.value);
     const arr = [];
-    for (const [key, value] of Object.entries(zscode)) {
+    for (const [key, value] of Object.entries(szscode)) {
       if (key.slice(0, 2) === e.target.value) {
         arr.push(`${key}:${value}`);
       }
@@ -88,7 +100,7 @@ const Header = () => {
             <IoSearchCircle
               color="red"
               size={'2.6em'}
-              onClick={() => getChargerinfo(z1, z2)}
+              onClick={searchResultHandler}
             />
           </SearchBtn>
         </SearchBox>

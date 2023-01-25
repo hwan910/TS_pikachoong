@@ -300,7 +300,7 @@ export const zcode50: Zcode = {
   서귀포시: '50130',
 };
 
-export const zcode = {
+export const szcode: any = {
   11: '서울특별시',
   26: '부산광역시',
   27: '대구광역시',
@@ -320,7 +320,7 @@ export const zcode = {
   50: '제주특별자치도',
 };
 
-export const zscode = {
+export const szscode: any = {
   11110: '종로구',
   11140: '중구',
   11170: '용산구',
