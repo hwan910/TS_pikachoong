@@ -30,6 +30,6 @@ yarn-error.log*
 yarn.lock
 .yarnrc.yml
 
-/src/common/firebase.js
+/src/common/firebase.ts
 
 

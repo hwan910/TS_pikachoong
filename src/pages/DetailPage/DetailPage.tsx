@@ -1,4 +1,6 @@
 import React, { ReactElement, useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import DetailMap from '../../components/DetailMap';
 import {
   InfoArea,
   ChargingStationInfo,
@@ -11,7 +13,6 @@ import {
   ReviewTextInput,
   ReviewBtn,
   ReviewList,
-  DetailMap,
 } from './style';
 import { FiMapPin, FiPhone, FiClock } from 'react-icons/fi';
 import { RiParkingFill } from 'react-icons/ri';
@@ -23,7 +24,7 @@ export const Detailpage = () => {
   // const [hover, setHover] = useState(null);
 
   // const [review, setReview]
-
+  const { state } = useLocation();
   // const newReview = {
   //   comment: newComment,
   //   rating:ratings,
@@ -93,8 +94,7 @@ export const Detailpage = () => {
           </ReviewList>
         </ReviewContainer>
       </InfoArea>
-
-      <DetailMap />
+      <DetailMap location={{ lat: state[0].lat, lng: state[0].lng }} />
     </div>
   );
 };
