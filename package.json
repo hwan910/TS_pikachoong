@@ -20,8 +20,10 @@
     "react-is": "^18.2.0",
     "react-modal": "^3.16.1",
     "react-query": "^3.39.2",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.7.0",
     "react-scripts": "5.0.1",
+    "redux": "^4.2.0",
     "styled-components": "^5.3.6",
     "typescript": "^4.9.4",
     "web-vitals": "^2.1.4"

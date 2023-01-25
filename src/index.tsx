@@ -22,7 +22,7 @@ root.render(
     <Provider store={store}>
       <App />
     </Provider>
-  </QueryClientProvider>
+  </QueryClientProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
