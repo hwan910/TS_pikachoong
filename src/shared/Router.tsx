@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Detailpage } from '../pages/DetailPage/DetailPage';
 import { MainPage } from '../pages/MainPage/MainPage';
 import { Mypage } from '../pages/MyPage/Mypage';
+import { SearchPage } from '../pages/SearchPage/SearchPage';
 import Layout from './Layout/Layout';
 import { useEffect, useState } from 'react';
 import useMyLocation from '../hooks/useMyLocation';
@@ -55,6 +56,7 @@ const Router = () => {
           />
           <Route path="/:id" element={<Detailpage />} />
           <Route path="/my" element={<Mypage />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
