@@ -3,7 +3,32 @@ import styled from 'styled-components';
 
 // DetailPage.jsx
 
-export const InfoArea = styled.div``;
+export const InfoArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 520px;
+  height: 770px;
+  margin-top: 40px;
+  padding: 10px;
+
+  overflow-y: auto;
+  // -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  // scrollbar-width: none; /* 파이어폭스 */
+  &::-webkit-scrollbar {
+    // 스크롤바 영역 설정
+    /* 크롬, 사파리, 오페라, 엣지 */
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    // 스크롤바 막대 설정
+    background-color: #fad61d;
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    // 스크롤바 트랙 설정
+  }
+`;
 
 export const Map = styled.div`
   width: 836px;
@@ -19,9 +44,8 @@ export const ChargingStationInfo = styled.div`
   background-color: white;
   border-radius: 5px;
   box-shadow: 2px 2px 8px lightgrey;
-  padding: 32px;
+  padding: 30px;
   margin-bottom: 50px;
-  margin-top: 40px;
 `;
 
 export const ChargingStationName = styled.div`
