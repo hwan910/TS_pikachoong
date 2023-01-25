@@ -11,7 +11,7 @@ import {
   ReviewTextInput,
   ReviewBtn,
   ReviewList,
-  Map,
+  DetailMap,
 } from './style';
 import { FiMapPin, FiPhone, FiClock } from 'react-icons/fi';
 import { RiParkingFill } from 'react-icons/ri';
@@ -94,7 +94,7 @@ export const Detailpage = () => {
         </ReviewContainer>
       </InfoArea>
 
-      <Map />
+      <DetailMap />
     </div>
   );
 };

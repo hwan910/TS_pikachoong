@@ -30,7 +30,7 @@ export const InfoArea = styled.div`
   }
 `;
 
-export const Map = styled.div`
+export const DetailMap = styled.div`
   width: 836px;
   height: 770px;
   background-color: lightgrey;
