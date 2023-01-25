@@ -4,89 +4,89 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getData } from '../common/api';
 
-interface LocationType {
-  latitude: number;
-  longitude: number;
-}
+// interface LocationType {
+//   latitude: number;
+//   longitude: number;
+// }
 
 export default function Main() {
-  const [myLocation, setMyLocation] = useState<LocationType>();
-  const [isLoading, setIsLoading] = useState(true);
-  const { data } = useQuery('data', getData);
+  //   const [myLocation, setMyLocation] = useState<LocationType>();
+  //   const [isLoading, setIsLoading] = useState(true);
+  //   const { data } = useQuery('data', getData);
 
-  const getLocation = (): Promise<GeolocationPosition> => {
-    return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        // getCurrentPosition 사용자의 경도, 위도를 알려줌
-        // 첫 번째 인자가 성공했을 때 반환하는 함수, 두 번째 인자가 실패했을 때 반환하는 함수
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            if (position) {
-              resolve(position);
-            }
-          },
-          (error) => reject(error),
-        );
-      } else {
-        alert('Geolocation is not supported by this browser.');
-      }
-    });
-  };
+  //   const getLocation = (): Promise<GeolocationPosition> => {
+  //     return new Promise((resolve, reject) => {
+  //       if (navigator.geolocation) {
+  //         // getCurrentPosition 사용자의 경도, 위도를 알려줌
+  //         // 첫 번째 인자가 성공했을 때 반환하는 함수, 두 번째 인자가 실패했을 때 반환하는 함수
+  //         navigator.geolocation.getCurrentPosition(
+  //           (position) => {
+  //             if (position) {
+  //               resolve(position);
+  //             }
+  //           },
+  //           (error) => reject(error),
+  //         );
+  //       } else {
+  //         alert('Geolocation is not supported by this browser.');
+  //       }
+  //     });
+  //   };
 
-  const setLocation = async () => {
-    const location: GeolocationPosition = await getLocation();
-    setMyLocation({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    });
-    setIsLoading(false);
-  };
+  //   const setLocation = async () => {
+  //     const location: GeolocationPosition = await getLocation();
+  //     setMyLocation({
+  //       latitude: location.coords.latitude,
+  //       longitude: location.coords.longitude,
+  //     });
+  //     setIsLoading(false);
+  //   };
 
-  useEffect(() => {
-    setLocation();
-  }, []);
+  //   useEffect(() => {
+  //     setLocation();
+  //   }, []);
 
-  useEffect(() => {
-    if (myLocation) {
-      const currentPosition = [myLocation.latitude, myLocation.longitude];
+  //   useEffect(() => {
+  //     if (myLocation) {
+  //       const currentPosition = [myLocation.latitude, myLocation.longitude];
 
-      const map: naver.maps.Map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
-        zoom: 16,
-      });
+  //       const map: naver.maps.Map = new naver.maps.Map('map', {
+  //         center: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
+  //         zoom: 16,
+  //       });
 
-      // 내 위치 마커 표시하기
-      const currentMarker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
-        map,
-        // 원하는 이미지로 마커 커스텀
-        // icon: {
-        //     url: pinImage,
-        //     size: new naver.maps.Size(50, 52),
-        //     origin: new naver.maps.Point(0, 0),
-        //     anchor: new naver.maps.Point(25, 26),
-        //   },
-      });
+  //       // 내 위치 마커 표시하기
+  //       const currentMarker = new naver.maps.Marker({
+  //         position: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
+  //         map,
+  //         // 원하는 이미지로 마커 커스텀
+  //         // icon: {
+  //         //     url: pinImage,
+  //         //     size: new naver.maps.Size(50, 52),
+  //         //     origin: new naver.maps.Point(0, 0),
+  //         //     anchor: new naver.maps.Point(25, 26),
+  //         //   },
+  //       });
 
-      var proj = map.getProjection();
-      let items = data.items.item;
-      for (const item of items) {
-        let distance = proj.getDistance(
-          new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
-          new naver.maps.LatLng(item.lat, item.lng),
-        );
-        console.log(distance);
-      }
-    }
-  }, [myLocation]);
+  //       var proj = map.getProjection();
+  //       let items = data.items.item;
+  //       for (const item of items) {
+  //         let distance = proj.getDistance(
+  //           new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
+  //           new naver.maps.LatLng(item.lat, item.lng),
+  //         );
+  //         console.log(distance);
+  //       }
+  //     }
+  //   }, [myLocation]);
 
   return (
     <Container>
-      {isLoading ? (
+      {/* {isLoading ? (
         <div style={{ width: '70%', height: '500px' }}>Loading...</div>
       ) : (
         <div id="map" style={{ width: '70%', height: '500px' }} />
-      )}
+      )} */}
 
       {/* <MainMap>지도</MainMap> */}
       <NearbyChargingStationWrap>

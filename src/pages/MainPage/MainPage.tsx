@@ -20,7 +20,7 @@ export const MainPage = ({ myLocation, setLocation, setMyLocation }: Props) => {
     Data,
     [string, string]
   >([zc, zsc], getData);
-
+  console.log(data);
   if (isLoading) return <div>로딩중</div>;
   if (isError) return <div>Error: {error.message}</div>;
 

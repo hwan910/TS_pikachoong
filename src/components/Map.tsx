@@ -26,13 +26,16 @@ const Map = ({ data, myLocation, setLocation, setMyLocation }: Props) => {
       },
     );
 
+    const nearItems = arrUnique?.filter((item: Item) => item.lat);
+    console.log(myLocation);
+
     const options = {
       center: myLocation,
       level: 2,
     };
 
     const map = new kakao.maps.Map(mapRef.current, options);
-    setMap(map);
+    // setMap(map);
 
     const zoomControl = new kakao.maps.ZoomControl();
     map.setDraggable(false);
@@ -78,6 +81,20 @@ const Map = ({ data, myLocation, setLocation, setMyLocation }: Props) => {
         );
       }
     }
+
+    var circle = new kakao.maps.Circle({
+      map: map,
+      center: new kakao.maps.LatLng(myLocation.Ma, myLocation.La),
+      radius: 1000,
+      strokeWeight: 2,
+      strokeColor: '#FF00FF',
+      strokeOpacity: 0.8,
+      strokeStyle: 'dashed',
+      fillColor: '#00EEEE',
+      fillOpacity: 0.5,
+    });
+
+    circle.setMap(map);
   }, []);
 
   const [text, setText] = useState('');
