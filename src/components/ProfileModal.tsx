@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import Profile from './Profile';
 
-const ProfileModal = ({ setProfileModalOpen }) => {
+interface Props {
+  setProfileModalOpen: any;
+}
+
+const ProfileModal = ({ setProfileModalOpen }: Props) => {
   // 모달 끄기
   const closeModal = () => {
     setProfileModalOpen(false);

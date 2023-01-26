@@ -11,10 +11,10 @@ import LoginModal from '../LoginModal/LoginModal';
 
 const Header = () => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsOpen(true);
+  const showLoginModal = () => {
+    setLoginModalOpen(true);
   };
 
   return (
@@ -26,7 +26,10 @@ const Header = () => {
         />
         <HeaderBtnBox>
           <HeaderBtn onClick={() => navigate('/my')}>마이페이지</HeaderBtn>
-          <HeaderBtn onClick={openModal}>LOGIN</HeaderBtn>
+          <HeaderBtn onClick={showLoginModal}>LOGIN</HeaderBtn>
+          {loginModalOpen && (
+            <LoginModal setLoginModalOpen={setLoginModalOpen} />
+          )}
         </HeaderBtnBox>
       </HeaderContainer>
     </StyledHeader>
