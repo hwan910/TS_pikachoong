@@ -35,10 +35,12 @@ const Map = ({
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const [map, setMap] = useState<any>('');
+
   const [marker, setMarker] = useState<any>('');
 
   let markers: any[] = [];
   let arrFilter: any[] = [];
+
 
   useEffect(() => {
     const arrUnique = data?.items.item.filter(

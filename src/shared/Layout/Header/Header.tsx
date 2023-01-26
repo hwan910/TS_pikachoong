@@ -23,6 +23,7 @@ import { switchSearchResult } from '../../../redux/modules/searchSlice';
 
 const Header = () => {
   const navigate = useNavigate();
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [z1List, setZ1List] = useState<string[]>([]);
@@ -56,8 +57,8 @@ const Header = () => {
     setZ2List(arr);
   };
 
-  const openModal = () => {
-    setIsOpen(true);
+  const showLoginModal = () => {
+    setLoginModalOpen(true);
   };
 
   return (
@@ -106,7 +107,10 @@ const Header = () => {
         </SearchBox>
         <HeaderBtnBox>
           <HeaderBtn onClick={() => navigate('/my')}>마이페이지</HeaderBtn>
-          <HeaderBtn onClick={openModal}>LOGIN</HeaderBtn>
+          <HeaderBtn onClick={showLoginModal}>LOGIN</HeaderBtn>
+          {loginModalOpen && (
+            <LoginModal setLoginModalOpen={setLoginModalOpen} />
+          )}
         </HeaderBtnBox>
       </HeaderContainer>
     </StyledHeader>
