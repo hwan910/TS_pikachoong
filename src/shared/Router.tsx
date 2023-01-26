@@ -16,6 +16,7 @@ const Router = () => {
     lat: 37.49810223154336,
     lng: 127.0327612337389,
   });
+  const [level, setLevel] = useState(2)
 
   const [zcode, zscode, setLocation] = useMyLocation();
 
@@ -50,6 +51,8 @@ const Router = () => {
                 myLocation={myLocation}
                 setMyLocation={setMyLocation}
                 setLocation={setLocation}
+                level={level}
+                setLevel={setLevel}
               />
             }
           />
