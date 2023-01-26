@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import { useSelector } from 'react-redux';
 import { getChargerinfo } from '../../common/api';
 import { szcode, szscode } from '../../common/zcode';
 import { Container, Table, MainTitle, TableHead, TableBody } from './style';
 import { Item } from '../../types/MapInterface';
 import { PageBtnBox } from '../../shared/Layout/Header/style';
 import { useNavigate, useParams } from 'react-router-dom';
+import PageNation from '../../components/PageNation';
 
 export const SearchPage = () => {
   const navigate = useNavigate();
-  const result = useSelector((state: any) => state.search);
   const queryClient = useQueryClient();
-  const [pageNum, setPageNum] = useState<any>();
-
+  const [i, setI] = useState(0);
   const { z2 }: any = useParams();
   const [page, setPage] = useState(0);
   const { data, isLoading, refetch } = useQuery('station', () =>
@@ -24,8 +22,12 @@ export const SearchPage = () => {
     queryClient.removeQueries('station');
     refetch();
     setPage(0);
-    pageNumMaker();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [z2]);
+
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
 
   const searchResult = data?.data.items[0].item
     .filter((stat: Item, idx: number, arr: Item[]) => {
@@ -39,23 +41,11 @@ export const SearchPage = () => {
     },
   );
 
-  const pageNumMaker = () => {
-    const pageNum = [];
-    for (let i = 5; i < pageResult?.length / 10 + 1; i += 5) {
-      const a = [];
-      if (i > pageResult?.length / 10 + 1) i = pageResult?.length / 10 + 1;
-      for (let j = 1; j <= i / 10 + 1; j++) {
-        a.push(j);
-      }
-      pageNum.push(a);
-    }
-    console.log(pageNum);
-    return setPageNum(pageNum);
-  };
-
-  if (isLoading) {
-    return <div>로딩중...</div>;
-  }
+  const pageNum = pageResult.map((x: any, i: number) => i + 1);
+  const allpage =
+    Math.ceil(pageNum.length / 10) > 5 * (i + 1)
+      ? pageNum.slice(5 * i, 5 * (i + 1))
+      : pageNum.slice(5 * i, Math.ceil(pageNum.length / 10));
 
   return (
     <Container>
@@ -123,15 +113,13 @@ export const SearchPage = () => {
         >
           이전
         </button>
-        <div>
-          {pageNum.map((v: any, i: any) => {
-            return <button>{i - 1}</button>;
-          })}
-        </div>
-
+        <PageNation allpage={allpage} />
         <button
           disabled={page === Math.floor(pageResult?.length / 10) ? true : false}
-          onClick={() => setPage(page + 1)}
+          onClick={() => {
+            setPage(page + 1);
+            if ((page + 1) % 5 === 0) setI(i + 1);
+          }}
         >
           다음
         </button>
