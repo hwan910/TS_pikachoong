@@ -38,10 +38,9 @@ export const SearchPage = () => {
           const test1 = data?.data.items[0].item.filter(
             (a: any) => a.statId === v.statId && a.stat === '2',
           );
-          console.log(test1.length);
 
           return (
-            <TableBody>
+            <TableBody key={v.statId}>
               <div style={{ width: '10%', textAlign: 'center' }}>
                 {10 * page + i + 1}
               </div>
@@ -61,7 +60,7 @@ export const SearchPage = () => {
       </Table>
       {page > 0 && <button onClick={() => setPage(page - 1)}>이전</button>}
       <div>{page + 1}</div>
-      {page < searchResult.length && (
+      {page < searchResult?.length && (
         <button onClick={() => setPage(page + 1)}>다음</button>
       )}
     </Container>
