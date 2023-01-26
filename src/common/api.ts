@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Data } from '../types/MapInterface';
+import { APIKEY } from './firebase';
+import { zcode } from './zcode';
 
 const SERVER_URL =
   'https://apis.data.go.kr/B552584/EvCharger/getChargerInfo?serviceKey=GZrWXIC2MesQBDxWNWBAM%2F2kOkiLtP0XWhKAjyqQb7%2FZiJY9OUrqcv8lpBFcPoyVsuNoInArZzfbYrbXxW9E%2Fg%3D%3D';
@@ -34,3 +36,12 @@ export const getData = async ({ queryKey }: DataKey) => {
 //     console.log(error);
 //   }
 // };
+
+const BASE_URL = 'https://apis.data.go.kr/B552584/EvCharger/getChargerInfo?';
+const pageNo = 1;
+
+export const getChargerinfo = (zcode: any, zscode: any): any => {
+  return axios.get(
+    `${BASE_URL}serviceKey=${APIKEY}&numOfRows=3000&zcode=${zcode}&zscode=${zscode}&pageNo=${pageNo}`,
+  );
+};

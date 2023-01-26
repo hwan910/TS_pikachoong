@@ -35,12 +35,11 @@ const Map = ({
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const [map, setMap] = useState<any>('');
-  const [marker, setMarker] = useState<any>("")
-  
+  const [marker, setMarker] = useState<any>('');
+
   let markers: any[] = [];
   let arrFilter: any[] = [];
 
-  
   useEffect(() => {
     const arrUnique = data?.items.item.filter(
       (stat: Item, idx: number, arr: Item[]) => {
@@ -71,7 +70,7 @@ const Map = ({
       clickable: true,
     });
 
-    setMarker(myMarker)
+    setMarker(myMarker);
     kakao.maps.event.addListener(map, 'dragend', function () {
       const level = map.getLevel();
       const latlng = map.getCenter();
@@ -81,7 +80,6 @@ const Map = ({
       setLocation({ lat: latlng.Ma, lng: latlng.La });
       setMyLocation({ lat: latlng.Ma, lng: latlng.La });
     });
-
 
     const thunderImage = new kakao.maps.MarkerImage(thunderimageSrc, imageSize);
     const thunderoffImage = new kakao.maps.MarkerImage(
@@ -120,7 +118,6 @@ const Map = ({
         );
       }
     }
-
 
     let circle = new kakao.maps.Circle({
       map: map,
@@ -192,14 +189,13 @@ const Map = ({
 
     geocoder.addressSearch(text, (result: GeoResult[], status: string) => {
       if (status === kakao.maps.services.Status.OK) {
-
         let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-        marker.setPosition(coords)
+        marker.setPosition(coords);
         setLocation({ lat: result[0].y, lng: result[0].x });
         setMyLocation({ lat: result[0].y, lng: result[0].x });
 
         map.setCenter(coords);
-        setText("")
+        setText('');
       }
     });
   };
