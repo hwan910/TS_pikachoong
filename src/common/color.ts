@@ -1,5 +1,3 @@
-// color
-
 export const COLOR = {
   YELLOW: '#fad61d',
   MUSTAD: '#e19720',

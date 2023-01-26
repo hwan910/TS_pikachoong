@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Detailpage } from '../pages/DetailPage/DetailPage';
 import { MainPage } from '../pages/MainPage/MainPage';
 import { Mypage } from '../pages/MyPage/Mypage';
+import { SearchPage } from '../pages/SearchPage/SearchPage';
 import Layout from './Layout/Layout';
 import { useEffect, useState } from 'react';
 import useMyLocation from '../hooks/useMyLocation';
@@ -16,6 +17,7 @@ const Router = () => {
     lat: 37.49810223154336,
     lng: 127.0327612337389,
   });
+  const [level, setLevel] = useState(2)
 
   const [zcode, zscode, setLocation] = useMyLocation();
 
@@ -50,11 +52,14 @@ const Router = () => {
                 myLocation={myLocation}
                 setMyLocation={setMyLocation}
                 setLocation={setLocation}
+                level={level}
+                setLevel={setLevel}
               />
             }
           />
           <Route path="/:id" element={<Detailpage />} />
           <Route path="/my" element={<Mypage />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
