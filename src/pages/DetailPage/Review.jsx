@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import {
   ReviewContainer,
@@ -9,6 +10,7 @@ import {
   ReviewTextInput,
   ReviewBtn,
   ReviewList,
+  ReviewDetail,
   ReviewBox,
   ProfileImg,
   OptionModal,
@@ -16,12 +18,46 @@ import {
   DeleteBtn,
   Rating,
 } from './style';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  orderBy,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
+import { db } from '../../common/firebase';
 import { SlOptions } from 'react-icons/sl';
 import { uuidv4 } from '@firebase/util';
 import { FaStar } from 'react-icons/fa';
+import { getAuth } from 'firebase/auth';
 
-export const Review = () => {
-  const [ratingIndex, setRatingIndex] = useState(null);
+export const Review = ({ state }) => {
+  const currentUser = getAuth().currentUser;
+  const [reviewRating, setReviewRating] = useState(0);
+  const [newReview, setNewReview] = useState('');
+  const [nickName, setNickName] = useState('');
+
+  const [reviewList, setReviewList] = useState([]);
+
+  // const [isValid, setIsValid] = useState('');
+  const [reviewId, setReviewId] = useState('');
+  const [getProfileImg, setGetProfileImg] = useState('');
+
+  const [getReviewList, setGetReviewList] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const { id } = useParams();
+
+  //리뷰 날짜! 사용할때는 now()
+  const now = () => {
+    const now = dayjs();
+    return now.format('YYYY.MM.DD HH:mm');
+  };
 
   // 리뷰 수정 삭제 모달
   const [modalOpen, setModalOpen] = useState(false);
@@ -32,26 +68,73 @@ export const Review = () => {
     setModalOpen(false);
   };
 
-  //리뷰 날짜! 사용할때는 now()
-  const now = () => {
-    const now = dayjs();
-    return now.format('YYYY.MM.DD HH:mm:ss');
+  // 파이어베이스
+
+  useEffect(() => {
+    reviewHandler();
+  }, [reviewList]); // 리뷰리스트의 값이 변할때마다 핸들러 함수 실행
+
+  const reviewHandler = async () => {
+    const q = query(
+      collection(db, 'reviews'),
+      where('statId', '==', id),
+      orderBy('createdTime', 'desc'),
+    );
+    const reviews = [];
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => reviews.push({ id: doc.id, ...doc.data() }));
+    return setReviewList(reviews);
   };
 
-  // const [rating, setRating] = useState(0);
-  const [newReview, setNewReview] = useState('');
-  const [nickName, setNickName] = useState('');
-  const [reviewList, setReviewList] = useState('');
-  // const [isValid, setIsValid] = useState('');
-  const [reviewId, setReviewId] = useState('');
-  const [getProfileImg, setGetProfileImg] = useState('');
+  // console.log(state);
 
-  const addReview = (event) => {
-    event.preventDefault();
-    setReviewList((prev) => [
-      ...prev,
-      { review: newReview, reviewId: uuidv4(), createDate: now() },
-    ]);
+  // const getUserInfo = async () => {
+  //   const q = await query(
+  //     collection(db, 'users'),
+  //     where('uid', '==', currentUser.uid),
+  //   );
+  //   getDocs(q).then((querySnapshot) => {
+  //     const user = [];
+  //     querySnapshot.forEach((doc) => {
+  //       user.push({
+  //         nickName: doc.data().nickName,
+  //         profileImg: doc.data().profileImg,
+  //       });
+  //     });
+  //     setNickName(user[0].nickName);
+  //     setGetProfileImg(user[0].profileImg);
+  //   });
+  // };
+
+  // 리뷰추가
+  const addReview = async () => {
+    // event.preventDefault();
+    await addDoc(collection(db, 'reviews'), {
+      statId: id,
+      review: newReview,
+      profileImg: getProfileImg,
+      nickName: nickName,
+      reviewId: uuidv4(),
+      createdTime: now(),
+      reviewRating: reviewRating,
+      isEdit: false,
+    });
+    setNewReview('');
+    // setreviewRating(0);
+  };
+
+  //리뷰삭제
+  const deleteReview = async () => {
+    // setReviewList((prev) => prev.filter((t) => t.reviewId !== reviewId));
+    await deleteDoc(doc(db, 'reviews', reviewId));
+  };
+
+  //리뷰수정
+  const editReview = async (reviewId) => {
+    const idx = reviewList.findIndex((review) => review.reviewId === reviewId);
+    await updateDoc(doc(db, 'todos', reviewId), {
+      isEdit: !reviewList[idx].isEdit,
+    });
   };
 
   const handleNewReview = (e) => {
@@ -118,9 +201,10 @@ export const Review = () => {
             type="text"
             value={newReview}
             onChange={(e) => handleNewReview(e)}
+            setReviewList={setReviewList}
           />
-          <ReviewBtn type="submit" onSubmit={addReview}>
-            {/* value={newReview} */}
+          <ReviewBtn onClick={addReview}>
+            {/* type="submit" */}
             등록
           </ReviewBtn>
         </div>
@@ -129,49 +213,47 @@ export const Review = () => {
       {/* 리뷰리스트 */}
 
       <ReviewList>
-        {/* {reviewList.map((review) => { */}
-        <div
-          // key={review}
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            position: 'relative',
-          }}
-        >
-          <ReviewBox>
-            <div style={{ display: 'flex' }}>
-              <ProfileImg />
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '10px',
-                }}
-              >
-                <div>닉네임</div>
-                <div>⭐⭐⭐⭐⭐ | {} 날짜</div>
-                <div>나중에 input으로 바꾸고 리뷰내용 넣기</div>
+        {reviewList.map((i) => (
+          <ReviewBox key={i.reviewId}>
+            <ReviewDetail>
+              <div style={{ display: 'flex' }}>
+                <ProfileImg
+                  source={{
+                    uri: `${i.profileImg}`,
+                  }}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                  }}
+                >
+                  <div>{i.nickName}</div>
+                  <div>⭐⭐⭐⭐⭐ | {i.createdTime}</div>
+                  <div>{i.review}</div>
+                </div>
               </div>
-            </div>
-            {/* 리뷰 수정삭제 모달 버튼 */}
-            <SlOptions
-              onSubmit={handleModalOpen}
-              style={{ cursor: 'pointer' }}
-            />
+              {/* 리뷰 수정삭제 모달 버튼 */}
+              <SlOptions
+                onClick={() => handleModalOpen()}
+                style={{ cursor: 'pointer' }}
+              />
+            </ReviewDetail>
+            {/* 리뷰 수정삭제 모달 */}
+            {modalOpen && (
+              <OptionModal
+                setModalOpen={setModalOpen}
+                onClick={handleModalClose}
+              >
+                <EditBtn onClick={editReview}>수정</EditBtn>
+                <DeleteBtn onClick={deleteReview}>삭제</DeleteBtn>
+              </OptionModal>
+            )}
           </ReviewBox>
-          {/* 리뷰 수정삭제 모달 */}
-          {modalOpen && (
-            <OptionModal
-              setModalOpen={setModalOpen}
-              onSubmit={handleModalClose}
-            >
-              <EditBtn>수정</EditBtn>
-              <DeleteBtn>삭제</DeleteBtn>
-            </OptionModal>
-          )}
-        </div>
-        ;{/* })} */}
+        ))}
       </ReviewList>
+      {/* <button onClick={reviewHandler}>리뷰 불러오는 버튼</button> */}
     </ReviewContainer>
   );
 };
