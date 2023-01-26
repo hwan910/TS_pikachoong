@@ -20,6 +20,7 @@ const StyledProfileDiv = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-top: 3rem;
 `;
 
 const StyledImg = styled.img`

@@ -8,6 +8,7 @@ import {
   GithubAuthProvider,
   OAuthProvider,
 } from 'firebase/auth';
+import LoginModalDetail from './LoginModalDetail';
 
 // interface Props {
 //   setLoginModalOpen: any;
@@ -26,7 +27,7 @@ const LoginModal = ({ setLoginModalOpen }) => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        setLoginModalOpen(false);
+        <LoginModalDetail />;
         // ...
       })
       .catch((error) => {
@@ -37,6 +38,7 @@ const LoginModal = ({ setLoginModalOpen }) => {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
+        alert('로그인이 실패 하였습니다.');
         // ...
       });
   };
@@ -138,4 +140,5 @@ const StyledButtonImg = styled.img`
   width: 7rem;
   height: 8rem;
   padding: 1rem;
+  border-radius: 50%;
 `;

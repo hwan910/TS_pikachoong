@@ -19,7 +19,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
         <StyledBackground></StyledBackground>
         <StyledImg src="img/camera.png" alt="카메라" />
         <StyledX onClick={closeModal} src="img/x.png" alt="X" />
-        <StyledButtonChange>수정완료</StyledButtonChange>
+        <StyledButtonChange onClick={closeModal}>수정완료</StyledButtonChange>
       </StyledProfileModalDiv>
     </StyledProfileModalBackground>
   );
@@ -55,7 +55,7 @@ const StyledProfileModalDiv = styled.div`
 
 const StyledBackground = styled.div`
   position: absolute;
-  top: 15rem;
+  top: 18rem;
   left: 19rem;
   background-color: white;
   width: 2.5rem;
@@ -80,7 +80,7 @@ const StyledX = styled.img`
 
 const StyledImg = styled.img`
   position: absolute;
-  top: 15.25rem;
+  top: 18.25rem;
   left: 19.25rem;
   z-index: 1;
   cursor: pointer;
@@ -98,4 +98,5 @@ const StyledButtonChange = styled.button`
   border-radius: 30px;
   margin-top: 1rem;
   font-size: medium;
+  margin-bottom: 3rem;
 `;

@@ -26,10 +26,6 @@ export const Mypage = () => {
         {profileModalOpen && (
           <ProfileModal setProfileModalOpen={setProfileModalOpen} />
         )}
-        <Button onClick={showPasswordModal}>암호화 수정</Button>
-        {passwordModalOpen && (
-          <PasswordModal setPasswordModalOpen={setPasswordModalOpen} />
-        )}
       </StyledMyProfile>
       <MyReview />
     </StyledMyPage>
