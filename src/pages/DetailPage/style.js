@@ -30,10 +30,7 @@ export const InfoArea = styled.div`
   }
 `;
 
-export const Map = styled.div`
-  width: 836px;
-  height: 770px;
-  background-color: lightgrey;
+export const DetailMapWrap = styled.div`
   margin: 40px;
 `;
 
@@ -153,5 +150,27 @@ export const DeleteBtn = styled.button`
   &:hover {
     background-color: black;
     color: white;
+  }
+`;
+
+export const Rating = styled.div`
+  display: flex;
+  padding-top: 5px;
+
+  & svg {
+    color: gray;
+    cursor: pointer;
+  }
+
+  :hover svg {
+    color: #fcc419;
+  }
+
+  & svg:hover ~ svg {
+    color: gray;
+  }
+
+  .yellowStar {
+    color: #fcc419;
   }
 `;
