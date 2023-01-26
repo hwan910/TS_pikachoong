@@ -1,11 +1,12 @@
 // import React, { useState } from 'react';
 import styled from 'styled-components';
-import { auth, providerGithub } from '../../../common/firebase';
+import { auth, providerGithub, providerApple } from '../../../common/firebase';
 import { provider } from '../../../common/firebase';
 import {
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider,
+  OAuthProvider,
 } from 'firebase/auth';
 
 // interface Props {
@@ -25,7 +26,6 @@ const LoginModal = ({ setLoginModalOpen }) => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        console.log(result);
         setLoginModalOpen(false);
         // ...
       })
@@ -37,7 +37,6 @@ const LoginModal = ({ setLoginModalOpen }) => {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(error);
         // ...
       });
   };
@@ -51,7 +50,6 @@ const LoginModal = ({ setLoginModalOpen }) => {
 
         // The signed-in user info.
         const user = result.user;
-        console.log(result);
         setLoginModalOpen(false);
         // ...
       })
@@ -63,7 +61,6 @@ const LoginModal = ({ setLoginModalOpen }) => {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GithubAuthProvider.credentialFromError(error);
-        console.log(error);
         // ...
       });
   };
@@ -76,9 +73,6 @@ const LoginModal = ({ setLoginModalOpen }) => {
         <StyledLoginDiv>
           <StyledLoginButton onClick={() => onClickGoogleLogin()} name="google">
             <StyledButtonImg src="img/google.png" alt="구글" />
-          </StyledLoginButton>
-          <StyledLoginButton>
-            <StyledButtonImg src="img/apple.png" alt="애플" />
           </StyledLoginButton>
           <StyledLoginButton onClick={() => onClickGithubLogin()} name="github">
             <StyledButtonImg src="img/github.png" alt="깃허브" />
