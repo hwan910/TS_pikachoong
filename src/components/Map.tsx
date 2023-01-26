@@ -41,7 +41,6 @@ const Map = ({
   let markers: any[] = [];
   let arrFilter: any[] = [];
 
-
   useEffect(() => {
     const arrUnique = data?.items.item.filter(
       (stat: Item, idx: number, arr: Item[]) => {
