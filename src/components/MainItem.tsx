@@ -8,7 +8,7 @@ interface Props {
 
 export default function MainItem({ item, data }: Props) {
   return (
-    <NearbyChargingStationCard key={item.statNm}>
+    <NearbyChargingStationCard>
       <NearbyChargingStationCardTextWrap>
         <NearbyChargingStationCardTitle>
           {item.statNm}

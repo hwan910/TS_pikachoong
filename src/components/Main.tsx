@@ -57,7 +57,7 @@ export default function Main({ filterData }: Props) {
       </NearbyChargingStationTitleWrap>
       <NearbyChargingStationCardWrap>
         {newData.map((item: any) => {
-          return <MainItem data={data} item={item} key={item.statNm} />;
+          return <MainItem data={data} item={item} key={item.statId} />;
         })}
       </NearbyChargingStationCardWrap>
     </NearbyChargingStationWrap>
