@@ -17,7 +17,7 @@ const Router = () => {
     lat: 37.49810223154336,
     lng: 127.0327612337389,
   });
-  const [level, setLevel] = useState(2)
+  const [level, setLevel] = useState(2);
 
   const [zcode, zscode, setLocation] = useMyLocation();
 
@@ -60,6 +60,7 @@ const Router = () => {
           <Route path="/:id" element={<Detailpage />} />
           <Route path="/my" element={<Mypage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/search/:z2" element={<SearchPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

@@ -90,3 +90,9 @@ export const HeaderBtn = styled.div`
     box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 7px;
   }
 `;
+
+export const PageBtnBox = styled.div`
+  border: 1px solid red;
+  display: flex;
+  justify-content: center;
+`;
