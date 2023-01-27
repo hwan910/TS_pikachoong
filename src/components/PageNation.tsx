@@ -3,8 +3,6 @@ interface Props {
 }
 
 const PageNation = ({ allpage }: Props) => {
-  console.log(allpage);
-
   return (
     <>
       <div>

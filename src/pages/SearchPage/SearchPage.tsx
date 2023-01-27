@@ -22,7 +22,9 @@ export const SearchPage = () => {
     queryClient.removeQueries('station');
     refetch();
     setPage(0);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setI(0);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [z2]);
 
   if (isLoading) {
@@ -109,7 +111,10 @@ export const SearchPage = () => {
       <PageBtnBox>
         <button
           disabled={page === 0 ? true : false}
-          onClick={() => setPage(page - 1)}
+          onClick={() => {
+            setPage(page - 1);
+            if (page % 5 === 0) setI(i - 1);
+          }}
         >
           이전
         </button>

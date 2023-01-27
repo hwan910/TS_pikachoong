@@ -92,7 +92,6 @@ export const HeaderBtn = styled.div`
 `;
 
 export const PageBtnBox = styled.div`
-  border: 1px solid red;
   display: flex;
   justify-content: center;
 `;
