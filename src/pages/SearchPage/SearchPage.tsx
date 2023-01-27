@@ -7,12 +7,24 @@ import { Item } from '../../types/MapInterface';
 import { PageBtnBox } from '../../shared/Layout/Header/style';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageNation from '../../components/PageNation';
+import { auth, provider } from '../../common/firebase';
+import {
+  AuthCredential,
+  deleteUser,
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  OAuthCredential,
+  onAuthStateChanged,
+  reauthenticateWithCredential,
+  signInWithPopup,
+} from 'firebase/auth';
+import { sign } from 'crypto';
 
 export const SearchPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [i, setI] = useState(0);
-  const { z2 }: any = useParams();
+  const { z2 } = useParams();
   const [page, setPage] = useState(0);
   const { data, isLoading, refetch } = useQuery('station', () =>
     getChargerinfo(z2?.slice(0, 2), z2),
@@ -41,11 +53,27 @@ export const SearchPage = () => {
     },
   );
 
-  const pageNum = pageResult.map((x: any, i: number) => i + 1);
+  const pageNum = pageResult.map((x: string, i: number) => i + 1);
   const allpage =
     Math.ceil(pageNum.length / 10) > 5 * (i + 1)
       ? pageNum.slice(5 * i, 5 * (i + 1))
       : pageNum.slice(5 * i, Math.ceil(pageNum.length / 10));
+
+  //회원탈퇴 기능
+  const user: any = auth.currentUser;
+  const deleteUserHandler = () => {
+    const credential: any = GoogleAuthProvider.credential;
+    reauthenticateWithCredential(user, credential);
+    const selector = window.prompt(
+      '회원탈퇴를 원하시면 [회원탈퇴] 라고 입력해주세요.',
+    );
+    selector === '회원탈퇴'
+      ? deleteUser(user).then(() => {
+          alert('완료');
+          navigate('/');
+        })
+      : console.log('취소');
+  };
 
   return (
     <Container>
@@ -61,12 +89,12 @@ export const SearchPage = () => {
           <div style={{ width: '60%' }}>충전소명</div>
           <div style={{ width: '30%', textAlign: 'center' }}>충전소정보</div>
         </TableHead>
-        {searchResult?.map((v: any, i: number) => {
+        {searchResult?.map((v: Item, i: number) => {
           const test = data?.data.items[0].item.filter(
-            (a: any) => a.statId === v.statId,
+            (a: Item) => a.statId === v.statId,
           );
           const test1 = data?.data.items[0].item.filter(
-            (a: any) => a.statId === v.statId && a.stat === '2',
+            (a: Item) => a.statId === v.statId && a.stat === '2',
           );
 
           return (
@@ -74,7 +102,7 @@ export const SearchPage = () => {
               onClick={() =>
                 navigate(`/${v.statId}`, {
                   state: data?.data.items[0].item.filter(
-                    (y: any) => y.statId === v.statId,
+                    (y: Item) => y.statId === v.statId,
                   ),
                 })
               }
@@ -127,6 +155,7 @@ export const SearchPage = () => {
           다음 &gt;
         </button>
       </PageBtnBox>
+      <button onClick={deleteUserHandler}>회원탈퇴</button>
     </Container>
   );
 };

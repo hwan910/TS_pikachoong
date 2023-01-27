@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Data } from '../types/MapInterface';
+import { code, Szcode } from '../types/SearchInterface';
 import { APIKEY } from './firebase';
 import { zcode } from './zcode';
 
@@ -40,7 +41,7 @@ export const getData = async ({ queryKey }: DataKey) => {
 const BASE_URL = 'https://apis.data.go.kr/B552584/EvCharger/getChargerInfo?';
 const pageNo = 1;
 
-export const getChargerinfo = (zcode: any, zscode: any): any => {
+export const getChargerinfo = (zcode: code, zscode: code) => {
   return axios.get(
     `${BASE_URL}serviceKey=${APIKEY}&numOfRows=3000&zcode=${zcode}&zscode=${zscode}&pageNo=${pageNo}`,
   );

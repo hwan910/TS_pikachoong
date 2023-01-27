@@ -23,6 +23,7 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
     setLoginModalOpen(false);
     setPageNumber(0);
   };
+  const userProfile: any = auth.currentUser;
 
   const onClickGoogleLogin = () => {
     signInWithPopup(auth, provider)
@@ -32,7 +33,8 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        setPageNumber(1);
+        setPageNumber(2);
+
         // ...
       })
       .catch((error) => {
@@ -57,7 +59,7 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
 
         // The signed-in user info.
         const user = result.user;
-        setPageNumber(1);
+        setPageNumber(2);
         // ...
       })
       .catch((error) => {
@@ -71,8 +73,6 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
         // ...
       });
   };
-
-  const userProfile: any = auth.currentUser;
 
   // 사용자 프로필 업데이트
   const nicknameHandler = () => {

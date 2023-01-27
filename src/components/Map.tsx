@@ -157,7 +157,6 @@ const Map = ({
         markerLocation.push(markerPosition);
       }
     });
-    console.log(markerLocation);
     for (const markerLocate of markerLocation) {
       let coords = new kakao.maps.Coords(markerLocate.La, markerLocate.Ma);
       let La = coords.La.toFixed(10);
