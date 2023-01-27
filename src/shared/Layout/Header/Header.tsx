@@ -115,7 +115,7 @@ const Header = () => {
           </SearchBtn>
         </SearchBox>
         <HeaderBtnBox>
-          {user === null ? (
+          {!user.uid ? (
             <HeaderBtn onClick={showLoginModal}>LOGIN</HeaderBtn>
           ) : (
             <>

@@ -45,7 +45,7 @@ const Router = () => {
         dispatch(notLogin());
       }
     });
-  }, []);
+  }, [auth]);
 
   useEffect(() => {
     setLocation(myLocation);

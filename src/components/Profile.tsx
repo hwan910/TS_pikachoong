@@ -3,7 +3,9 @@ import { useAppSelector } from '../hooks/useRedux';
 
 const Profile = () => {
   const user = useAppSelector(state => state.login.user)
-
+  console.log(user);
+  
+  
   return (
     <StyledProfileDiv>
       <StyledImg

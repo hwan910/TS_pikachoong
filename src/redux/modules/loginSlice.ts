@@ -16,7 +16,10 @@ const login = createSlice({
   reducers: {
     isLogin: (state, action) => {
       state.isLogin = true;
-      state.user = action.payload;
+      state.user.displayName = action.payload.displayName;
+      state.user.email = action.payload.email;
+      state.user.photoURL = action.payload.photoURL;
+      state.user.uid = action.payload.uid
     },
     notLogin: (state) => {
       state.isLogin = false;
