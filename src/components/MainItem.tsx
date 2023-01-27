@@ -1,14 +1,41 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Item, MarkerLocation } from '../types/MapInterface';
 
 interface Props {
-  item: any;
-  data: any;
+  item: Item;
+  data: Item[];
+  newMarkerLocation: MarkerLocation[];
 }
 
-export default function MainItem({ item, data }: Props) {
+export default function MainItem({ item, data, newMarkerLocation }: Props) {
+  const navigate = useNavigate();
+
+  const allCharge = data?.filter((x: any) => x.statId === item.statId).length;
+  const okCharge = data?.filter(
+    (x: any) => x.statId === item.statId && x.stat === '2',
+  ).length;
+
+  const newData = newMarkerLocation.map((x: any) => {
+    if (
+      Number(item.lat).toFixed(10) === x.Ma.toFixed(10) &&
+      Number(item.lng).toFixed(10) === x.La.toFixed(10)
+    ) {
+      return x.dist;
+    }
+  });
+
+  let distArr = Array.from(new Set(newData)).filter((x: any) => !!x);
+
   return (
-    <NearbyChargingStationCard>
+    <NearbyChargingStationCard
+      onClick={() => {
+        navigate(`${item.statId}`, {
+          state: data?.filter((y: any) => y.statId === item.statId),
+        });
+      }}
+    >
       <NearbyChargingStationCardTextWrap>
         <NearbyChargingStationCardTitle>
           {item.statNm}
@@ -16,20 +43,11 @@ export default function MainItem({ item, data }: Props) {
       </NearbyChargingStationCardTextWrap>
       <NearbyChargingStationCardTextWrap>
         <NearbyChargingStationCardContent>
-          {item.addr}
+          {item.addr} / {Math.floor(distArr[0]) + 'm'}
         </NearbyChargingStationCardContent>
         <NearbyChargingStationCardContent>
-          전체 충전기 :{' '}
-          {data?.filter((x: any) => x.statId === item.statId).length} / 충전
-          가능 :{' '}
-          {data?.filter((x: any) => x.statId === item.statId && x.stat === '2')
-            .length > 0
-            ? `${
-                data?.filter(
-                  (x: any) => x.statId === item.statId && x.stat === '2',
-                ).length
-              } `
-            : 0}
+          전체 충전기 : {allCharge} / 충전 가능 :{' '}
+          {okCharge > 0 ? `${okCharge}` : 0}
         </NearbyChargingStationCardContent>
       </NearbyChargingStationCardTextWrap>
     </NearbyChargingStationCard>
@@ -46,6 +64,8 @@ const NearbyChargingStationCard = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px 0 20px;
+  cursor: pointer;
+  margin: 0 auto 0 0;
 `;
 
 const NearbyChargingStationCardTextWrap = styled.div`

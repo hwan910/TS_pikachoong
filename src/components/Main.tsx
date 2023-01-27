@@ -2,62 +2,33 @@ import styled from 'styled-components';
 import { COLOR } from '../common/color';
 import { useState } from 'react';
 import MainItem from './MainItem';
-
-// interface LocationType {
-//   latitude: number;
-//   longitude: number;
-// }
+import { Item, MarkerLocation } from '../types/MapInterface';
 
 interface Props {
-  filterData: any[];
-  // {
-  //   addr: string;
-  //   bnm: string;
-  //   busiCall: string;
-  //   busiId: string;
-  //   busiNm: string;
-  //   chgerId: string;
-  //   chgerType: string;
-  //   delDetail: string;
-  //   delYn: string;
-  //   kind: string;
-  //   kindDetail: string;
-  //   lastTedt: string;
-  //   lastTsdt: string;
-  //   lat: string;
-  //   limitDetail: string;
-  //   limitYn: string;
-  //   lng: string;
-  //   location: string;
-  //   method: string;
-  //   note: string;
-  //   nowTsdt: string;
-  //   output: string;
-  //   parkingFree: string;
-  //   powerType: string;
-  //   stat: string;
-  //   statId: string;
-  //   statNm: string;
-  //   statUpdDt: string;
-  //   trafficYn: string;
-  //   useTime: string;
-  //   zcode: string;
-  //   zscode: string;
-  // };
+  filterData: Item[];
+  markerLocation: MarkerLocation[];
 }
 
-export default function Main({ filterData }: Props) {
-  const [data, setData] = useState<any>(filterData);
+export default function Main({ filterData, markerLocation }: Props) {
+  const [data, setData] = useState(filterData);
+  const [newMarkerLocation, setNewMarkerLocation] = useState(markerLocation);
   let newData = Array.from(new Set(data));
 
   return (
     <NearbyChargingStationWrap>
       <NearbyChargingStationTitleWrap>
-        <NearbyChargingStationTitle>인근 충전소</NearbyChargingStationTitle>
+        <NearbyChargingStationTitle>피카츙</NearbyChargingStationTitle>
       </NearbyChargingStationTitleWrap>
       <NearbyChargingStationCardWrap>
-        {newData.map((item: any) => {
-          return <MainItem data={data} item={item} key={item.statId} />;
+        {newData.map((item: Item) => {
+          return (
+            <MainItem
+              data={data}
+              item={item}
+              key={item.statId}
+              newMarkerLocation={newMarkerLocation}
+            />
+          );
         })}
       </NearbyChargingStationCardWrap>
     </NearbyChargingStationWrap>
@@ -88,11 +59,12 @@ const NearbyChargingStationTitle = styled.span`
 const NearbyChargingStationCardWrap = styled.div`
   overflow: scroll;
   padding: 50px 0 20px 0;
-  width: auto;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin: 0 auto;
   gap: 50px 50px;
   &::-webkit-scrollbar {
     display: none;

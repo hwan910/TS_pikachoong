@@ -61,3 +61,7 @@ export interface Item {
 export interface Zcode {
   [key: string]: string;
 }
+
+export interface MarkerLocation {
+  [key: string]: number;
+}
