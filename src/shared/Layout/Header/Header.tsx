@@ -77,7 +77,6 @@ const Header = () => {
       });
   };
 
-  console.log(auth);
   return (
     <StyledHeader>
       <HeaderContainer>

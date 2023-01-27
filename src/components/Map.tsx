@@ -139,7 +139,6 @@ const Map = ({
     let markerLocation: any[] = [];
     markers?.forEach(function (marker) {
       // 마커의 위치와 원의 중심을 경로로 하는 폴리라인 설정
-      console.log('marker!@#@!#@', marker);
       let path = [marker.getPosition(), center];
       line.setPath(path);
 
@@ -150,7 +149,6 @@ const Map = ({
       if (dist <= radius) {
         marker.setMap(map);
         markerLocation.push(marker.n);
-        console.log(marker);
       }
     });
 
@@ -165,7 +163,6 @@ const Map = ({
       // console.log('coord@@', coord);
       let La = coord.La.toFixed(10);
       let Ma = coord.Ma.toFixed(10);
-      console.log('LA@@', La, 'MA@@', Ma);
 
       const filters = arrUnique?.find(
         (item: Item) =>
@@ -177,7 +174,6 @@ const Map = ({
       }
     }
   }, []);
-  console.log('@@', arrFilter);
   const [text, setText] = useState('');
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
