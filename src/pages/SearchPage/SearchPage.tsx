@@ -23,8 +23,6 @@ export const SearchPage = () => {
     refetch();
     setPage(0);
     setI(0);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [z2]);
 
   if (isLoading) {
@@ -116,9 +114,9 @@ export const SearchPage = () => {
             if (page % 5 === 0) setI(i - 1);
           }}
         >
-          이전
+          &lt; 이전
         </button>
-        <PageNation allpage={allpage} />
+        <PageNation allpage={allpage} setPage={setPage} page={page} />
         <button
           disabled={page === Math.floor(pageResult?.length / 10) ? true : false}
           onClick={() => {
@@ -126,7 +124,7 @@ export const SearchPage = () => {
             if ((page + 1) % 5 === 0) setI(i + 1);
           }}
         >
-          다음
+          다음 &gt;
         </button>
       </PageBtnBox>
     </Container>
