@@ -2,13 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { ProfileImg } from '../pages/DetailPage/style';
 import Profile from './Profile';
+import { auth } from '../common/firebase';
 
 const ProfileTap = () => {
+  const user = auth?.currentUser;
+  console.log(user);
   return (
     <div>
-      <Profile />
-      <StyledTextH4>최원장</StyledTextH4>
-      <StyledTextP>sparta@gmail.com</StyledTextP>
+      <Profile url={user?.photoURL} />
+      <StyledTextH4>{user?.displayName}</StyledTextH4>
+      <StyledTextP>{user?.email}</StyledTextP>
     </div>
   );
 };

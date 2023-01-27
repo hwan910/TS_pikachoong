@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { auth } from '../common/firebase';
 
-const Profile = () => {
+interface Props {
+  url: any;
+}
+
+const Profile = ({ url }: Props) => {
+  console.log(auth.currentUser);
   return (
     <StyledProfileDiv>
-      <StyledImg src={require('../assets/girl.png')} alt="프로필 사진" />
+      <StyledImg
+        src={`${url === null ? require('../assets/x.png') : url}`}
+        alt="프로필 사진"
+      />
       <StyledTextDiv></StyledTextDiv>
     </StyledProfileDiv>
   );
@@ -29,3 +38,9 @@ const StyledImg = styled.img`
 const StyledTextDiv = styled.div`
   text-align: center;
 `;
+
+// src={`${
+//   auth.currentUser?.photoURL === undefined
+//     ? require('../assets/github.png')
+//     : auth.currentUser?.photoURL
+// }`}

@@ -1,34 +1,49 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Profile from './Profile';
+import { auth } from '../common/firebase';
+import { updateProfile } from 'firebase/auth';
 
 interface Props {
   setProfileModalOpen: any;
 }
 
 const ProfileModal = ({ setProfileModalOpen }: Props) => {
+  const [nickname, setNickname] = useState('');
+  const userProfile: any = auth.currentUser;
+  console.log(userProfile);
+
   // 모달 끄기
   const closeModal = () => {
     setProfileModalOpen(false);
+    updateProfile(userProfile, {
+      displayName: nickname,
+    })
+      .then(() => {
+        alert('변경완료');
+      })
+      .catch((e) => console.log('e:', e));
   };
-  const [name, setName] = useState('');
+
+  // 사용자 프로필 업데이트
+  const nicknameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(event.target.value);
+  };
 
   return (
     <StyledProfileModalBackground>
       <StyledProfileModalDiv>
         <StyledH2>프로필 수정</StyledH2>
-        <Profile />
-        <StyledBackground></StyledBackground>
-        <StyledImg src={require('../assets/camera.png')} alt="카메라" />
+        <Profile url={userProfile.photoURL} />
         <StyledX
           onClick={closeModal}
           src={require('../assets/x.png')}
           alt="X"
         />
         <StyledInput
-          value={name}
-          onChange={(event) => {
-            setName(event.target.value);
+          value={nickname}
+          onChange={(e) => {
+            nicknameHandler(e);
           }}
           type="text"
         />

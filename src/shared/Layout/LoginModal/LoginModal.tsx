@@ -6,12 +6,19 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider,
+  updateProfile,
 } from 'firebase/auth';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const LoginModal = ({ setLoginModalOpen }) => {
+interface Props {
+  setLoginModalOpen: any;
+}
+
+const LoginModal = ({ setLoginModalOpen }: Props) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [nickname, setNickname] = useState('');
+  const navigate = useNavigate();
   const closeModal = () => {
     setLoginModalOpen(false);
     setPageNumber(0);
@@ -21,7 +28,7 @@ const LoginModal = ({ setLoginModalOpen }) => {
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const credential: any = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
@@ -45,7 +52,7 @@ const LoginModal = ({ setLoginModalOpen }) => {
     signInWithPopup(auth, providerGithub)
       .then((result) => {
         // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-        const credential = GithubAuthProvider.credentialFromResult(result);
+        const credential: any = GithubAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
 
         // The signed-in user info.
@@ -63,6 +70,20 @@ const LoginModal = ({ setLoginModalOpen }) => {
         const credential = GithubAuthProvider.credentialFromError(error);
         // ...
       });
+  };
+
+  const userProfile: any = auth.currentUser;
+
+  // 사용자 프로필 업데이트
+  const nicknameHandler = () => {
+    updateProfile(userProfile, {
+      displayName: nickname,
+    })
+      .then(() => {
+        alert('변경완료');
+        setPageNumber(2);
+      })
+      .catch((e) => console.log('e:', e));
   };
 
   return (
@@ -110,16 +131,11 @@ const LoginModal = ({ setLoginModalOpen }) => {
               value={nickname}
               onChange={(event) => {
                 setNickname(event.target.value);
+                console.log(nickname);
               }}
               type="text"
             />
-            <StyledButton
-              onClick={() => {
-                setPageNumber(2);
-              }}
-            >
-              확인
-            </StyledButton>
+            <StyledButton onClick={nicknameHandler}>확인</StyledButton>
           </StyledLoginModalDiv>
         )}
         {pageNumber === 2 && (
@@ -134,6 +150,7 @@ const LoginModal = ({ setLoginModalOpen }) => {
               onClick={() => {
                 setPageNumber(0);
                 setLoginModalOpen(false);
+                navigate('/');
               }}
             >
               확인
