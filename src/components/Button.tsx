@@ -26,5 +26,5 @@ const StyledButton = styled.button`
   border: none;
   cursor: pointer;
   border-radius: 30px;
-  /* margin-top: 1rem; */
+  margin-bottom: 4rem;
 `;

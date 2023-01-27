@@ -23,6 +23,7 @@ export const TableHead = styled.div`
   font-weight: 700;
 `;
 export const TableBody = styled.div`
+  cursor: pointer;
   display: flex;
   justify-content: space-evenly;
   padding: 10px;

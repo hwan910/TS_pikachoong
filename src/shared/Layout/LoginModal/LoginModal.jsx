@@ -1,21 +1,20 @@
 // import React, { useState } from 'react';
 import styled from 'styled-components';
-import { auth, providerGithub, providerApple } from '../../../common/firebase';
+import { auth, providerGithub } from '../../../common/firebase';
 import { provider } from '../../../common/firebase';
 import {
   signInWithPopup,
   GoogleAuthProvider,
   GithubAuthProvider,
-  OAuthProvider,
 } from 'firebase/auth';
-
-// interface Props {
-//   setLoginModalOpen: any;
-// }
+import { useState } from 'react';
 
 const LoginModal = ({ setLoginModalOpen }) => {
+  const [pageNumber, setPageNumber] = useState(0);
+  const [nickname, setNickname] = useState('');
   const closeModal = () => {
     setLoginModalOpen(false);
+    setPageNumber(0);
   };
 
   const onClickGoogleLogin = () => {
@@ -26,7 +25,7 @@ const LoginModal = ({ setLoginModalOpen }) => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        setLoginModalOpen(false);
+        setPageNumber(1);
         // ...
       })
       .catch((error) => {
@@ -37,6 +36,7 @@ const LoginModal = ({ setLoginModalOpen }) => {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
+        alert('로그인이 실패 하였습니다.');
         // ...
       });
   };
@@ -50,7 +50,7 @@ const LoginModal = ({ setLoginModalOpen }) => {
 
         // The signed-in user info.
         const user = result.user;
-        setLoginModalOpen(false);
+        setPageNumber(1);
         // ...
       })
       .catch((error) => {
@@ -66,20 +66,82 @@ const LoginModal = ({ setLoginModalOpen }) => {
   };
 
   return (
-    <StyledLoginModalBackground>
-      <StyledLoginModalDiv>
-        <h1>간편 로그인</h1>
-        <StyledX onClick={closeModal} src="img/x.png" alt="X" />
-        <StyledLoginDiv>
-          <StyledLoginButton onClick={() => onClickGoogleLogin()} name="google">
-            <StyledButtonImg src="img/google.png" alt="구글" />
-          </StyledLoginButton>
-          <StyledLoginButton onClick={() => onClickGithubLogin()} name="github">
-            <StyledButtonImg src="img/github.png" alt="깃허브" />
-          </StyledLoginButton>
-        </StyledLoginDiv>
-      </StyledLoginModalDiv>
-    </StyledLoginModalBackground>
+    <div>
+      <StyledLoginModalBackground>
+        {pageNumber === 0 && (
+          <StyledLoginModalDiv>
+            <h1>원하시는 로그인 방식을 선택해주세요.</h1>
+            <StyledX
+              onClick={closeModal}
+              src={require('../../../assets/x.png')}
+              alt="X"
+            />
+            <StyledLoginDiv>
+              <StyledLoginButton
+                onClick={() => onClickGoogleLogin()}
+                name="google"
+              >
+                <StyledButtonImg
+                  src={require('../../../assets/google.png')}
+                  alt="구글"
+                />
+              </StyledLoginButton>
+              <StyledLoginButton
+                onClick={() => onClickGithubLogin()}
+                name="github"
+              >
+                <StyledButtonImg
+                  src={require('../../../assets/github.png')}
+                  alt="깃허브"
+                />
+              </StyledLoginButton>
+            </StyledLoginDiv>
+          </StyledLoginModalDiv>
+        )}
+        {pageNumber === 1 && (
+          <StyledLoginModalDiv>
+            <h1>닉네임을 입력해주세요.</h1>
+            <StyledX
+              onClick={closeModal}
+              src={require('../../../assets/x.png')}
+              alt="X"
+            />
+            <StyledNicknameInput
+              value={nickname}
+              onChange={(event) => {
+                setNickname(event.target.value);
+              }}
+              type="text"
+            />
+            <StyledButton
+              onClick={() => {
+                setPageNumber(2);
+              }}
+            >
+              확인
+            </StyledButton>
+          </StyledLoginModalDiv>
+        )}
+        {pageNumber === 2 && (
+          <StyledLoginModalDiv>
+            <h1>로그인이 완료되었습니다.</h1>
+            <StyledX
+              onClick={closeModal}
+              src={require('../../../assets/x.png')}
+              alt="X"
+            />
+            <StyledButton
+              onClick={() => {
+                setPageNumber(0);
+                setLoginModalOpen(false);
+              }}
+            >
+              확인
+            </StyledButton>
+          </StyledLoginModalDiv>
+        )}
+      </StyledLoginModalBackground>
+    </div>
   );
 };
 
@@ -92,6 +154,7 @@ const StyledLoginModalBackground = styled.div`
   bottom: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.8);
+  z-index: 999;
 `;
 
 const StyledLoginModalDiv = styled.div`
@@ -137,4 +200,27 @@ const StyledButtonImg = styled.img`
   width: 7rem;
   height: 8rem;
   padding: 1rem;
+  border-radius: 50%;
+`;
+
+const StyledNicknameInput = styled.input`
+  padding: 1rem 3rem;
+  border: none;
+  outline: none;
+  font-size: large;
+  text-align: center;
+`;
+
+const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgb(250, 214, 29, 0.3);
+  padding: 1rem 3rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 30px;
+  margin-top: 1.5rem;
+  font-size: larger;
 `;

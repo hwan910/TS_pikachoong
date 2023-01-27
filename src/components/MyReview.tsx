@@ -32,7 +32,7 @@ const StyledReview = styled.div`
   justify-content: center;
   flex-direction: column;
   margin-left: 10rem;
-  /* margin-bottom: 2rem; */
+  margin-bottom: 3rem;
 `;
 
 const StyledH1 = styled.h1`
@@ -41,7 +41,7 @@ const StyledH1 = styled.h1`
 
 const StyledScroll = styled.div`
   overflow-y: scroll;
-  height: 22rem;
+  height: 17rem;
 `;
 
 const StyledReviewBox = styled.div`
