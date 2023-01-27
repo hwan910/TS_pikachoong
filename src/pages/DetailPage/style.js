@@ -99,13 +99,19 @@ export const ReviewList = styled.div``;
 //Review.jsx
 
 //작성된 리뷰
-export const ReviewBox = styled.div`
+export const ReviewDetail = styled.div`
   /* background-color: #e0e0e0; */
   display: flex;
   justify-content: space-between;
   padding: 30px 15px;
   width: 420px;
   border-top: solid 2px #e0e0e0;
+`;
+
+export const ReviewBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  position: relative;
 `;
 
 export const ProfileImg = styled.div`
