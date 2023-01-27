@@ -8,7 +8,6 @@ import {
   MarkerLocation,
 } from '../types/MapInterface';
 import { useNavigate } from 'react-router-dom';
-import { COLOR } from '../common/color';
 import Main from './Main';
 import styled from 'styled-components';
 
@@ -26,37 +25,6 @@ interface Props {
       lng: number | string;
     }>
   >;
-  refetch: any;
-}
-
-interface Markers {
-  u: {
-    $a: number;
-    Ba: number;
-    Gb: string;
-    Ha: number;
-    Hb: boolean;
-    K: undefined;
-    Na: boolean;
-    Nh: number;
-    Qi: number;
-    Rc: { x: number; y: number };
-    Ri: number;
-    T: {
-      Ij: { x: number; y: number };
-      Jj: { width: number; height: number };
-      Qd: { x: number; y: number };
-      Yj: string;
-      de: string;
-      lf: { width: number; height: number };
-      n: string;
-      Za: boolean;
-      a: any;
-      ca: any;
-      o: { mouseover: any[]; mouseout: any[]; click: any[] };
-      vj: number;
-    };
-  };
 }
 
 const Map = ({
@@ -65,8 +33,7 @@ const Map = ({
   myLocation,
   setLevel,
   setLocation,
-  setMyLocation,
-  refetch,
+  setMyLocation
 }: Props) => {
   const navigate = useNavigate();
   const mapRef = useRef(null);
@@ -85,13 +52,6 @@ const Map = ({
   );
 
   useEffect(() => {
-    // const arrUnique = data?.items.item.filter(
-    //   (stat: Item, idx: number, arr: Item[]) => {
-    //     return (
-    //       arr.findIndex((item: Item) => item.statId === stat.statId) === idx
-    //     );
-    //   },
-    // );
     const location = new kakao.maps.LatLng(myLocation.lat, myLocation.lng);
 
     const options = {
@@ -163,51 +123,6 @@ const Map = ({
         );
       }
     }
-
-    // let circle = new kakao.maps.Circle({
-    //   map: map,
-    //   center: new kakao.maps.LatLng(myLocation.lat, myLocation.lng),
-    //   radius: 1000,
-    //   strokeWeight: 2,
-    //   strokeOpacity: 0,
-    //   strokeStyle: 'dashed',
-    //   fillOpacity: 0,
-    // });
-
-    // let center = circle.getPosition();
-    // let radius = circle.getRadius();
-    // let line = new kakao.maps.Polyline();
-
-    // let markerLocation: any[] = [];
-    // markers?.forEach(function (marker) {
-    //   // 마커의 위치와 원의 중심을 경로로 하는 폴리라인 설정
-    //   let markerPosition = marker.getPosition();
-    //   let path = [markerPosition, center];
-    //   line.setPath(path);
-
-    //   // 마커와 원의 중심 사이의 거리
-    //   let dist = line.getLength();
-
-    //   // 이 거리가 원의 반지름보다 작거나 같다면
-    //   if (dist <= radius) {
-    //     markerLocation.push(markerPosition);
-    //   }
-    // });
-
-    // for (const markerLocate of markerLocation) {
-    //   var coords = new kakao.maps.Coords(markerLocate.La, markerLocate.Ma);
-    //   let La = coords.La.toFixed(10);
-    //   let Ma = coords.Ma.toFixed(10);
-
-    //   const filters = arrUnique?.find(
-    //     (item: Item) =>
-    //       Number(item.lat).toFixed(10) === Ma &&
-    //       Number(item.lng).toFixed(10) === La,
-    //   );
-    //   if (filters !== undefined) {
-    //     arrFilter.push(filters);
-    //   }
-    // }
   }, []);
 
   useEffect(() => {

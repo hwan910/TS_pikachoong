@@ -11,7 +11,6 @@ interface Props {
 const ProfileModal = ({ setProfileModalOpen }: Props) => {
   const [nickname, setNickname] = useState('');
   const userProfile: any = auth.currentUser;
-  console.log(userProfile);
 
   // 모달 끄기
   const closeModal = () => {
@@ -34,7 +33,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
     <StyledProfileModalBackground>
       <StyledProfileModalDiv>
         <StyledH2>프로필 수정</StyledH2>
-        <Profile url={userProfile.photoURL} />
+        <Profile />
         <StyledX
           onClick={closeModal}
           src={require('../assets/x.png')}
