@@ -1,23 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import {
-  ReviewContainer,
-  ReviewHeadTitle,
-  ScoreAvg,
-  ReviewInput,
-  ReviewStarRating,
-  ReviewTextInput,
-  ReviewBtn,
-  ReviewList,
-  ReviewDetail,
-  ReviewBox,
-  ProfileImg,
-  OptionModal,
-  EditBtn,
-  DeleteBtn,
-  Rating,
-} from './style';
+import * as S from './style';
 import {
   addDoc,
   collection,
@@ -63,12 +47,14 @@ export const Review = () => {
   // 리뷰 수정 삭제 모달
   const [modalOpen, setModalOpen] = useState({ id: 0, isOpen: false });
   const handleModalOpen = (reviewId) => {
-    setModalOpen({ id: reviewId, isOpen: true });
-    // console.log(id);
-  };
-  const handleModalClose = () => {
-    setModalOpen({ id: 0, isOpen: false });
-  };
+    if (modalOpen.id !== reviewId && !modalOpen.isOpen) {
+      setModalOpen({ id: reviewId, isOpen: true });
+    } else if (modalOpen.id !== reviewId && modalOpen.isOpen) {
+      setModalOpen({ id: reviewId, isOpen: true });
+    } else if (modalOpen.id === reviewId && modalOpen.isOpen) {
+      setModalOpen({ id: 0, isOpen: false })
+    }
+  }
 
   // 파이어베이스
 
@@ -168,18 +154,18 @@ export const Review = () => {
   };
 
   return (
-    <ReviewContainer>
+    <S.ReviewContainer>
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
         }}
       >
-        <ReviewHeadTitle>이용 후기</ReviewHeadTitle>
-        <ScoreAvg>⭐️ 평균 4.0</ScoreAvg>
+        <S.ReviewHeadTitle>이용 후기</S.ReviewHeadTitle>
+        <S.ScoreAvg>⭐️ 평균 4.0</S.ScoreAvg>
       </div>
-      <ReviewInput>
-        <Rating>
+      <S.ReviewInput>
+        <S.Rating>
           {/* map함수로 배열을 받아 별5개를 리턴하기 위해 위에 ratingArr=[0,1,2,3,4] 를 선언 */}
           {/* 클릭한 별의 index값이 el에 찍힘(별점 3점 -> el = 3) */}
           {/* handleStarClick 함수로 클릭한 el값을 index로 받음 + i <= 3이 될때까지는 true값을 반환 */}
@@ -194,7 +180,7 @@ export const Review = () => {
               />
             );
           })}
-        </Rating>
+        </S.Rating>
         <div
           style={{
             display: 'flex',
@@ -202,28 +188,28 @@ export const Review = () => {
             alignItems: 'center',
           }}
         >
-          <ReviewTextInput
+          <S.ReviewTextInput
             placeholder="의견 남기기"
             type="text"
             value={newReview}
             onChange={(e) => handleNewReview(e)}
             setReviewList={setReviewList}
           />
-          <ReviewBtn onClick={addReview}>
+          <S.ReviewBtn onClick={addReview}>
             {/* type="submit" */}
             등록
-          </ReviewBtn>
+          </S.ReviewBtn>
         </div>
-      </ReviewInput>
+      </S.ReviewInput>
 
       {/* 리뷰리스트 */}
 
-      <ReviewList>
+      <S.ReviewList>
         {reviewList.map((i) => (
-          <ReviewBox key={i.reviewId}>
-            <ReviewDetail>
+          <S.ReviewBox key={i.reviewId}>
+            <S.ReviewDetail>
               <div style={{ display: 'flex' }}>
-                <ProfileImg
+                <S.ProfileImg
                   source={{
                     uri: `${i.profileImg}`,
                   }}
@@ -243,31 +229,24 @@ export const Review = () => {
               {/* 리뷰 수정삭제 모달 버튼 */}
 
               <SlOptions
-                onClick={() =>
-                  !modalOpen.isOpen
-                    ? handleModalOpen(i.reviewId)
-                    : handleModalClose()
-                }
+                onClick={() => handleModalOpen(i.reviewId)}
                 // i.reviewId
                 style={{ cursor: 'pointer' }}
               />
-            </ReviewDetail>
+            </S.ReviewDetail>
             {/* 리뷰 수정삭제 모달 */}
             {modalOpen.id === i.reviewId && modalOpen.isOpen && (
-              <OptionModal
-                setModalOpen={setModalOpen}
-                onClick={() => handleModalClose(i.reviewId)}
-              >
-                <EditBtn onClick={editReview}>수정</EditBtn>
-                <DeleteBtn onClick={() => deleteReview(i.reviewId)}>
+              <S.OptionModal>
+                <S.EditBtn onClick={editReview}>수정</S.EditBtn>
+                <S.DeleteBtn onClick={() => deleteReview(i.reviewId)}>
                   삭제
-                </DeleteBtn>
-              </OptionModal>
+                </S.DeleteBtn>
+              </S.OptionModal>
             )}
-          </ReviewBox>
+          </S.ReviewBox>
         ))}
-      </ReviewList>
+      </S.ReviewList>
       {/* <button onClick={reviewHandler}>리뷰 불러오는 버튼</button> */}
-    </ReviewContainer>
+    </S.ReviewContainer>
   );
 };
