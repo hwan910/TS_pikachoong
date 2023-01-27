@@ -35,8 +35,9 @@ import { SlOptions } from 'react-icons/sl';
 import { uuidv4 } from '@firebase/util';
 import { FaStar } from 'react-icons/fa';
 import { getAuth } from 'firebase/auth';
+import { toEditorSettings } from 'typescript';
 
-export const Review = ({ state }) => {
+export const Review = () => {
   const currentUser = getAuth().currentUser;
   const [reviewRating, setReviewRating] = useState(0);
   const [newReview, setNewReview] = useState('');
@@ -60,19 +61,21 @@ export const Review = ({ state }) => {
   };
 
   // 리뷰 수정 삭제 모달
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleModalOpen = () => {
-    setModalOpen(true);
+  const [modalOpen, setModalOpen] = useState({ id: 0, isOpen: false });
+  const handleModalOpen = (reviewId) => {
+    setModalOpen({ id: reviewId, isOpen: true });
+    // console.log(id);
   };
   const handleModalClose = () => {
-    setModalOpen(false);
+    setModalOpen({ id: 0, isOpen: false });
   };
 
   // 파이어베이스
 
   useEffect(() => {
     reviewHandler();
-  }, [reviewList]); // 리뷰리스트의 값이 변할때마다 핸들러 함수 실행
+  }, []); // 리뷰리스트의 값이 변할때마다 핸들러 함수 실행
+  // 리뷰핸들러 -> 리뷰리스트 -> 유즈이펙트 -> 리뷰핸들러 무한반복이라 [setReviewList] -> [] 로 수정
 
   const reviewHandler = async () => {
     const q = query(
@@ -126,13 +129,14 @@ export const Review = ({ state }) => {
   //리뷰삭제
   const deleteReview = async () => {
     // setReviewList((prev) => prev.filter((t) => t.reviewId !== reviewId));
-    await deleteDoc(doc(db, 'reviews', reviewId));
+    // await deleteDoc(doc(db, 'reviews', reviewId));
+    // setTimeout(() => {});
   };
 
   //리뷰수정
   const editReview = async (reviewId) => {
     const idx = reviewList.findIndex((review) => review.reviewId === reviewId);
-    await updateDoc(doc(db, 'todos', reviewId), {
+    await updateDoc(doc(db, 'reviews', reviewId), {
       isEdit: !reviewList[idx].isEdit,
     });
   };
@@ -140,6 +144,8 @@ export const Review = ({ state }) => {
   const handleNewReview = (e) => {
     setNewReview(e.target.value);
   };
+
+  // 별점핸들링
 
   // 별점 rating
   const ratingArr = [0, 1, 2, 3, 4];
@@ -170,7 +176,7 @@ export const Review = ({ state }) => {
         }}
       >
         <ReviewHeadTitle>이용 후기</ReviewHeadTitle>
-        <ScoreAvg>평균 4.0 ⭐️⭐️⭐️⭐️⭐️</ScoreAvg>
+        <ScoreAvg>⭐️ 평균 4.0</ScoreAvg>
       </div>
       <ReviewInput>
         <Rating>
@@ -235,19 +241,27 @@ export const Review = ({ state }) => {
                 </div>
               </div>
               {/* 리뷰 수정삭제 모달 버튼 */}
+
               <SlOptions
-                onClick={() => handleModalOpen()}
+                onClick={() =>
+                  !modalOpen.isOpen
+                    ? handleModalOpen(i.reviewId)
+                    : handleModalClose()
+                }
+                // i.reviewId
                 style={{ cursor: 'pointer' }}
               />
             </ReviewDetail>
             {/* 리뷰 수정삭제 모달 */}
-            {modalOpen && (
+            {modalOpen.id === i.reviewId && modalOpen.isOpen && (
               <OptionModal
                 setModalOpen={setModalOpen}
-                onClick={handleModalClose}
+                onClick={() => handleModalClose(i.reviewId)}
               >
                 <EditBtn onClick={editReview}>수정</EditBtn>
-                <DeleteBtn onClick={deleteReview}>삭제</DeleteBtn>
+                <DeleteBtn onClick={() => deleteReview(i.reviewId)}>
+                  삭제
+                </DeleteBtn>
               </OptionModal>
             )}
           </ReviewBox>
