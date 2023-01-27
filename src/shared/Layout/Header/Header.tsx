@@ -15,17 +15,29 @@ import { useEffect, useState } from 'react';
 import LoginModal from '../LoginModal/LoginModal';
 import { IoSearchCircle } from 'react-icons/io5';
 import { szcode, szscode } from '../../../common/zcode';
+import { useQuery } from 'react-query';
+import { Data } from '../../../types/MapInterface';
+import { getChargerinfo, getData } from '../../../common/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { switchSearchResult } from '../../../redux/modules/searchSlice';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../../common/firebase';
 
 const Header = () => {
   const navigate = useNavigate();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
   const [z1List, setZ1List] = useState<string[]>([]);
   const [z1, setZ1] = useState('');
   const [z2List, setZ2List] = useState<string[]>([]);
   const [z2, setZ2] = useState('');
 
+  const searchResult = useSelector((state: any) => state.search);
+
   const searchResultHandler = () => {
-    navigate(`/search/${z2}`);
+    dispatch(switchSearchResult([z1, z2]));
+    navigate('/search');
   };
 
   useEffect(() => {
@@ -47,8 +59,22 @@ const Header = () => {
     setZ2List(arr);
   };
 
+  // 모달 끄기
   const showLoginModal = () => {
     setLoginModalOpen(true);
+  };
+
+  // 로그아웃
+  const onClickLogout = (): void => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log('잘 됨.');
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log('안 됨.');
+      });
   };
 
   return (
@@ -97,8 +123,10 @@ const Header = () => {
         </SearchBox>
         <HeaderBtnBox>
           <HeaderBtn onClick={() => navigate('/my')}>마이페이지</HeaderBtn>
-          <HeaderBtn onClick={showLoginModal}>LOGIN</HeaderBtn>
-          <HeaderBtn>LOGOUT</HeaderBtn>
+          <HeaderBtn onClick={showLoginModal}>
+            {auth ? 'LOGIN' : 'LOGOUT'}
+          </HeaderBtn>
+          <HeaderBtn onClick={onClickLogout}>LOGOUT</HeaderBtn>
           {loginModalOpen && (
             <LoginModal setLoginModalOpen={setLoginModalOpen} />
           )}
