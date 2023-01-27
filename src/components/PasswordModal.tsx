@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-const PasswordModal = ({ setPasswordModalOpen }) => {
+interface Props {
+  setPasswordModalOpen: any;
+}
+
+const PasswordModal = ({ setPasswordModalOpen }: Props) => {
   const closeModal = () => {
     setPasswordModalOpen(false);
   };

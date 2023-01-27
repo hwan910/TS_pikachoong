@@ -71,6 +71,7 @@ const Map = ({
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const [map, setMap] = useState<any>('');
+
   const [marker, setMarker] = useState<any>('');
 
   let markers: any[] = [];
@@ -226,8 +227,10 @@ const Map = ({
 
     markers?.forEach(function (marker) {
       // 마커의 위치와 원의 중심을 경로로 하는 폴리라인 설정
+
       let markerPosition = marker.getPosition();
       let path = [markerPosition, center];
+
       line.setPath(path);
 
       // 마커와 원의 중심 사이의 거리
@@ -241,7 +244,7 @@ const Map = ({
     });
     console.log(markerLocation);
     for (const markerLocate of markerLocation) {
-      var coords = new kakao.maps.Coords(markerLocate.La, markerLocate.Ma);
+      let coords = new kakao.maps.Coords(markerLocate.La, markerLocate.Ma);
       let La = coords.La.toFixed(10);
       let Ma = coords.Ma.toFixed(10);
 

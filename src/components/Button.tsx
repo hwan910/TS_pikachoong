@@ -1,7 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ children, onClick }) => {
+interface Props {
+  children: any;
+  onClick: any;
+}
+
+const Button = ({ children, onClick }: Props) => {
   return (
     <div>
       <StyledButton onClick={onClick}>{children}</StyledButton>
@@ -21,5 +26,5 @@ const StyledButton = styled.button`
   border: none;
   cursor: pointer;
   border-radius: 30px;
-  margin-top: 1rem;
+  margin-bottom: 4rem;
 `;
