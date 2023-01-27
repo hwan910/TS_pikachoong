@@ -1,25 +1,65 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import Profile from './Profile';
-import { auth } from '../common/firebase';
+import { auth, storage } from '../common/firebase';
 import { updateProfile } from 'firebase/auth';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { uuidv4 } from '@firebase/util';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { isLogin } from '../redux/modules/loginSlice';
 
 interface Props {
-  setProfileModalOpen: any;
+  setProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ProfileModal = ({ setProfileModalOpen }: Props) => {
-  const [nickname, setNickname] = useState('');
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.login.user);
+  const [photoURL, setPhotoURL] = useState(user.photoURL);
+  const [nickname, setNickname] = useState(user.displayName);
   const userProfile: any = auth.currentUser;
+
+  const miribogi = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files !== null) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setPhotoURL(reader.result);
+        }
+      };
+    }
+  };
+
+  const uploadImg = async () => {
+    const imgRef = ref(storage, `profile/${uuidv4()}`);
+    if (photoURL) {
+      const response = await uploadString(imgRef, photoURL, 'data_url');
+      const downloadURL = await getDownloadURL(response.ref);
+      return downloadURL;
+    }
+  };
+
+  const clickX = () => {
+    setPhotoURL('');
+    setNickname('');
+    setProfileModalOpen(false);
+  };
 
   // 모달 끄기
   const closeModal = () => {
-    setProfileModalOpen(false);
-    updateProfile(userProfile, {
-      displayName: nickname,
-    })
-      .then(() => {
-        alert('변경완료');
+    uploadImg()
+      .then((res) => {
+        dispatch(isLogin({ ...user, displayName: nickname, photoURL: res }));
+        updateProfile(userProfile, {
+          displayName: nickname,
+          photoURL: res,
+        }).then(() => {
+          alert('변경완료!');
+          setPhotoURL('');
+          setNickname('');
+          setProfileModalOpen(false);
+        });
       })
       .catch((e) => console.log('e:', e));
   };
@@ -33,9 +73,21 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
     <StyledProfileModalBackground>
       <StyledProfileModalDiv>
         <StyledH2>프로필 수정</StyledH2>
-        <Profile />
+        <StyledProfileDiv>
+          <StyledImg src={photoURL} alt="프로필 사진" />
+          <StyledTextDiv></StyledTextDiv>
+        </StyledProfileDiv>
+        <label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => miribogi(e)}
+            id="img"
+            style={{ display: 'none' }}
+          />
+        </label>
         <StyledX
-          onClick={closeModal}
+          onClick={() => clickX()}
           src={require('../assets/x.png')}
           alt="X"
         />
@@ -85,6 +137,24 @@ const StyledH2 = styled.h2`
   top: 0.7rem;
 `;
 
+const StyledProfileDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 3rem;
+`;
+
+const StyledImg = styled.img`
+  border-radius: 50%;
+  width: 13rem;
+  /* margin-top: 3rem; */
+`;
+
+const StyledTextDiv = styled.div`
+  text-align: center;
+`;
+
 const StyledBackground = styled.div`
   position: absolute;
   top: 14rem;
@@ -107,14 +177,6 @@ const StyledX = styled.img`
   position: absolute;
   top: 1rem;
   right: 1rem;
-  cursor: pointer;
-`;
-
-const StyledImg = styled.img`
-  position: absolute;
-  top: 14.25rem;
-  left: 19.25rem;
-  z-index: 1;
   cursor: pointer;
 `;
 
