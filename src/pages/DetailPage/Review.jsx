@@ -20,6 +20,7 @@ import {
 } from './style';
 import {
   addDoc,
+  setDoc,
   collection,
   deleteDoc,
   doc,
@@ -50,7 +51,7 @@ export const Review = () => {
   const [getProfileImg, setGetProfileImg] = useState('');
 
   const [getReviewList, setGetReviewList] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(false); // 수정버튼 누르면 true
 
   const { id } = useParams();
 
@@ -111,38 +112,49 @@ export const Review = () => {
 
   // 리뷰추가
   const addReview = async () => {
-    // event.preventDefault();
-    await addDoc(collection(db, 'reviews'), {
+    const uuid = uuidv4();
+
+    // addDoc을 쓰면 문서id가 랜덤으로 추가
+    // reviewId:uuid와 문서 id를 일치시키기 위해 setDoc(doc(db, 'reviews', uuid) 으로 교체
+    // onsnapshot을 쓰면 addDoc도 사용 가능! (onsnapshot 안쓰면 밑에 getDoc 써줘야함)
+
+    await setDoc(doc(db, 'reviews', uuid), {
       statId: id,
       review: newReview,
       profileImg: getProfileImg,
       nickName: nickName,
-      reviewId: uuidv4(),
+      reviewId: uuid,
       createdTime: now(),
       reviewRating: reviewRating,
       isEdit: false,
     });
     setNewReview('');
+    reviewHandler();
     // setreviewRating(0);
   };
 
   //리뷰삭제
-  const deleteReview = async () => {
-    // setReviewList((prev) => prev.filter((t) => t.reviewId !== reviewId));
-    // await deleteDoc(doc(db, 'reviews', reviewId));
-    // setTimeout(() => {});
+  const deleteReview = async (reviewId) => {
+    setReviewList((prev) => prev.filter((t) => t.reviewId !== reviewId));
+    await deleteDoc(doc(db, 'reviews', reviewId));
   };
 
   //리뷰수정
   const editReview = async (reviewId) => {
-    const idx = reviewList.findIndex((review) => review.reviewId === reviewId);
+    const idx = reviewList.find((review) => review.reviewId === reviewId);
     await updateDoc(doc(db, 'reviews', reviewId), {
-      isEdit: !reviewList[idx].isEdit,
+      isEdit: !idx.isEdit,
     });
+    reviewHandler();
+    console.log(idx.isEdit);
   };
 
   const handleNewReview = (e) => {
     setNewReview(e.target.value);
+  };
+
+  const handleEditReview = () => {
+    setIsEdit();
   };
 
   // 별점핸들링
@@ -258,7 +270,7 @@ export const Review = () => {
                 setModalOpen={setModalOpen}
                 onClick={() => handleModalClose(i.reviewId)}
               >
-                <EditBtn onClick={editReview}>수정</EditBtn>
+                <EditBtn onClick={() => editReview(i.reviewId)}>수정</EditBtn>
                 <DeleteBtn onClick={() => deleteReview(i.reviewId)}>
                   삭제
                 </DeleteBtn>
