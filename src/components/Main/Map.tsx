@@ -6,11 +6,10 @@ import {
   Item,
   Location,
   MarkerLocation,
-} from '../types/MapInterface';
+} from '../../types/MapInterface';
 import { useNavigate } from 'react-router-dom';
-import { COLOR } from '../common/color';
 import Main from './Main';
-import styled from 'styled-components';
+import { Container } from '../../pages/MainPage/style';
 
 const { kakao } = window;
 
@@ -98,8 +97,8 @@ const Map = ({
     const zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
 
-    const thunderimageSrc = require('../assets/thunder.png');
-    const thunderoffimageSrc = require('../assets/thunderoff.png');
+    const thunderimageSrc = require('../../assets/thunder.png');
+    const thunderoffimageSrc = require('../../assets/thunderoff.png');
     const imageSize = new kakao.maps.Size(48, 48);
     const myMarker = new kakao.maps.Marker({
       map: map,
@@ -190,7 +189,7 @@ const Map = ({
         markerLocation.push(markerPosition);
       }
     });
-    console.log(markerLocation);
+
     for (const markerLocate of markerLocation) {
       let coords = new kakao.maps.Coords(markerLocate.La, markerLocate.Ma);
       let La = coords.La.toFixed(10);
@@ -246,11 +245,3 @@ const Map = ({
 };
 
 export default Map;
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;

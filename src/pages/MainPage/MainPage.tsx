@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from 'react-query';
-import Map from '../../components/Map';
+import Map from '../../components/Main/Map';
 import { getData } from '../../common/api';
 import { useEffect } from 'react';
 import { Data, Location } from '../../types/MapInterface';
