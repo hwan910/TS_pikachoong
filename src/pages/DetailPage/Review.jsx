@@ -36,6 +36,9 @@ export const Review = () => {
   const [getReviewList, setGetReviewList] = useState([]);
   const [isEdit, setIsEdit] = useState(false); // 수정버튼 누르면 true
 
+  const [editedReview, SetEditedReview] = useState('');
+  const [editedRating, setEditedRating] = useState('');
+
   const { id } = useParams();
 
   //리뷰 날짜! 사용할때는 now()
@@ -153,9 +156,9 @@ export const Review = () => {
     setNewReview(e.target.value);
   };
 
-  const handleEditReview = () => {
-    setIsEdit();
-  };
+  const handleEditReview = (e) => {
+    // setEditedReview(e.target.value);
+  }; // 리뷰 수정모달 input(textarea) onChange={(e) => handleEditReview(e)
 
   // 별점핸들링
 
@@ -266,7 +269,9 @@ export const Review = () => {
             {/* 리뷰 수정삭제버튼 모달 */}
             {modalOpen.id === i.reviewId && modalOpen.isOpen && (
               <S.OptionModal>
-                <S.EditBtn onClick={editReview}>수정</S.EditBtn>
+                <S.EditBtn onClick={() => editReview(i.reviewed)}>
+                  수정
+                </S.EditBtn>
                 <S.DeleteBtn onClick={() => deleteReview(i.reviewId)}>
                   삭제
                 </S.DeleteBtn>
