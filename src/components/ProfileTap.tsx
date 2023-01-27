@@ -1,17 +1,15 @@
-import React from 'react';
 import styled from 'styled-components';
-import { ProfileImg } from '../pages/DetailPage/style';
 import Profile from './Profile';
-import { auth } from '../common/firebase';
+import { useAppSelector } from '../hooks/useRedux';
 
 const ProfileTap = () => {
-  const user = auth?.currentUser;
-  console.log(user);
+  const user = useAppSelector(state => state.login.user)
+
   return (
     <div>
-      <Profile url={user?.photoURL} />
-      <StyledTextH4>{user?.displayName}</StyledTextH4>
-      <StyledTextP>{user?.email}</StyledTextP>
+      <Profile />
+      <StyledTextH4>{user.displayName}</StyledTextH4>
+      <StyledTextP>{user.email}</StyledTextP>
     </div>
   );
 };

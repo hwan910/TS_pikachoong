@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
-import { auth } from '../common/firebase';
+import { useAppSelector } from '../hooks/useRedux';
 
-interface Props {
-  url: any;
-}
-
-const Profile = ({ url }: Props) => {
-  console.log(auth.currentUser);
+const Profile = () => {
+  const user = useAppSelector(state => state.login.user)
+  console.log(user);
+  
+  
   return (
     <StyledProfileDiv>
       <StyledImg
-        src={`${url === null ? require('../assets/x.png') : url}`}
+        src={!!user ? user.photoURL : require('../assets/x.png')}
         alt="프로필 사진"
       />
       <StyledTextDiv></StyledTextDiv>

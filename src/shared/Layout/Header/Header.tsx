@@ -17,9 +17,11 @@ import { IoSearchCircle } from 'react-icons/io5';
 import { szcode, szscode } from '../../../common/zcode';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../../common/firebase';
+import { useAppSelector } from '../../../hooks/useRedux';
 
 const Header = () => {
   const navigate = useNavigate();
+  const user = useAppSelector(state => state.login.user)
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [z1List, setZ1List] = useState<string[]>([]);
   const [z1, setZ1] = useState('');
@@ -68,8 +70,6 @@ const Header = () => {
       });
   };
 
-  console.log(auth.currentUser);
-
   return (
     <StyledHeader>
       <HeaderContainer>
@@ -115,7 +115,7 @@ const Header = () => {
           </SearchBtn>
         </SearchBox>
         <HeaderBtnBox>
-          {auth.currentUser === null ? (
+          {!user.uid ? (
             <HeaderBtn onClick={showLoginModal}>LOGIN</HeaderBtn>
           ) : (
             <>

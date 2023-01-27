@@ -53,7 +53,6 @@ export const MainPage = ({
       setMyLocation={setMyLocation}
       level={level}
       setLevel={setLevel}
-      refetch={refetch}
     />
   );
 };
