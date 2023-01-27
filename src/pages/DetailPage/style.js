@@ -75,6 +75,7 @@ export const ReviewInput = styled.div`
 
 export const ReviewStarRating = styled.div``;
 export const ReviewTextInput = styled.textarea`
+  resize: none;
   margin-top: 10px;
   width: 350px;
   height: 47px;
@@ -114,7 +115,7 @@ export const ReviewBox = styled.div`
   position: relative;
 `;
 
-export const ProfileImg = styled.div`
+export const ProfileImg = styled.img`
   background-color: grey;
   width: 36px;
   height: 36px;
@@ -180,3 +181,15 @@ export const Rating = styled.div`
     color: #fcc419;
   }
 `;
+
+export const EditReviewTextInput = styled.textarea`
+  width: 300px;
+  height: 47px;
+  resize: none;
+  margin-right: 20px;
+  background-color: #e0e0e0;
+  border-style: none;
+  border-radius: 5px;
+`;
+
+export const DeleteCheck = styled.div``;

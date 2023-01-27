@@ -15,29 +15,26 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import { db } from '../../common/firebase';
+import { db, auth } from '../../common/firebase';
 import { SlOptions } from 'react-icons/sl';
 import { uuidv4 } from '@firebase/util';
 import { FaStar } from 'react-icons/fa';
 import { getAuth } from 'firebase/auth';
 import { toEditorSettings } from 'typescript';
+import ReviewEditModal from './ReviewEditModal';
+// import EditDeleteModal from './EditDeleteModal';
 
-export const Review = () => {
-  const currentUser = getAuth().currentUser;
+export const Review = ({ state }) => {
+  const currentUser = auth.currentUser;
   const [reviewRating, setReviewRating] = useState(0);
   const [newReview, setNewReview] = useState('');
-  const [nickName, setNickName] = useState('');
-
   const [reviewList, setReviewList] = useState([]);
 
-  // const [isValid, setIsValid] = useState('');
   const [reviewId, setReviewId] = useState('');
   const [getProfileImg, setGetProfileImg] = useState('');
-  const [getReviewList, setGetReviewList] = useState([]);
-  const [isEdit, setIsEdit] = useState(false); // 수정버튼 누르면 true
+  const [getReviewList, setGetReviewList] = useState('');
 
-  const [editedReview, SetEditedReview] = useState('');
-  const [editedRating, setEditedRating] = useState('');
+  const [editRating, setEditRating] = useState('');
 
   const { id } = useParams();
 
@@ -59,10 +56,21 @@ export const Review = () => {
     }
   };
 
-  //리뷰 수정 모달
-  const handleEditModal = (reviewId) => {
-    setIsEdit(reviewId);
+  // 리뷰 수정 모달
+  const [editModal, setEditModal] = useState({ id: 0, isOpen: false }); // 수정버튼 누르면
+  const handleEditModalOpen = (reviewId) => {
+    if (editModal.id !== reviewId && !editModal.isOpen) {
+      setEditModal({ id: reviewId, isOpen: true });
+    } else if (editModal.id !== reviewId && editModal.isOpen) {
+      setEditModal({ id: reviewId, isOpen: true });
+    } else if (editModal.id === reviewId && editModal.isOpen) {
+      setEditModal({ id: 0, isOpen: false });
+    }
   };
+
+  // const handleEditModalClose = () => {
+  //   setEditModal(false);
+  // };
 
   // 파이어베이스
 
@@ -83,26 +91,6 @@ export const Review = () => {
     return setReviewList(reviews);
   };
 
-  // console.log(state);
-
-  // const getUserInfo = async () => {
-  //   const q = await query(
-  //     collection(db, 'users'),
-  //     where('uid', '==', currentUser.uid),
-  //   );
-  //   getDocs(q).then((querySnapshot) => {
-  //     const user = [];
-  //     querySnapshot.forEach((doc) => {
-  //       user.push({
-  //         nickName: doc.data().nickName,
-  //         profileImg: doc.data().profileImg,
-  //       });
-  //     });
-  //     setNickName(user[0].nickName);
-  //     setGetProfileImg(user[0].profileImg);
-  //   });
-  // };
-
   // 리뷰추가
   const addReview = async () => {
     const uuid = uuidv4();
@@ -119,10 +107,12 @@ export const Review = () => {
       alert('댓글을 입력해 주세요');
     } else {
       await setDoc(doc(db, 'reviews', uuid), {
+        statNm: state.statNm,
+        uid: currentUser.uid,
         statId: id,
         review: newReview,
-        profileImg: getProfileImg,
-        nickName: nickName,
+        profileImg: currentUser.photoURL,
+        nickName: currentUser.displayName,
         reviewId: uuid,
         createdTime: now(),
         reviewRating: reviewRating,
@@ -136,29 +126,29 @@ export const Review = () => {
     }
   };
 
-  //리뷰삭제
-  const deleteReview = async (reviewId) => {
-    setReviewList((prev) => prev.filter((t) => t.reviewId !== reviewId));
-    await deleteDoc(doc(db, 'reviews', reviewId));
-  };
-
   //리뷰수정
-  const editReview = async (reviewId) => {
-    const idx = reviewList.find((review) => review.reviewId === reviewId);
+  const setEdit = async (reviewId) => {
+    const newReviewList = [...reviewList];
+    const idx = newReviewList.findIndex(
+      (review) => review.reviewId === reviewId,
+    );
+    newReviewList[idx].isEdit = !newReviewList[idx].isEdit;
+    setReviewList(newReviewList);
+    // const idx = reviewList.findIndex((review) => review.reviewId === reviewId);
     await updateDoc(doc(db, 'reviews', reviewId), {
-      isEdit: !idx.isEdit,
+      isEdit: !reviewList[idx].isEdit,
     });
     reviewHandler();
-    console.log(idx.isEdit);
   };
 
   const handleNewReview = (e) => {
     setNewReview(e.target.value);
   };
 
-  const handleEditReview = (e) => {
-    // setEditedReview(e.target.value);
-  }; // 리뷰 수정모달 input(textarea) onChange={(e) => handleEditReview(e)
+  const deleteReview = async (reviewId) => {
+    setReviewList((prev) => prev.filter((t) => t.reviewId !== reviewId));
+    await deleteDoc(doc(db, 'reviews', reviewId));
+  };
 
   // 별점핸들링
 
@@ -173,13 +163,14 @@ export const Review = () => {
     setReviewRating(clickStates.filter((x) => x === true).length);
     setClicked(clickStates);
   };
-  console.log(reviewRating);
-  useEffect(() => {
-    sendReview();
-  }, [clicked]);
-  const sendReview = () => {
-    let score = clicked.filter(Boolean).length;
-  };
+
+  // console.log(reviewRating);
+  // useEffect(() => {
+  //   sendReview();
+  // }, [clicked]);
+  // const sendReview = () => {
+  //   let score = clicked.filter(Boolean).length;
+  // };
 
   return (
     <S.ReviewContainer>
@@ -190,7 +181,7 @@ export const Review = () => {
         }}
       >
         <S.ReviewHeadTitle>이용 후기</S.ReviewHeadTitle>
-        <S.ScoreAvg>⭐️ 평균 4.0</S.ScoreAvg>
+        <S.ScoreAvg>⭐️ {}4.0</S.ScoreAvg>
       </div>
       <S.ReviewInput>
         <S.Rating>
@@ -235,54 +226,98 @@ export const Review = () => {
       {/* 리뷰리스트 */}
 
       <S.ReviewList>
-        {reviewList.map((i) => (
-          <S.ReviewBox key={i.reviewId}>
-            <S.ReviewDetail>
-              <div style={{ display: 'flex' }}>
-                <S.ProfileImg
-                  source={{
-                    uri: `${i.profileImg}`,
-                  }}
-                />
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '10px',
-                  }}
-                >
-                  <div>{i.nickName}</div>
-                  <div>
-                    {'⭐'.repeat(i.reviewRating)} | {i.createdTime}
+        {reviewList.map((i) => {
+          console.log(editModal.id === i.reviewId && editModal.isOpen);
+          return (
+            <S.ReviewBox key={i.reviewId}>
+              {/* {editModal.isOpen(false) &&             } */}
+
+              <S.ReviewDetail
+                style={{
+                  display:
+                    editModal.id === i.reviewId && editModal.isOpen
+                      ? 'none'
+                      : 'flex',
+                }}
+              >
+                <div style={{ display: 'flex', width: 410 }}>
+                  <S.ProfileImg src={i.profileImg} />
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '10px',
+                    }}
+                  >
+                    <div>{i.nickName}</div>
+                    <div>
+                      {'⭐'.repeat(i.reviewRating)} | {i.createdTime}
+                    </div>
+                    <div>{i.review}</div>
                   </div>
-                  <div>{i.review}</div>
                 </div>
-              </div>
 
-              {/* 리뷰 수정삭제버튼 모달 여닫 버튼 */}
-              <SlOptions
-                onClick={() => handleModalOpen(i.reviewId)}
-                // i.reviewId
-                style={{ cursor: 'pointer' }}
-              />
-            </S.ReviewDetail>
-            {/* 리뷰 수정삭제버튼 모달 */}
-            {modalOpen.id === i.reviewId && modalOpen.isOpen && (
-              <S.OptionModal>
-                <S.EditBtn onClick={() => editReview(i.reviewed)}>
-                  수정
-                </S.EditBtn>
-                <S.DeleteBtn onClick={() => deleteReview(i.reviewId)}>
-                  삭제
-                </S.DeleteBtn>
-              </S.OptionModal>
-            )}
+                {/* 리뷰 수정삭제 모달 여닫 버튼 */}
+                {/* 본인 리뷰만 수정삭제 가능하게 */}
+                {i.uid === currentUser.uid ? (
+                  <SlOptions
+                    onClick={() => handleModalOpen(i.reviewId)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                ) : (
+                  <></>
+                )}
+              </S.ReviewDetail>
+              {/* 리뷰 수정삭제 모달 */}
+              {modalOpen.id === i.reviewId && modalOpen.isOpen && (
+                <S.OptionModal>
+                  <S.EditBtn
+                    onClick={() => {
+                      handleEditModalOpen(i.reviewId);
+                      setEdit(i.reviewId);
+                      handleModalOpen(false);
+                    }}
+                  >
+                    수정
+                  </S.EditBtn>
+                  <S.DeleteBtn onClick={() => deleteReview(i.reviewId)}>
+                    삭제
+                  </S.DeleteBtn>
+                </S.OptionModal>
+              )}
 
-            {/* 리뷰수정 모달 */}
-          </S.ReviewBox>
-        ))}
+              {/* 수정모달 여기 */}
+
+              {editModal.id === i.reviewId && editModal.isOpen && (
+                <ReviewEditModal
+                  reviewHandler={reviewHandler}
+                  ratingArr={ratingArr}
+                  handleStarClick={handleStarClick}
+                  handleEditModalOpen={handleEditModalOpen}
+                  clicked={clicked}
+                  i={i}
+                />
+              )}
+            </S.ReviewBox>
+          );
+        })}
       </S.ReviewList>
+
       {/* <button onClick={reviewHandler}>리뷰 불러오는 버튼</button> */}
     </S.ReviewContainer>
   );
 };
+
+// http://localhost:3000/KE000642
+// 서울강남역두산위브센티움
+
+// {editModal.id === i.reviewId && editModal.isOpen && (
+//   <ReviewEditModal
+//     reviewHandler={reviewHandler}
+//     ratingArr={ratingArr}
+//     handleStarClick={handleStarClick}
+//     handleEditModalOpen={handleEditModalOpen}
+//     clicked={clicked}
+//     i={i}
+//   />
+// )}
