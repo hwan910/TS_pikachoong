@@ -20,6 +20,8 @@ import { Data } from '../../../types/MapInterface';
 import { getChargerinfo, getData } from '../../../common/api';
 import { useSelector, useDispatch } from 'react-redux';
 import { switchSearchResult } from '../../../redux/modules/searchSlice';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../../common/firebase';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -57,10 +59,25 @@ const Header = () => {
     setZ2List(arr);
   };
 
+  // 모달 끄기
   const showLoginModal = () => {
     setLoginModalOpen(true);
   };
 
+  // 로그아웃
+  const onClickLogout = (): void => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log('잘 됨.');
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log('안 됨.');
+      });
+  };
+
+  console.log(auth);
   return (
     <StyledHeader>
       <HeaderContainer>
@@ -107,7 +124,10 @@ const Header = () => {
         </SearchBox>
         <HeaderBtnBox>
           <HeaderBtn onClick={() => navigate('/my')}>마이페이지</HeaderBtn>
-          <HeaderBtn onClick={showLoginModal}>LOGIN</HeaderBtn>
+          <HeaderBtn onClick={showLoginModal}>
+            {auth ? 'LOGIN' : 'LOGOUT'}
+          </HeaderBtn>
+          <HeaderBtn onClick={onClickLogout}>LOGOUT</HeaderBtn>
           {loginModalOpen && (
             <LoginModal setLoginModalOpen={setLoginModalOpen} />
           )}

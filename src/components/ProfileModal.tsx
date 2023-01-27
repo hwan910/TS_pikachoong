@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Profile from './Profile';
 
@@ -10,15 +11,27 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
   const closeModal = () => {
     setProfileModalOpen(false);
   };
+  const [name, setName] = useState('');
 
   return (
     <StyledProfileModalBackground>
       <StyledProfileModalDiv>
-        <h2>프로필 수정</h2>
+        <StyledH2>프로필 수정</StyledH2>
         <Profile />
         <StyledBackground></StyledBackground>
-        <StyledImg src="img/camera.png" alt="카메라" />
-        <StyledX onClick={closeModal} src="img/x.png" alt="X" />
+        <StyledImg src={require('../assets/camera.png')} alt="카메라" />
+        <StyledX
+          onClick={closeModal}
+          src={require('../assets/x.png')}
+          alt="X"
+        />
+        <StyledInput
+          value={name}
+          onChange={(event) => {
+            setName(event.target.value);
+          }}
+          type="text"
+        />
         <StyledButtonChange onClick={closeModal}>수정완료</StyledButtonChange>
       </StyledProfileModalDiv>
     </StyledProfileModalBackground>
@@ -53,9 +66,14 @@ const StyledProfileModalDiv = styled.div`
   transform: translate(-50%, -50%) scale(1);
 `;
 
+const StyledH2 = styled.h2`
+  position: absolute;
+  top: 0.7rem;
+`;
+
 const StyledBackground = styled.div`
   position: absolute;
-  top: 18rem;
+  top: 14rem;
   left: 19rem;
   background-color: white;
   width: 2.5rem;
@@ -80,10 +98,21 @@ const StyledX = styled.img`
 
 const StyledImg = styled.img`
   position: absolute;
-  top: 18.25rem;
+  top: 14.25rem;
   left: 19.25rem;
   z-index: 1;
   cursor: pointer;
+`;
+
+const StyledInput = styled.input`
+  margin: 0.7rem 0;
+  padding: 0.5rem 0.5rem;
+  text-align: center;
+  font-size: large;
+  border: none;
+  outline: none;
+  margin-top: 2rem;
+  border-radius: 3rem;
 `;
 
 const StyledButtonChange = styled.button`
@@ -98,5 +127,5 @@ const StyledButtonChange = styled.button`
   border-radius: 30px;
   margin-top: 1rem;
   font-size: medium;
-  margin-bottom: 3rem;
+  margin-bottom: 0.7rem;
 `;

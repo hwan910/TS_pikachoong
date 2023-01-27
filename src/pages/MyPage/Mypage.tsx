@@ -5,6 +5,7 @@ import MyReview from '../../components/MyReview';
 import PasswordModal from '../../components/PasswordModal';
 import Profile from '../../components/Profile';
 import ProfileModal from '../../components/ProfileModal';
+import ProfileTap from '../../components/ProfileTap';
 
 export const Mypage = () => {
   // 모달창 노출 여부 state
@@ -21,7 +22,7 @@ export const Mypage = () => {
   return (
     <StyledMyPage>
       <StyledMyProfile>
-        <Profile />
+        <ProfileTap />
         <Button onClick={showProfileModal}>프로필 수정</Button>
         {profileModalOpen && (
           <ProfileModal setProfileModalOpen={setProfileModalOpen} />
