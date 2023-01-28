@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import DetailMap from '../../components/DetailMap';
+import DetailMap from '../../components/Detail/DetailMap';
 import {
   InfoArea,
   ChargingStationInfo,
@@ -10,7 +10,7 @@ import {
 import { FiMapPin, FiPhone, FiClock } from 'react-icons/fi';
 import { RiParkingFill } from 'react-icons/ri';
 import { FaBolt } from 'react-icons/fa';
-import { Review } from './Review';
+import { Review } from '../../components/Detail/Review';
 
 export const Detailpage = () => {
   // const [rating, setRating] = useState(null);

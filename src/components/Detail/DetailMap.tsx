@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react';
-import { Location } from '../types/MapInterface';
+import { Location } from '../../types/MapInterface';
 
 const { kakao } = window;
 

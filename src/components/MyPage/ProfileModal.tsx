@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { auth, storage } from '../common/firebase';
+import { auth, storage } from '../../common/firebase';
 import { updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { uuidv4 } from '@firebase/util';
-import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { isLogin } from '../redux/modules/loginSlice';
-import useInput from '../hooks/useInput';
-import useImgInput from '../hooks/useImgInput';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { isLogin } from '../../redux/modules/loginSlice';
+import useInput from '../../hooks/useInput';
+import useImgInput from '../../hooks/useImgInput';
 
 interface Props {
   setProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -81,13 +81,16 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
               id="img"
             />
             <CameraDiv>
-              <Camera src={require('../assets/camera.png')} alt="카메라" />
+              <Camera
+                src={require('../../assets/MyPage/camera.png')}
+                alt="카메라"
+              />
             </CameraDiv>
           </StyledProfileDiv>
         </StyledImageLabel>
         <StyledX
           onClick={() => closeModal()}
-          src={require('../assets/x.png')}
+          src={require('../../assets/x.png')}
           alt="X"
         />
         <StyledInput

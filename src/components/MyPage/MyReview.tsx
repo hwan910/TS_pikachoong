@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { db } from '../common/firebase';
+import { db } from '../../common/firebase';
 import { useEffect, useState } from 'react';
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
-import { Item } from '../types/MapInterface';
-import { useAppSelector } from '../hooks/useRedux';
+import { Item } from '../../types/MapInterface';
+import { useAppSelector } from '../../hooks/useRedux';
 
 const MyReview = () => {
-  const user = useAppSelector(state => state.login.user)
+  const user = useAppSelector((state) => state.login.user);
   const [myReview, setMyReview] = useState<Item[]>([]);
 
   const reviewHandler = async () => {
@@ -23,7 +23,7 @@ const MyReview = () => {
 
   useEffect(() => {
     reviewHandler();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
@@ -32,9 +32,7 @@ const MyReview = () => {
       <StyledScroll>
         {myReview.map((x) => {
           return (
-            <StyledReviewBox
-              key={x.reviewId}
-            >
+            <StyledReviewBox key={x.reviewId}>
               <h2>{x.statNm}</h2>
               <div>
                 {'⭐'.repeat(Number(x.reviewRating))} | {x.createdTime}
