@@ -29,7 +29,12 @@ export const Mypage = () => {
           <ProfileModal setProfileModalOpen={setProfileModalOpen} />
         )}
       </StyledMyProfile>
-      <MyReview />
+      <StyledMyreviewCon>
+        <StyledH1>My Review</StyledH1>
+        <StyledMyReviewContainer>
+          <MyReview />
+        </StyledMyReviewContainer>
+      </StyledMyreviewCon>
     </StyledMyPage>
   );
 };
@@ -48,10 +53,34 @@ const StyledMyProfile = styled.div`
 const StyledMyPage = styled.div`
   display: flex;
   margin-top: 5rem;
+  flex-direction: row;
+  gap: 100px;
   @media screen and (max-width: 768px) {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
+`;
+
+const StyledMyreviewCon = styled.div`
+  @media screen and (max-width: 768px) {
+    position: relative;
+    bottom: 8rem;
+  }
+`;
+
+const StyledH1 = styled.h1`
+  @media screen and (max-width: 768px) {
+    position: relative;
+    right: -2rem;
+    font-size: large;
+    z-index: -1;
+    top: 0rem;
+  }
+`;
+
+const StyledMyReviewContainer = styled.div`
+  overflow-y: scroll;
+  height: 25rem;
 `;

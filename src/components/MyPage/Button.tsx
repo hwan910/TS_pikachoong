@@ -26,8 +26,11 @@ const StyledButton = styled.button`
   border: none;
   cursor: pointer;
   border-radius: 30px;
-  margin-bottom: 11rem;
+  position: relative;
+  bottom: 5rem;
   @media screen and (max-width: 768px) {
-    margin-bottom: 3rem;
+    /* margin-bottom: 3rem; */
+    position: relative;
+    bottom: 0rem;
   }
 `;

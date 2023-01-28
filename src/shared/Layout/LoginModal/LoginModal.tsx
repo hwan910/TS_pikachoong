@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 import { auth, providerGithub } from '../../../common/firebase';
 import { provider } from '../../../common/firebase';
+import { COLOR } from '../../../common/color';
 import {
   signInWithPopup,
   GoogleAuthProvider,
@@ -92,31 +93,38 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
       <StyledLoginModalBackground>
         {pageNumber === 0 && (
           <StyledLoginModalDiv>
-            <h1>원하시는 로그인 방식을 선택해주세요.</h1>
+            <h2>
+              기존에 사용하시는 계정으로 <br />
+              간단하게 회원가입 하세요.
+            </h2>
             <StyledX
               onClick={closeModal}
               src={require('../../../assets/x.png')}
               alt="X"
             />
             <StyledLoginDiv>
-              <StyledLoginButton
-                onClick={() => onClickGoogleLogin()}
-                name="google"
-              >
-                <StyledButtonImg
-                  src={require('../../../assets/google.png')}
-                  alt="구글"
-                />
-              </StyledLoginButton>
-              <StyledLoginButton
-                onClick={() => onClickGithubLogin()}
-                name="github"
-              >
-                <StyledButtonImg
-                  src={require('../../../assets/github.png')}
-                  alt="깃허브"
-                />
-              </StyledLoginButton>
+              <StyledLoginGoogleButton onClick={onClickGoogleLogin}>
+                <StyledLoginGoogle>
+                  <StyledLoginGoogleImg
+                    src={require('../../../assets/google.png')}
+                    alt=""
+                  />
+                  <StyledLoginTextDiv>
+                    <StyledLoginText>Google 로그인</StyledLoginText>
+                  </StyledLoginTextDiv>
+                </StyledLoginGoogle>
+              </StyledLoginGoogleButton>
+              <StyledLoginGithubButton onClick={onClickGithubLogin}>
+                <StyledLoginGithub>
+                  <StyledLoginGithubImg
+                    src={require('../../../assets/github.png')}
+                    alt=""
+                  />
+                  <StyledLoginGithubTextDiv>
+                    <StyledLoginGithubText>Github 로그인</StyledLoginGithubText>
+                  </StyledLoginGithubTextDiv>
+                </StyledLoginGithub>
+              </StyledLoginGithubButton>
             </StyledLoginDiv>
           </StyledLoginModalDiv>
         )}
@@ -176,9 +184,9 @@ const StyledLoginModalBackground = styled.div`
 `;
 
 const StyledLoginModalDiv = styled.div`
-  background-color: #fffae3;
-  width: 50rem;
-  height: 3 0rem;
+  background-color: ${COLOR.YELLOW};
+  width: 30rem;
+  height: 30rem;
   padding: 2rem 0;
   position: relative;
   display: flex;
@@ -200,25 +208,84 @@ const StyledX = styled.img`
 
 const StyledLoginDiv = styled.div`
   display: flex;
-  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 2rem;
 `;
 
-const StyledLoginButton = styled.button`
-  padding: 0 2rem;
+const StyledLoginGoogleButton = styled.button`
   border: none;
-  outline: none;
-  background: none;
-  font-size: 200;
-`;
-
-const StyledButtonImg = styled.img`
-  display: flex;
-  border: none;
+  background-color: transparent;
   cursor: pointer;
-  width: 7rem;
-  height: 8rem;
-  padding: 1rem;
+`;
+
+const StyledLoginGoogle = styled.div`
+  display: flex;
+  /* border: 1px solid ${COLOR.RED}; */
+  background-color: white;
+  width: 14rem;
+  /* height: 70px; */
+  height: auto;
+  padding: 1rem 2rem;
+  border-radius: 45px;
+  padding-left: 18px;
+`;
+
+const StyledLoginGoogleImg = styled.img`
+  /* background-color: white; */
+  border: none;
   border-radius: 50%;
+  width: 60px;
+`;
+
+const StyledLoginTextDiv = styled.div`
+  margin-left: 1.2rem;
+  display: flex;
+  align-items: center;
+`;
+
+const StyledLoginText = styled.h3`
+  color: black;
+  font-weight: 700;
+  margin-left: 20px;
+`;
+
+const StyledLoginGithubButton = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin-top: 0.5rem;
+`;
+
+const StyledLoginGithub = styled.div`
+  display: flex;
+  /* border: 1px solid ${COLOR.RED}; */
+  background-color: white;
+  width: 14rem;
+  height: 3.9rem;
+  padding: 1rem 2rem;
+  border-radius: 45px;
+  padding-left: 18px;
+`;
+
+const StyledLoginGithubImg = styled.img`
+  /* background-color: white; */
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+`;
+
+const StyledLoginGithubTextDiv = styled.div`
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+`;
+
+const StyledLoginGithubText = styled.h3`
+  color: black;
+  font-weight: 700;
+  margin-left: 15px;
 `;
 
 const StyledNicknameInput = styled.input`
@@ -234,11 +301,15 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: rgb(250, 214, 29, 0.3);
+  background-color: #fffae3;
   padding: 1rem 3rem;
   border: none;
   cursor: pointer;
   border-radius: 30px;
   margin-top: 1.5rem;
   font-size: larger;
+  :hover {
+    background-color: ${COLOR.RED};
+    color: white;
+  }
 `;
