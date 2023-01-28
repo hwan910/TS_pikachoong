@@ -7,18 +7,7 @@ import { Item } from '../../types/MapInterface';
 import { PageBtnBox } from '../../shared/Layout/Header/style';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageNation from '../../components/PageNation';
-import { auth, provider } from '../../common/firebase';
-import {
-  AuthCredential,
-  deleteUser,
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  OAuthCredential,
-  onAuthStateChanged,
-  reauthenticateWithCredential,
-  signInWithPopup,
-} from 'firebase/auth';
-import { sign } from 'crypto';
+import { auth } from '../../common/firebase';
 
 export const SearchPage = () => {
   const navigate = useNavigate();
@@ -59,21 +48,8 @@ export const SearchPage = () => {
       ? pageNum.slice(5 * i, 5 * (i + 1))
       : pageNum.slice(5 * i, Math.ceil(pageNum.length / 10));
 
-  //회원탈퇴 기능
   const user: any = auth.currentUser;
-  const deleteUserHandler = () => {
-    const credential: any = GoogleAuthProvider.credential;
-    reauthenticateWithCredential(user, credential);
-    const selector = window.prompt(
-      '회원탈퇴를 원하시면 [회원탈퇴] 라고 입력해주세요.',
-    );
-    selector === '회원탈퇴'
-      ? deleteUser(user).then(() => {
-          alert('완료');
-          navigate('/');
-        })
-      : console.log('취소');
-  };
+  console.log(user);
 
   return (
     <Container>
@@ -155,7 +131,7 @@ export const SearchPage = () => {
           다음 &gt;
         </button>
       </PageBtnBox>
-      <button onClick={deleteUserHandler}>회원탈퇴</button>
+      <button>회원탈퇴</button>
     </Container>
   );
 };

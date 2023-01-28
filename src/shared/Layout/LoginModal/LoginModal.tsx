@@ -71,6 +71,7 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
         // The AuthCredential type that was used.
         const credential = GithubAuthProvider.credentialFromError(error);
         // ...
+        console.log(error.message);
       });
   };
 
