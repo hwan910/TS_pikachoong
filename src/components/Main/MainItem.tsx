@@ -10,10 +10,9 @@ import {
 interface Props {
   item: Item;
   data: Item[];
-  newMarkerLocation: MarkerLocation[];
 }
 
-export default function MainItem({ item, data, newMarkerLocation }: Props) {
+export default function MainItem({ item, data }: Props) {
   const navigate = useNavigate();
 
   const allCharge = data?.filter((x: Item) => x.statId === item.statId).length;
@@ -21,25 +20,26 @@ export default function MainItem({ item, data, newMarkerLocation }: Props) {
     (x: Item) => x.statId === item.statId && x.stat === '2',
   ).length;
 
-  const newData = newMarkerLocation.map((x: MarkerLocation) => {
-    if (
-      Number(item.lat).toFixed(10) === x.Ma.toFixed(10) &&
-      Number(item.lng).toFixed(10) === x.La.toFixed(10)
-    ) {
-      return x.dist;
-    }
-  });
+  // const newData = newMarkerLocation.map((x: MarkerLocation) => {
+  //   if (
+  //     Number(item.lat).toFixed(10) === x.Ma.toFixed(10) &&
+  //     Number(item.lng).toFixed(10) === x.La.toFixed(10)
+  //   ) {
+  //     return x.dist;
+  //   } else return undefined;
+  // });
 
-  let distArr: any = Array.from(new Set(newData)).filter(
-    (x: number | undefined) => !!x,
-  );
+  // let distArr: (number | undefined)[] = Array.from(new Set(newData)).filter(
+  //   (x: number | undefined) => !!x,
+  // );
 
-  // console.log(distArr);
+  // item.dist = distArr[0];
+
   return (
     <NearbyChargingStationCard
       onClick={() => {
         navigate(`${item.statId}`, {
-          state: data?.filter((y: any) => y.statId === item.statId),
+          state: data?.filter((y) => y.statId === item.statId),
         });
       }}
     >
@@ -50,7 +50,7 @@ export default function MainItem({ item, data, newMarkerLocation }: Props) {
       </NearbyChargingStationCardTextWrap>
       <NearbyChargingStationCardTextWrap>
         <NearbyChargingStationCardContent>
-          {item.addr} / {Math.floor(distArr[0]) + 'm'}
+          {item.addr} / {Math.floor(Number(item.dist)) + 'm'}
         </NearbyChargingStationCardContent>
         <NearbyChargingStationCardContent>
           전체 충전기 : {allCharge} / 충전 가능 :{' '}

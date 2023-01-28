@@ -25,37 +25,6 @@ interface Props {
       lng: number | string;
     }>
   >;
-  refetch: any;
-}
-
-interface Markers {
-  u: {
-    $a: number;
-    Ba: number;
-    Gb: string;
-    Ha: number;
-    Hb: boolean;
-    K: undefined;
-    Na: boolean;
-    Nh: number;
-    Qi: number;
-    Rc: { x: number; y: number };
-    Ri: number;
-    T: {
-      Ij: { x: number; y: number };
-      Jj: { width: number; height: number };
-      Qd: { x: number; y: number };
-      Yj: string;
-      de: string;
-      lf: { width: number; height: number };
-      n: string;
-      Za: boolean;
-      a: any;
-      ca: any;
-      o: { mouseover: any[]; mouseout: any[]; click: any[] };
-      vj: number;
-    };
-  };
 }
 
 const Map = ({
@@ -65,25 +34,26 @@ const Map = ({
   setLevel,
   setLocation,
   setMyLocation,
-  refetch,
 }: Props) => {
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const [map, setMap] = useState<any>('');
-
   const [marker, setMarker] = useState<any>('');
+  const [text, setText] = useState('');
 
   let markers: any[] = [];
   let arrFilter: Item[] = [];
   let markerLocation: MarkerLocation[] = [];
 
-  const arrUnique = data?.items.item.filter(
-    (stat: Item, idx: number, arr: Item[]) => {
-      return arr.findIndex((item: Item) => item.statId === stat.statId) === idx;
-    },
-  );
-
   useEffect(() => {
+    const arrUnique = data?.items.item.filter(
+      (stat: Item, idx: number, arr: Item[]) => {
+        return (
+          arr.findIndex((item: Item) => item.statId === stat.statId) === idx
+        );
+      },
+    );
+
     const location = new kakao.maps.LatLng(myLocation.lat, myLocation.lng);
 
     const options = {
@@ -155,9 +125,6 @@ const Map = ({
         );
       }
     }
-  }, []);
-
-  useEffect(() => {
     let circle = new kakao.maps.Circle({
       map: map,
       center: new kakao.maps.LatLng(myLocation.lat, myLocation.lng),
@@ -172,6 +139,8 @@ const Map = ({
     let radius = circle.getRadius();
     let line = new kakao.maps.Polyline();
 
+    let distArr: number[] = [];
+
     markers?.forEach(function (marker) {
       // 마커의 위치와 원의 중심을 경로로 하는 폴리라인 설정
 
@@ -185,7 +154,7 @@ const Map = ({
 
       // 이 거리가 원의 반지름보다 작거나 같다면
       if (dist <= radius) {
-        markerPosition.dist = dist;
+        distArr.push(dist);
         markerLocation.push(markerPosition);
       }
     });
@@ -204,9 +173,11 @@ const Map = ({
         arrFilter.push(filters);
       }
     }
-  }, []);
 
-  const [text, setText] = useState('');
+    for (let i = 0; i < arrFilter.length; i++) {
+      arrFilter[i].dist = distArr[i];
+    }
+  }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -231,15 +202,17 @@ const Map = ({
 
   return (
     <Container>
+      <div>지도</div>
+      <div
+        ref={mapRef}
+        style={{ width: 700, height: 300, marginBottom: '3%' }}
+      />
+      <button>주소로 검색하기^_^</button>
       <form onSubmit={onSubmit}>
         <input type="text" onChange={(e) => onChange(e)} value={text} />
         <button>확인</button>
       </form>
-      <div
-        ref={mapRef}
-        style={{ width: 1000, height: 500, marginBottom: '3%' }}
-      />
-      <Main filterData={arrFilter} markerLocation={markerLocation} />
+      <Main filterData={arrFilter} />
     </Container>
   );
 };

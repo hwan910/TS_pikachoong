@@ -10,13 +10,14 @@ import {
 
 interface Props {
   filterData: Item[];
-  markerLocation: MarkerLocation[];
 }
 
-export default function Main({ filterData, markerLocation }: Props) {
+export default function Main({ filterData }: Props) {
   const [data, setData] = useState(filterData);
-  const [newMarkerLocation, setNewMarkerLocation] = useState(markerLocation);
-  let newData = Array.from(new Set(data));
+
+  let newData = Array.from(new Set(data)).sort(
+    (a: Item, b: Item) => Number(a.dist) - Number(b.dist),
+  );
 
   return (
     <NearbyChargingStationWrap>
@@ -25,14 +26,7 @@ export default function Main({ filterData, markerLocation }: Props) {
       </NearbyChargingStationTitleWrap>
       <NearbyChargingStationCardWrap>
         {newData.map((item: Item) => {
-          return (
-            <MainItem
-              data={data}
-              item={item}
-              key={item.statId}
-              newMarkerLocation={newMarkerLocation}
-            />
-          );
+          return <MainItem data={data} item={item} key={item.statId} />;
         })}
       </NearbyChargingStationCardWrap>
     </NearbyChargingStationWrap>

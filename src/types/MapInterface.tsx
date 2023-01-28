@@ -55,7 +55,7 @@ export interface GeoAddress {
 }
 
 export interface Item {
-  [key: string]: string;
+  [key: string]: string | number;
 }
 
 export interface Zcode {

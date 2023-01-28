@@ -69,17 +69,17 @@ const NearbyChargingStationTitle = styled.span`
 `;
 
 const NearbyChargingStationCardWrap = styled.div`
-  overflow: scroll;
+  overflow-x: auto;
   padding: 50px 0 20px 0;
   width: 80%;
   height: 100%;
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   justify-content: center;
   margin: 0 auto;
   gap: 50px 50px;
   &::-webkit-scrollbar {
-    display: none;
+    /* display: none; */
   }
 `;
 
