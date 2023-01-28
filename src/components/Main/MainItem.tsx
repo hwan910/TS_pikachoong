@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Item, MarkerLocation } from '../../types/MapInterface';
+import { Item } from '../../types/MapInterface';
 import {
   NearbyChargingStationCard,
   NearbyChargingStationCardTextWrap,

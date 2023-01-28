@@ -42,7 +42,21 @@ export const MainPage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [zc, zsc]);
 
-  if (isLoading) return <div>로딩중</div>;
+  if (isLoading)
+    return (
+      <div
+        style={{
+          width: '100vw',
+          height: '80vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '100px',
+        }}
+      >
+        ☠️로딩중이다☠️
+      </div>
+    );
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
