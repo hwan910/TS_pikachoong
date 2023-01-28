@@ -27,8 +27,8 @@ const NearbyChargingStationCard = styled.div`
   @media screen and (max-width: 1000px) {
     width: 300px;
   }
-  @media screen and (max-width: 600px) {
-    width: 300px;
+  @media screen and (max-width: 400px) {
+    width: 250px;
   }
 `;
 
@@ -57,7 +57,7 @@ const NearbyChargingStationCardContent = styled.span`
 `;
 
 const NearbyChargingStationWrap = styled.div`
-  font-size: 48px;
+  font-size: 1.5rem;
   width: 1300px;
   height: 170px;
   display: flex;
@@ -111,6 +111,9 @@ const StyledSlider = styled(Slider)`
   }
   @media screen and (max-width: 600px) {
     width: 500px;
+  }
+  @media screen and (max-width: 400px) {
+    width: 300px;
   }
 `;
 
