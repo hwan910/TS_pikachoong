@@ -216,7 +216,9 @@ export const Review = ({ state }) => {
             onChange={(e) => handleNewReview(e)}
             setReviewList={setReviewList}
           />
-          <S.ReviewBtn onClick={addReview}>등록</S.ReviewBtn>
+          <S.ReviewBtn onClick={addReview}>
+            등록
+          </S.ReviewBtn>
         </div>
       </S.ReviewInput>
 
@@ -224,8 +226,11 @@ export const Review = ({ state }) => {
 
       <S.ReviewList>
         {reviewList.map((i) => {
+
           return (
             <S.ReviewBox key={i.reviewId}>
+
+
               <S.ReviewDetail
                 style={{
                   display:
