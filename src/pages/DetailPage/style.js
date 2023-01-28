@@ -75,6 +75,7 @@ export const ReviewInput = styled.div`
 
 export const ReviewStarRating = styled.div``;
 export const ReviewTextInput = styled.textarea`
+  resize: none;
   margin-top: 10px;
   width: 350px;
   height: 47px;
@@ -114,7 +115,7 @@ export const ReviewBox = styled.div`
   position: relative;
 `;
 
-export const ProfileImg = styled.div`
+export const ProfileImg = styled.img`
   background-color: grey;
   width: 36px;
   height: 36px;
@@ -159,7 +160,7 @@ export const DeleteBtn = styled.button`
   }
 `;
 
-export const Rating = styled.div`
+export const Rating = styled.span`
   display: flex;
   padding-top: 5px;
 
@@ -168,15 +169,27 @@ export const Rating = styled.div`
     cursor: pointer;
   }
 
-  :hover svg {
-    color: #fcc419;
-  }
+  /* :hover svg {
+    color: #fad61d;
+  } */
 
   & svg:hover ~ svg {
     color: gray;
   }
 
   .yellowStar {
-    color: #fcc419;
+    color: #fad61d;
   }
 `;
+
+export const EditReviewTextInput = styled.textarea`
+  width: 300px;
+  height: 47px;
+  resize: none;
+  margin-right: 20px;
+  background-color: #e0e0e0;
+  border-style: none;
+  border-radius: 5px;
+`;
+
+export const DeleteCheck = styled.div``;

@@ -57,7 +57,7 @@ export const Detailpage = () => {
           </div>
         </ChargingStationInfo>
 
-        <Review />
+        <Review state={state[0]} />
       </InfoArea>
 
       <DetailMapWrap>
