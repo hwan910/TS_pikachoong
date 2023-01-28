@@ -57,7 +57,7 @@ const NearbyChargingStationCardContent = styled.span`
 `;
 
 const NearbyChargingStationWrap = styled.div`
-  font-size: 48px;
+  font-size: 1.5rem;
   width: 1300px;
   height: 170px;
   display: flex;

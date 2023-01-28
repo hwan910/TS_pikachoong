@@ -51,7 +51,7 @@ export const MainPage = ({
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          fontSize: '100px',
+          fontSize: '3rem',
         }}
       >
         ☠️로딩중이다☠️
