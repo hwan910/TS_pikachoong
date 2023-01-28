@@ -34,8 +34,6 @@ export const Review = ({ state }) => {
   const [getProfileImg, setGetProfileImg] = useState('');
   const [getReviewList, setGetReviewList] = useState('');
 
-  const [editRating, setEditRating] = useState('');
-
   const { id } = useParams();
 
   //리뷰 날짜! 사용할때는 now()
@@ -65,6 +63,18 @@ export const Review = ({ state }) => {
       setEditModal({ id: reviewId, isOpen: true });
     } else if (editModal.id === reviewId && editModal.isOpen) {
       setEditModal({ id: 0, isOpen: false });
+    }
+  };
+
+  //삭제 확인 모달
+  const [deleteModal, setDeleteModal] = useState({ id: 0, isOpen: false });
+  const handleDeleteModalOpen = (reviewId) => {
+    if (deleteModal.id !== reviewId && !deleteModal.isOpen) {
+      setDeleteModal({ id: reviewId, isOpen: true });
+    } else if (deleteModal.id !== reviewId && deleteModal.isOpen) {
+      setDeleteModal({ id: reviewId, isOpen: true });
+    } else if (deleteModal.id === reviewId && deleteModal.isOpen) {
+      setDeleteModal({ id: 0, isOpen: false });
     }
   };
 
@@ -131,6 +141,7 @@ export const Review = ({ state }) => {
     const newReviewList = [...reviewList];
     const idx = newReviewList.findIndex(
       (review) => review.reviewId === reviewId,
+      (reviewRating) => reviewRating.reviewId === reviewId, // 별점수정
     );
     newReviewList[idx].isEdit = !newReviewList[idx].isEdit;
     setReviewList(newReviewList);
@@ -230,8 +241,12 @@ export const Review = ({ state }) => {
                 style={{
                   display:
                     editModal.id === i.reviewId && editModal.isOpen
-                      ? 'none'
+                      ? // || (deleteModal.id === i.reviewId && deleteModal.isOpen) // 삭제확인모달
+                        'none'
                       : 'flex',
+                }}
+                onClick={() => {
+                  handleDeleteModalOpen(false);
                 }}
               >
                 <div style={{ display: 'flex', width: 410 }}>
@@ -245,7 +260,8 @@ export const Review = ({ state }) => {
                   >
                     <div>{i.nickName}</div>
                     <div>
-                      {'⭐'.repeat(i.reviewRating)}&nbsp;&nbsp;|&nbsp;&nbsp;
+                      {'⭐'.repeat(i.reviewRating)}
+                      {i.reviewRating}&nbsp;&nbsp;|&nbsp;&nbsp;
                       {i.createdTime}
                     </div>
                     <div>{i.review}</div>
@@ -253,14 +269,23 @@ export const Review = ({ state }) => {
                 </div>
 
                 {/* 평점구하기 */}
-                {/* {const avrScoreRating = reviewList.filter(())} */}
+                {/*  */}
 
                 {/* 리뷰 수정삭제 모달 여닫 버튼 */}
                 {/* 본인 리뷰만 수정삭제 가능하게 */}
                 {i.uid === currentUser.uid ? (
                   <SlOptions
-                    onClick={() => handleModalOpen(i.reviewId)}
-                    style={{ cursor: 'pointer' }}
+                    onClick={
+                      deleteModal.id === i.reviewId && deleteModal.isOpen
+                        ? ''
+                        : () => handleModalOpen(i.reviewId)
+                    }
+                    style={{
+                      cursor:
+                        deleteModal.id === i.reviewId && deleteModal.isOpen
+                          ? ' '
+                          : 'pointer',
+                    }}
                   />
                 ) : (
                   <></>
@@ -278,13 +303,37 @@ export const Review = ({ state }) => {
                   >
                     수정
                   </S.EditBtn>
-                  <S.DeleteBtn onClick={() => deleteReview(i.reviewId)}>
+                  <S.DeleteBtn
+                    onClick={() => {
+                      handleDeleteModalOpen(i.reviewId);
+                      handleModalOpen(false);
+                    }}
+                  >
                     삭제
                   </S.DeleteBtn>
                 </S.OptionModal>
               )}
 
-              {/* 수정모달 여기 */}
+              {/* 삭제하시겠습니까? 유효성 모달 */}
+              {deleteModal.id === i.reviewId && deleteModal.isOpen && (
+                <S.DeleteCheckModal>
+                  <div>삭제하시겠습니까?</div>
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    <S.DeleteCancelBtn
+                      onClick={() => {
+                        handleDeleteModalOpen(false);
+                      }}
+                    >
+                      취소
+                    </S.DeleteCancelBtn>
+                    <S.DeleteCancelBtn onClick={() => deleteReview(i.reviewId)}>
+                      삭제
+                    </S.DeleteCancelBtn>
+                  </div>
+                </S.DeleteCheckModal>
+              )}
+
+              {/* 리뷰수정모달 여기 */}
 
               {editModal.id === i.reviewId && editModal.isOpen && (
                 <ReviewEditModal

@@ -147,6 +147,8 @@ export const EditBtn = styled.button`
     color: white;
   }
 `;
+
+//삭제확인 모달 띄우는 버튼
 export const DeleteBtn = styled.button`
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -158,6 +160,34 @@ export const DeleteBtn = styled.button`
     background-color: black;
     color: white;
   }
+`;
+
+//삭제확인 모달
+export const DeleteCheckModal = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  color: white;
+  padding: 7px;
+  border-radius: 10px;
+`;
+
+export const DeleteCancelBtn = styled.button`
+  width: 60px;
+  height: 30px;
+  border-radius: 10px;
+  border-style: none;
+  background-color: white;
+  cursor: pointer;
 `;
 
 export const Rating = styled.span`

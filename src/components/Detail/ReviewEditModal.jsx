@@ -13,10 +13,15 @@ function ReviewEditModal({
   i,
 }) {
   const [editComment, setEditComment] = useState(i.review);
+  const [editRating, setEditRating] = useState(i.reviewRating); // 별점수정
 
   const handleEditComment = (e) => {
     setEditComment(e.target.value);
   }; // 리뷰 수정모달 input(textarea) onChange={(e) => handleEditReview(e)
+
+  const handleEditRating = (e) => {
+    setEditRating(e.target.value);
+  }; // 별점수정
 
   const editReview = async (reviewId) => {
     // const newReviewList = [...reviewList];
@@ -28,9 +33,11 @@ function ReviewEditModal({
     // setReviewList(newReviewList);
     await updateDoc(doc(db, 'reviews', reviewId), {
       review: editComment,
+      reviewRating: editRating, // 별점수정
       isEdit: false,
     });
     setEditComment('');
+    setEditRating([false, false, false, false, false]); // 별점수정
     reviewHandler();
   };
 
@@ -53,8 +60,12 @@ function ReviewEditModal({
                   <FaStar
                     key={idx}
                     size="20"
-                    onClick={() => handleStarClick(el)}
+                    onClick={(e) => {
+                      handleStarClick(el);
+                    }}
                     className={clicked[el] && 'yellowStar'}
+                    defaultValue={i.reviewRating} //별점수정
+                    onChange={(e) => handleEditRating(e)} // 별점수정
                   />
                 );
               })}
