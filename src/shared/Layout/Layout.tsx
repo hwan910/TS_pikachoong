@@ -1,11 +1,7 @@
 import styled from 'styled-components';
 import Header from './Header/Header';
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const Layout = ({ children }: Props) => {
+const Layout = ({ children }: any) => {
   return (
     <Wrap>
       <Header />
