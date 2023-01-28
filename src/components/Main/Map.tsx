@@ -1,14 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRef, useEffect, useState } from 'react';
-import {
-  Item,
-  MapProps,
-  MarkerLocation,
-} from '../types/MapInterface';
+import { Item, MapProps, MarkerLocation } from '../../types/MapInterface';
 import { useNavigate } from 'react-router-dom';
 import Main from './Main';
-import styled from 'styled-components';
-import useSearchMap from '../hooks/useSearchMap';
+import { Container } from '../../pages/MainPage/style';
+import useSearchMap from '../../hooks/useSearchMap';
 
 const { kakao } = window;
 
@@ -49,8 +45,8 @@ const Map = ({
     const zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
 
-    const thunderimageSrc = require('../assets/map/thunder.png');
-    const thunderoffimageSrc = require('../assets/map/thunderoff.png');
+    const thunderimageSrc = require('../../assets/map/thunder.png');
+    const thunderoffimageSrc = require('../../assets/map/thunderoff.png');
     const imageSize = new kakao.maps.Size(48, 48);
     const myMarker = new kakao.maps.Marker({
       map: map,
@@ -102,7 +98,9 @@ const Map = ({
         });
         kakao.maps.event.addListener(marker, 'click', () =>
           navigate(`${stat.statId}`, {
-            state: data?.items.item.filter((item) => item.statId === stat.statId),
+            state: data?.items.item.filter(
+              (item) => item.statId === stat.statId,
+            ),
           }),
         );
       }
@@ -124,6 +122,8 @@ const Map = ({
     let radius = circle.getRadius();
     let line = new kakao.maps.Polyline();
 
+    let distArr: number[] = [];
+
     markers?.forEach(function (marker) {
       // 마커의 위치와 원의 중심을 경로로 하는 폴리라인 설정
 
@@ -137,7 +137,7 @@ const Map = ({
 
       // 이 거리가 원의 반지름보다 작거나 같다면
       if (dist <= radius) {
-        markerPosition.dist = dist;
+        distArr.push(dist);
         markerLocation.push(markerPosition);
       }
     });
@@ -155,6 +155,9 @@ const Map = ({
         arrFilter.push(filters);
       }
     }
+    for (let i = 0; i < arrFilter.length; i++) {
+      arrFilter[i].dist = distArr[i];
+    }
   }, []);
 
   const [searchByAddress, onChangeSearch, onSubmit] = useSearchMap({
@@ -166,6 +169,12 @@ const Map = ({
 
   return (
     <Container>
+      <div>지도</div>
+      <div
+        ref={mapRef}
+        style={{ width: 700, height: 300, marginBottom: '3%' }}
+      />
+      <button>주소로 검색하기^_^</button>
       <form onSubmit={onSubmit}>
         <input
           type="text"
@@ -174,21 +183,9 @@ const Map = ({
         />
         <button>확인</button>
       </form>
-      <div
-        ref={mapRef}
-        style={{ width: 1000, height: 500, marginBottom: '3%' }}
-      />
-      <Main filterData={arrFilter} markerLocation={markerLocation} />
+      <Main filterData={arrFilter} />
     </Container>
   );
 };
 
 export default Map;
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
