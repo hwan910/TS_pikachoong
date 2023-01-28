@@ -10,6 +10,8 @@ import useMyLocation from '../hooks/useMyLocation';
 import { useAppDispatch } from '../hooks/useRedux';
 import { addMyLocation } from '../redux/modules/locationSlice';
 import { Location } from '../types/MapInterface';
+import { auth } from '../common/firebase';
+import { isLogin, notLogin } from '../redux/modules/loginSlice';
 
 const Router = () => {
   const dispatch = useAppDispatch();
@@ -32,6 +34,23 @@ const Router = () => {
       window.alert('위치정보를 불러올 수 없습니다.');
     }
   }, []);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(
+          isLogin({
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            uid: user.uid,
+          }),
+        );
+      } else {
+        dispatch(notLogin());
+      }
+    });
+  }, [auth]);
 
   useEffect(() => {
     setLocation(myLocation);

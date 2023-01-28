@@ -1,42 +1,92 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import Profile from './Profile';
-import { auth } from '../common/firebase';
+import { auth, storage } from '../common/firebase';
 import { updateProfile } from 'firebase/auth';
+import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { uuidv4 } from '@firebase/util';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { isLogin } from '../redux/modules/loginSlice';
+import useInput from '../hooks/useInput';
+import useImgInput from '../hooks/useImgInput';
 
 interface Props {
-  setProfileModalOpen: any;
+  setProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ProfileModal = ({ setProfileModalOpen }: Props) => {
-  const [nickname, setNickname] = useState('');
-  const userProfile: any = auth.currentUser;
-  console.log(userProfile);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.login.user);
+  const [nickname, nicknameHandler, nicknameReset] = useInput(user.displayName);
+  const [photoURL, miribogi, resetImg] = useImgInput(user.photoURL);
 
-  // 모달 끄기
+  const reset = () => {
+    resetImg();
+    nicknameReset();
+  };
+
+  // 모달창 종료
   const closeModal = () => {
+    reset();
     setProfileModalOpen(false);
+  };
+
+  // 프로필 변경
+  const userProfile: any = auth.currentUser;
+
+  const uploadImg = async () => {
+    const imgRef = ref(storage, `profile/${uuidv4()}`);
+    if (photoURL) {
+      const response = await uploadString(imgRef, photoURL, 'data_url');
+      const downloadURL = await getDownloadURL(response.ref);
+      return downloadURL;
+    }
+  };
+
+  const changeProfile = (x: string = photoURL) => {
+    dispatch(isLogin({ ...user, displayName: nickname, photoURL: x }));
     updateProfile(userProfile, {
       displayName: nickname,
+      photoURL: x,
     })
       .then(() => {
-        alert('변경완료');
+        alert('변경완료!');
+        closeModal();
       })
       .catch((e) => console.log('e:', e));
   };
 
-  // 사용자 프로필 업데이트
-  const nicknameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(event.target.value);
+  const submitChange = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    if (photoURL === userProfile.photoURL) {
+      changeProfile();
+    } else {
+      uploadImg()
+        .then((res) => {
+          changeProfile(res);
+        })
+        .catch((e) => console.log('e:', e));
+    }
   };
 
   return (
     <StyledProfileModalBackground>
       <StyledProfileModalDiv>
         <StyledH2>프로필 수정</StyledH2>
-        <Profile url={userProfile.photoURL} />
+        <StyledImageLabel>
+          <StyledProfileDiv>
+            <StyledImg src={photoURL} alt="프로필 사진" />
+            <StyledImageUploader
+              type="file"
+              accept="image/*"
+              onChange={(e) => miribogi(e)}
+              id="img"
+            />
+            <CameraDiv>
+              <Camera src={require('../assets/camera.png')} alt="카메라" />
+            </CameraDiv>
+          </StyledProfileDiv>
+        </StyledImageLabel>
         <StyledX
-          onClick={closeModal}
+          onClick={() => closeModal()}
           src={require('../assets/x.png')}
           alt="X"
         />
@@ -47,7 +97,9 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
           }}
           type="text"
         />
-        <StyledButtonChange onClick={closeModal}>수정완료</StyledButtonChange>
+        <StyledButtonChange onClick={(e) => submitChange(e)}>
+          수정완료
+        </StyledButtonChange>
       </StyledProfileModalDiv>
     </StyledProfileModalBackground>
   );
@@ -67,7 +119,7 @@ const StyledProfileModalBackground = styled.div`
 const StyledProfileModalDiv = styled.div`
   background-color: #fffae3;
   width: 30rem;
-  height: 3 0rem;
+  height: 30rem;
   padding: 2rem 0;
   position: relative;
   display: flex;
@@ -75,7 +127,6 @@ const StyledProfileModalDiv = styled.div`
   justify-content: center;
   flex-direction: column;
   z-index: 999;
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
@@ -86,18 +137,44 @@ const StyledH2 = styled.h2`
   top: 0.7rem;
 `;
 
-const StyledBackground = styled.div`
-  position: absolute;
-  top: 14rem;
-  left: 19rem;
-  background-color: white;
-  width: 2.5rem;
-  height: 2.5rem;
+const StyledProfileDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
+
+const StyledImg = styled.img`
+  border: 1px solid rgb(250, 214, 29);
   border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* margin-top: 3rem; */
 `;
 
 const StyledImageLabel = styled.label`
   cursor: pointer;
+  position: relative;
+  width: 13rem;
+  height: 13rem;
+`;
+
+const CameraDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+`;
+
+const Camera = styled.img`
+  background-color: rgb(250, 214, 29);
+  border-radius: 50%;
+  padding: 5px;
+  margin: 10px;
 `;
 
 const StyledImageUploader = styled.input`
@@ -108,14 +185,6 @@ const StyledX = styled.img`
   position: absolute;
   top: 1rem;
   right: 1rem;
-  cursor: pointer;
-`;
-
-const StyledImg = styled.img`
-  position: absolute;
-  top: 14.25rem;
-  left: 19.25rem;
-  z-index: 1;
   cursor: pointer;
 `;
 
