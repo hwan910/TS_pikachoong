@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import MainItem from './MainItem';
-import { Item, MarkerLocation } from '../../types/MapInterface';
+import { Item } from '../../types/MapInterface';
 import {
   NearbyChargingStationWrap,
   NearbyChargingStationTitleWrap,
