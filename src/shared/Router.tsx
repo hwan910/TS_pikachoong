@@ -39,7 +39,12 @@ const Router = () => {
     auth.onAuthStateChanged((user) => {
       if (user) {
         dispatch(
-          isLogin({ displayName: user.displayName, email: user.email, photoURL: user.photoURL, uid: user.uid }),
+          isLogin({
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            uid: user.uid,
+          }),
         );
       } else {
         dispatch(notLogin());
