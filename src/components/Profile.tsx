@@ -2,14 +2,12 @@ import styled from 'styled-components';
 import { useAppSelector } from '../hooks/useRedux';
 
 const Profile = () => {
-  const user = useAppSelector(state => state.login.user)
-  console.log(user);
-  
-  
+  const user = useAppSelector((state) => state.login.user);
+
   return (
     <StyledProfileDiv>
       <StyledImg
-        src={!!user ? user.photoURL : require('../assets/x.png')}
+        src={!!user.photoURL ? user.photoURL : require('../assets/x.png')}
         alt="프로필 사진"
       />
       <StyledTextDiv></StyledTextDiv>

@@ -1,31 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRef, useEffect, useState } from 'react';
-import {
-  Data,
-  GeoResult,
-  Item,
-  Location,
-  MarkerLocation,
-} from '../types/MapInterface';
+import { Item, MapProps, MarkerLocation } from '../../types/MapInterface';
 import { useNavigate } from 'react-router-dom';
 import Main from './Main';
-import styled from 'styled-components';
+import { Container } from '../../pages/MainPage/style';
+import useSearchMap from '../../hooks/useSearchMap';
 
 const { kakao } = window;
-
-interface Props {
-  data: Data | undefined;
-  myLocation: Location;
-  level: number;
-  setLevel: React.Dispatch<React.SetStateAction<number>>;
-  setLocation: (location: Location) => void;
-  setMyLocation: React.Dispatch<
-    React.SetStateAction<{
-      lat: number | string;
-      lng: number | string;
-    }>
-  >;
-}
 
 const Map = ({
   data,
@@ -33,21 +14,20 @@ const Map = ({
   myLocation,
   setLevel,
   setLocation,
-  setMyLocation
-}: Props) => {
+  setMyLocation,
+}: MapProps) => {
   const navigate = useNavigate();
   const mapRef = useRef(null);
   const [map, setMap] = useState<any>('');
-
   const [marker, setMarker] = useState<any>('');
 
   let markers: any[] = [];
   let arrFilter: Item[] = [];
   let markerLocation: MarkerLocation[] = [];
 
-  const arrUnique = data?.items.item.filter(
-    (stat: Item, idx: number, arr: Item[]) => {
-      return arr.findIndex((item: Item) => item.statId === stat.statId) === idx;
+  const uniqueStats = data?.items.item.filter(
+    (stat: Item, idx: number, allStats: Item[]) => {
+      return allStats.findIndex((item) => item.statId === stat.statId) === idx;
     },
   );
 
@@ -65,8 +45,8 @@ const Map = ({
     const zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
 
-    const thunderimageSrc = require('../assets/thunder.png');
-    const thunderoffimageSrc = require('../assets/thunderoff.png');
+    const thunderimageSrc = require('../../assets/map/thunder.png');
+    const thunderoffimageSrc = require('../../assets/map/thunderoff.png');
     const imageSize = new kakao.maps.Size(48, 48);
     const myMarker = new kakao.maps.Marker({
       map: map,
@@ -75,7 +55,7 @@ const Map = ({
     });
 
     setMarker(myMarker);
-    kakao.maps.event.addListener(map, 'dragend', function () {
+    kakao.maps.event.addListener(map, 'dragend', () => {
       const level = map.getLevel();
       const latlng = map.getCenter();
       setLevel(level);
@@ -90,13 +70,13 @@ const Map = ({
       thunderoffimageSrc,
       imageSize,
     );
-    if (typeof arrUnique === 'object') {
-      for (const x of arrUnique) {
+    if (typeof uniqueStats === 'object') {
+      for (const stat of uniqueStats) {
         const checkStatus = !!data?.items.item.filter(
-          (a: Item) => a.statId === x.statId && a.stat === '2',
+          (item) => item.statId === stat.statId && item.stat === '2',
         ).length;
-        const content = `<div style="background: white; border: 1px solid black;"><span>${x.statNm}</span></div>`;
-        const position = new kakao.maps.LatLng(x.lat, x.lng);
+        const content = `<div style="background: white; border: 1px solid black;"><span>${stat.statNm}</span></div>`;
+        const position = new kakao.maps.LatLng(stat.lat, stat.lng);
         const overlay = new kakao.maps.CustomOverlay({
           position,
           content,
@@ -117,8 +97,10 @@ const Map = ({
           overlay.setMap(null);
         });
         kakao.maps.event.addListener(marker, 'click', () =>
-          navigate(`${x.statId}`, {
-            state: data?.items.item.filter((y) => y.statId === x.statId),
+          navigate(`${stat.statId}`, {
+            state: data?.items.item.filter(
+              (item) => item.statId === stat.statId,
+            ),
           }),
         );
       }
@@ -140,6 +122,8 @@ const Map = ({
     let radius = circle.getRadius();
     let line = new kakao.maps.Polyline();
 
+    let distArr: number[] = [];
+
     markers?.forEach(function (marker) {
       // 마커의 위치와 원의 중심을 경로로 하는 폴리라인 설정
 
@@ -153,17 +137,16 @@ const Map = ({
 
       // 이 거리가 원의 반지름보다 작거나 같다면
       if (dist <= radius) {
-        markerPosition.dist = dist;
+        distArr.push(dist);
         markerLocation.push(markerPosition);
       }
     });
-    console.log(markerLocation);
     for (const markerLocate of markerLocation) {
       let coords = new kakao.maps.Coords(markerLocate.La, markerLocate.Ma);
       let La = coords.La.toFixed(10);
       let Ma = coords.Ma.toFixed(10);
 
-      const filters = arrUnique?.find(
+      const filters = uniqueStats?.find(
         (item: Item) =>
           Number(item.lat).toFixed(10) === Ma &&
           Number(item.lng).toFixed(10) === La,
@@ -172,52 +155,37 @@ const Map = ({
         arrFilter.push(filters);
       }
     }
+    for (let i = 0; i < arrFilter.length; i++) {
+      arrFilter[i].dist = distArr[i];
+    }
   }, []);
 
-  const [text, setText] = useState('');
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  };
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const geocoder = new kakao.maps.services.Geocoder();
-
-    geocoder.addressSearch(text, (result: GeoResult[], status: string) => {
-      if (status === kakao.maps.services.Status.OK) {
-        let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-        marker.setPosition(coords);
-        setLocation({ lat: result[0].y, lng: result[0].x });
-        setMyLocation({ lat: result[0].y, lng: result[0].x });
-
-        map.setCenter(coords);
-        setText('');
-      }
-    });
-  };
+  const [searchByAddress, onChangeSearch, onSubmit] = useSearchMap({
+    map,
+    marker,
+    setLocation,
+    setMyLocation,
+  });
 
   return (
     <Container>
-      <form onSubmit={onSubmit}>
-        <input type="text" onChange={(e) => onChange(e)} value={text} />
-        <button>확인</button>
-      </form>
+      <div>지도</div>
       <div
         ref={mapRef}
-        style={{ width: 1000, height: 500, marginBottom: '3%' }}
+        style={{ width: 700, height: 300, marginBottom: '3%' }}
       />
-      <Main filterData={arrFilter} markerLocation={markerLocation} />
+      <button>주소로 검색하기^_^</button>
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          onChange={(e) => onChangeSearch(e)}
+          value={searchByAddress}
+        />
+        <button>확인</button>
+      </form>
+      <Main filterData={arrFilter} />
     </Container>
   );
 };
 
 export default Map;
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
