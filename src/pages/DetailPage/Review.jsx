@@ -216,10 +216,7 @@ export const Review = ({ state }) => {
             onChange={(e) => handleNewReview(e)}
             setReviewList={setReviewList}
           />
-          <S.ReviewBtn onClick={addReview}>
-            {/* type="submit" */}
-            등록
-          </S.ReviewBtn>
+          <S.ReviewBtn onClick={addReview}>등록</S.ReviewBtn>
         </div>
       </S.ReviewInput>
 
@@ -227,11 +224,8 @@ export const Review = ({ state }) => {
 
       <S.ReviewList>
         {reviewList.map((i) => {
-          console.log(editModal.id === i.reviewId && editModal.isOpen);
           return (
             <S.ReviewBox key={i.reviewId}>
-              {/* {editModal.isOpen(false) &&             } */}
-
               <S.ReviewDetail
                 style={{
                   display:
@@ -251,11 +245,15 @@ export const Review = ({ state }) => {
                   >
                     <div>{i.nickName}</div>
                     <div>
-                      {'⭐'.repeat(i.reviewRating)} | {i.createdTime}
+                      {'⭐'.repeat(i.reviewRating)}&nbsp;&nbsp;|&nbsp;&nbsp;
+                      {i.createdTime}
                     </div>
                     <div>{i.review}</div>
                   </div>
                 </div>
+
+                {/* 평점구하기 */}
+                {/* {const avrScoreRating = reviewList.filter(())} */}
 
                 {/* 리뷰 수정삭제 모달 여닫 버튼 */}
                 {/* 본인 리뷰만 수정삭제 가능하게 */}
@@ -302,22 +300,9 @@ export const Review = ({ state }) => {
           );
         })}
       </S.ReviewList>
-
-      {/* <button onClick={reviewHandler}>리뷰 불러오는 버튼</button> */}
     </S.ReviewContainer>
   );
 };
 
 // http://localhost:3000/KE000642
 // 서울강남역두산위브센티움
-
-// {editModal.id === i.reviewId && editModal.isOpen && (
-//   <ReviewEditModal
-//     reviewHandler={reviewHandler}
-//     ratingArr={ratingArr}
-//     handleStarClick={handleStarClick}
-//     handleEditModalOpen={handleEditModalOpen}
-//     clicked={clicked}
-//     i={i}
-//   />
-// )}

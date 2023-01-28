@@ -160,7 +160,7 @@ export const DeleteBtn = styled.button`
   }
 `;
 
-export const Rating = styled.div`
+export const Rating = styled.span`
   display: flex;
   padding-top: 5px;
 
@@ -169,16 +169,16 @@ export const Rating = styled.div`
     cursor: pointer;
   }
 
-  :hover svg {
-    color: #fcc419;
-  }
+  /* :hover svg {
+    color: #fad61d;
+  } */
 
   & svg:hover ~ svg {
     color: gray;
   }
 
   .yellowStar {
-    color: #fcc419;
+    color: #fad61d;
   }
 `;
 

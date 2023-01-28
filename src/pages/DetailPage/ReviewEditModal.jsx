@@ -1,24 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as S from './style';
-import {
-  addDoc,
-  setDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '../../common/firebase';
-import { uuidv4 } from '@firebase/util';
 import { FaStar } from 'react-icons/fa';
-import { getAuth } from 'firebase/auth';
-import { toEditorSettings } from 'typescript';
-import { Review } from './Review';
 
 function ReviewEditModal({
   reviewHandler,
