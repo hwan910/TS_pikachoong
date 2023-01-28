@@ -2,7 +2,14 @@ import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { getChargerinfo } from '../../common/api';
 import { szcode, szscode } from '../../common/zcode';
-import { Container, Table, MainTitle, TableHead, TableBody } from './style';
+import {
+  Container,
+  Table,
+  MainTitle,
+  TableHead,
+  TableBody,
+  PageBtn,
+} from './style';
 import { Item } from '../../types/MapInterface';
 import { PageBtnBox } from '../../shared/Layout/Header/style';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -47,8 +54,6 @@ export const SearchPage = () => {
     Math.ceil(pageNum.length / 10) > 5 * (i + 1)
       ? pageNum.slice(5 * i, 5 * (i + 1))
       : pageNum.slice(5 * i, Math.ceil(pageNum.length / 10));
-
-  const user: any = auth.currentUser;
 
   return (
     <Container>
@@ -103,14 +108,16 @@ export const SearchPage = () => {
                 <div style={{ color: 'gray', paddingBottom: 5 }}>
                   전체 충전기:{test.length}
                 </div>
-                <div style={{ color: 'blue' }}> 사용가능:{test1.length}</div>
+                <div style={{ color: test1.length === 0 ? 'red' : 'blue' }}>
+                  사용가능:{test1.length}
+                </div>
               </div>
             </TableBody>
           );
         })}
       </Table>
       <PageBtnBox>
-        <button
+        <PageBtn
           disabled={page === 0 ? true : false}
           onClick={() => {
             setPage(page - 1);
@@ -118,9 +125,9 @@ export const SearchPage = () => {
           }}
         >
           &lt; 이전
-        </button>
+        </PageBtn>
         <PageNation allpage={allpage} setPage={setPage} page={page} />
-        <button
+        <PageBtn
           disabled={page === Math.floor(pageResult?.length / 10) ? true : false}
           onClick={() => {
             setPage(page + 1);
@@ -128,9 +135,8 @@ export const SearchPage = () => {
           }}
         >
           다음 &gt;
-        </button>
+        </PageBtn>
       </PageBtnBox>
-      <button>회원탈퇴</button>
     </Container>
   );
 };

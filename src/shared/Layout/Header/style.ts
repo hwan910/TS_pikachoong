@@ -9,6 +9,10 @@ export const StyledHeader = styled.div`
   justify-content: center;
   margin-bottom: 20px;
   background-color: ${COLOR.YELLOW};
+  @media screen and (max-width: 800px) {
+    height: 150px;
+    align-items: center;
+  }
 `;
 
 export const HeaderContainer = styled.div`
@@ -18,6 +22,21 @@ export const HeaderContainer = styled.div`
   align-items: center;
   box-sizing: border-box;
   padding-left: 13px;
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
+`;
+
+export const HeaderDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 65%;
+  @media screen and (max-width: 800px) {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-right: 20px;
+  }
 `;
 
 export const LogoBox = styled.div`
@@ -25,6 +44,10 @@ export const LogoBox = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  @media screen and (max-width: 800px) {
+    width: 95%;
+    justify-content: center;
+  }
 `;
 
 export const Logo = styled.img`
@@ -33,17 +56,25 @@ export const Logo = styled.img`
 export const LogoText = styled.div`
   font-size: 24px;
   font-weight: 700;
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;
 
 export const SearchBox = styled.div`
-  /* border-radius: 15px; */
-  width: 40%;
   display: flex;
-  justify-content: space-between;
   height: 30px;
-  background-color: #ffffff;
   opacity: 0.8;
-  border-radius: 25px;
+  border-radius: 15px;
+  border: 1px solid red;
+  justify-content: space-evenly;
+  width: 270px;
+  background-color: white;
+
+  @media screen and (max-width: 800px) {
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
 `;
 
 export const SearchInput = styled.input`
@@ -57,7 +88,7 @@ export const SearchSelect = styled.div`
   width: 90%;
   min-width: 260px;
   display: flex;
-  justify-content: space-evenly;
+  padding-left: 10px;
 `;
 
 export const SearchBtn = styled.button`
@@ -71,6 +102,13 @@ export const HeaderBtnBox = styled.div`
   display: flex;
   flex-direction: row;
   margin-right: 5px;
+  @media screen and (max-width: 800px) {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    background-color: 'white';
+    width: 140px;
+  }
 `;
 
 export const HeaderBtn = styled.div`
@@ -88,6 +126,9 @@ export const HeaderBtn = styled.div`
   opacity: 0.8;
   :hover {
     box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 7px;
+  }
+  @media screen and (max-width: 800px) {
+    font-size: 11px;
   }
 `;
 
