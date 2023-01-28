@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import Main from './Main';
 import { Container } from '../../pages/MainPage/style';
 import useSearchMap from '../../hooks/useSearchMap';
+import styled from 'styled-components';
+import { IoSearchCircle } from 'react-icons/io5';
+import { SearchBtn } from '../../shared/Layout/Header/style';
 
 const { kakao } = window;
 
@@ -40,6 +43,7 @@ const Map = ({
     };
 
     const map = new kakao.maps.Map(mapRef.current, options);
+    map.setMaxLevel(8);
     setMap(map);
 
     const zoomControl = new kakao.maps.ZoomControl();
@@ -169,23 +173,102 @@ const Map = ({
 
   return (
     <Container>
-      <div>지도</div>
-      <div
-        ref={mapRef}
-        style={{ width: 700, height: 300, marginBottom: '3%' }}
-      />
-      <button>주소로 검색하기^_^</button>
+      <HeaderWrap>
+        <HeaderTitle>인근 충전소</HeaderTitle>
+        <HeaderForm onSubmit={onSubmit}>
+          <HeaderInput
+            type="text"
+            onChange={(e) => onChangeSearch(e)}
+            value={searchByAddress}
+            placeholder="지도에서 주소 검색"
+          />
+          <SearchBtn>
+            <IoSearchCircle color="red" size={'2.6em'} />
+          </SearchBtn>
+        </HeaderForm>
+      </HeaderWrap>
+
+      <MapWrap ref={mapRef} />
+      {/* <button>주소로 검색하기^_^</button>
       <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          onChange={(e) => onChangeSearch(e)}
-          value={searchByAddress}
-        />
         <button>확인</button>
-      </form>
+      </form> */}
       <Main filterData={arrFilter} />
     </Container>
   );
 };
 
 export default Map;
+
+const MapWrap = styled.div`
+  width: 1300px;
+  height: 500px;
+  @media screen and (max-width: 1200px) {
+    width: 1000px;
+    height: 300px;
+  }
+  @media screen and (max-width: 1000px) {
+    width: 800px;
+  }
+  @media screen and (max-width: 600px) {
+    width: 500px;
+  }
+`;
+
+const HeaderWrap = styled.div`
+  width: 1300px;
+  height: 50px;
+  border-bottom: 1px solid #fad61d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  @media screen and (max-width: 1200px) {
+    width: 1000px;
+    @media screen and (max-width: 1000px) {
+      width: 800px;
+    }
+    @media screen and (max-width: 600px) {
+      width: 500px;
+    }
+  }
+`;
+
+const HeaderTitle = styled.span`
+  font-size: 30px;
+  font-weight: bold;
+  @media screen and (max-width: 1200px) {
+    font-size: 25px;
+  }
+  @media screen and (max-width: 1000px) {
+    font-size: 22px;
+  }
+  @media screen and (max-width: 600px) {
+    font-size: 20px;
+  }
+`;
+
+const HeaderForm = styled.form`
+  display: flex;
+`;
+
+const HeaderInput = styled.input`
+  padding: 15px;
+  width: 300px;
+  height: 1px;
+  background: rgba(250, 214, 29, 0.2);
+  border-radius: 24px;
+  border: none;
+  ::placeholder {
+    opacity: 0.5;
+  }
+  @media screen and (max-width: 1200px) {
+    width: 200px;
+  }
+  @media screen and (max-width: 1000px) {
+    width: 150px;
+  }
+  @media screen and (max-width: 600px) {
+    width: 100px;
+  }
+`;

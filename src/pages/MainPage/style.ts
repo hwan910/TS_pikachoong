@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { COLOR } from '../../common/color';
 
 const Container = styled.div`
@@ -10,17 +13,23 @@ const Container = styled.div`
 `;
 
 const NearbyChargingStationCard = styled.div`
-  min-width: 400px;
   border-radius: 10px;
   background-color: white;
-  width: 35%;
-  height: 50%;
+  width: 370px;
+  height: 150px;
+  border: 1px solid #fad61d;
   box-shadow: 2px 2px 8px rgba(101, 101, 101, 0.25);
   display: flex;
   flex-direction: column;
   padding: 0 20px 0 20px;
   cursor: pointer;
-  margin: 0 auto 0 0;
+  margin: 0 auto;
+  @media screen and (max-width: 1000px) {
+    width: 300px;
+  }
+  @media screen and (max-width: 600px) {
+    width: 300px;
+  }
 `;
 
 const NearbyChargingStationCardTextWrap = styled.div`
@@ -48,9 +57,14 @@ const NearbyChargingStationCardContent = styled.span`
 `;
 
 const NearbyChargingStationWrap = styled.div`
-  width: 85%;
-  height: 45vh;
-  margin-bottom: 15%;
+  font-size: 48px;
+  width: 1300px;
+  height: 170px;
+  display: flex;
+  margin-left: 10px;
+  justify-content: center;
+  background-color: white;
+  align-items: center;
 `;
 
 const NearbyChargingStationTitleWrap = styled.div`
@@ -68,18 +82,35 @@ const NearbyChargingStationTitle = styled.span`
   font-weight: bold;
 `;
 
-const NearbyChargingStationCardWrap = styled.div`
-  overflow-x: auto;
-  padding: 50px 0 20px 0;
-  width: 80%;
-  height: 100%;
+const StyledSlider = styled(Slider)`
+  .slick-list {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 0;
+    width: 1300px;
+  }
+
+  .slick-prev:before,
+  .slick-next:before {
+    font-size: 30px;
+    opacity: 0.5;
+    color: black;
+  }
+
   display: flex;
-  /* flex-wrap: wrap; */
-  justify-content: center;
-  margin: 0 auto;
-  gap: 50px 50px;
-  &::-webkit-scrollbar {
-    /* display: none; */
+  align-items: center;
+  width: 1350px;
+  height: 200px;
+  @media screen and (max-width: 1200px) {
+    width: 1000px;
+  }
+  @media screen and (max-width: 1000px) {
+    width: 800px;
+  }
+  @media screen and (max-width: 600px) {
+    width: 500px;
   }
 `;
 
@@ -92,5 +123,5 @@ export {
   NearbyChargingStationWrap,
   NearbyChargingStationTitleWrap,
   NearbyChargingStationTitle,
-  NearbyChargingStationCardWrap,
+  StyledSlider,
 };
