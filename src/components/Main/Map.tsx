@@ -213,6 +213,9 @@ const MapWrap = styled.div`
   @media screen and (max-width: 600px) {
     width: 500px;
   }
+  @media screen and (max-width: 400px) {
+    width: 380px;
+  }
 `;
 
 const HeaderWrap = styled.div`
@@ -225,12 +228,15 @@ const HeaderWrap = styled.div`
   margin-bottom: 10px;
   @media screen and (max-width: 1200px) {
     width: 1000px;
-    @media screen and (max-width: 1000px) {
-      width: 800px;
-    }
-    @media screen and (max-width: 600px) {
-      width: 500px;
-    }
+  }
+  @media screen and (max-width: 1000px) {
+    width: 800px;
+  }
+  @media screen and (max-width: 600px) {
+    width: 500px;
+  }
+  @media screen and (max-width: 400px) {
+    width: 360px;
   }
 `;
 
@@ -245,6 +251,9 @@ const HeaderTitle = styled.span`
   }
   @media screen and (max-width: 600px) {
     font-size: 20px;
+  }
+  @media screen and (max-width: 400px) {
+    font-size: 18px;
   }
 `;
 
