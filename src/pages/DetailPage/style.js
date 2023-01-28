@@ -3,6 +3,18 @@ import styled from 'styled-components';
 
 // DetailPage.jsx
 
+//디테일페이지 전체
+export const DetailPageMain = styled.div`
+  display: flex;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
 export const InfoArea = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,10 +40,24 @@ export const InfoArea = styled.div`
   &::-webkit-scrollbar-track {
     // 스크롤바 트랙 설정
   }
+
+  @media screen and (max-width: 768px) {
+  }
 `;
 
 export const DetailMapWrap = styled.div`
   margin: 40px;
+`;
+
+// DetailMap.tsx 지도태그
+export const DetailMapStyle = styled.div`
+  width: 400px;
+  min-width: 50%;
+  height: 400px;
+  min-height: 50%;
+  // 1024px
+  /* @media screen and (max-width: 768px) {
+  } */
 `;
 
 //좌측상단 info박스

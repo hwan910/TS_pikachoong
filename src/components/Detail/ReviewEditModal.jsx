@@ -11,6 +11,9 @@ function ReviewEditModal({
   handleEditModalOpen,
   clicked,
   i,
+  setReviewRating,
+  setClicked,
+  reviewId,
 }) {
   const [editComment, setEditComment] = useState(i.review);
   const [editRating, setEditRating] = useState(i.reviewRating); // 별점수정
@@ -37,8 +40,18 @@ function ReviewEditModal({
       isEdit: false,
     });
     setEditComment('');
-    setEditRating([false, false, false, false, false]); // 별점수정
+    // setEditRating([false, false, false, false, false]); // 별점수정
     reviewHandler();
+  };
+
+  const [editClicked, setEditClicked] = useState(reviewId);
+  const handleEditStarClick = (index) => {
+    let clickStates = [...clicked];
+    for (let i = 0; i < 5; i++) {
+      clickStates[i] = i <= index ? true : false;
+    }
+    setEditRating(clickStates.filter((x) => x === true).length);
+    setEditClicked(clickStates);
   };
 
   return (
@@ -55,20 +68,23 @@ function ReviewEditModal({
           >
             <div>{i.nickName}</div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {ratingArr.map((el, idx) => {
-                return (
-                  <FaStar
-                    key={idx}
-                    size="20"
-                    onClick={(e) => {
-                      handleStarClick(el);
-                    }}
-                    className={clicked[el] && 'yellowStar'}
-                    defaultValue={i.reviewRating} //별점수정
-                    onChange={(e) => handleEditRating(e)} // 별점수정
-                  />
-                );
-              })}
+              <S.Rating>
+                {ratingArr.map((el, idx) => {
+                  return (
+                    <FaStar
+                      key={idx}
+                      size="20"
+                      onClick={() => {
+                        handleEditStarClick(el);
+                        console.log(editClicked); // 왜 직전에 클릭했던 배열이 찍힐까요?ㅠ
+                      }}
+                      className={editClicked[el] && 'yellowStar'}
+                      // defaultValue={i.editClicked} //  별점수정
+                      // defaultValue={i.reviewRating} //별점수정
+                    />
+                  );
+                })}
+              </S.Rating>
               <div>&nbsp;|&nbsp;{i.createdTime}</div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>

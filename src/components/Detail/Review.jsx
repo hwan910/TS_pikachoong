@@ -25,7 +25,8 @@ import ReviewEditModal from './ReviewEditModal';
 // import EditDeleteModal from './EditDeleteModal';
 
 export const Review = ({ state }) => {
-  const currentUser = auth.currentUser;
+  const currentUser = auth?.currentUser;
+
   const [reviewRating, setReviewRating] = useState(0);
   const [newReview, setNewReview] = useState('');
   const [reviewList, setReviewList] = useState([]);
@@ -104,6 +105,10 @@ export const Review = ({ state }) => {
   // 리뷰추가
   const addReview = async () => {
     const uuid = uuidv4();
+    if (currentUser === null) {
+      alert('로그인이 필요한 서비스 입니다.');
+      return;
+    }
 
     // addDoc을 쓰면 문서id가 랜덤으로 추가
     // reviewId:uuid와 문서 id를 일치시키기 위해 setDoc(doc(db, 'reviews', uuid) 으로 교체
@@ -164,8 +169,8 @@ export const Review = ({ state }) => {
   // 별점핸들링
 
   // 별점 rating
-  const ratingArr = [0, 1, 2, 3, 4];
   const [clicked, setClicked] = useState([false, false, false, false, false]);
+  const ratingArr = [0, 1, 2, 3, 4];
   const handleStarClick = (index) => {
     let clickStates = [...clicked];
     for (let i = 0; i < 5; i++) {
@@ -175,7 +180,6 @@ export const Review = ({ state }) => {
     setClicked(clickStates);
   };
 
-  // console.log(reviewRating);
   // useEffect(() => {
   //   sendReview();
   // }, [clicked]);
@@ -201,14 +205,15 @@ export const Review = ({ state }) => {
           {/* handleStarClick 함수로 클릭한 el값을 index로 받음 + i <= 3이 될때까지는 true값을 반환 */}
           {/* filter(Boolean)을 통해 true값만 반환 + length로 true=별 갯수 구현 */}
           {ratingArr.map((el, idx) => {
-            // setReviewRating(clicked.filter((x) => x === true).length);
-            // console.log(reviewRating);
             return (
               <FaStar
                 key={idx}
                 size="25"
                 onClick={() => handleStarClick(el)}
                 className={clicked[el] && 'yellowStar'}
+                value={clicked}
+                // onChange={(e) => handleNewReview(e)}
+                // setReviewList={setReviewList}
               />
             );
           })}
@@ -261,7 +266,7 @@ export const Review = ({ state }) => {
                     <div>{i.nickName}</div>
                     <div>
                       {'⭐'.repeat(i.reviewRating)}
-                      {i.reviewRating}&nbsp;&nbsp;|&nbsp;&nbsp;
+                      &nbsp;&nbsp;|&nbsp;&nbsp;
                       {i.createdTime}
                     </div>
                     <div>{i.review}</div>
@@ -273,11 +278,11 @@ export const Review = ({ state }) => {
 
                 {/* 리뷰 수정삭제 모달 여닫 버튼 */}
                 {/* 본인 리뷰만 수정삭제 가능하게 */}
-                {i.uid === currentUser.uid ? (
+                {i.uid === currentUser?.uid ? (
                   <SlOptions
                     onClick={
                       deleteModal.id === i.reviewId && deleteModal.isOpen
-                        ? ''
+                        ? () => {}
                         : () => handleModalOpen(i.reviewId)
                     }
                     style={{
@@ -343,6 +348,9 @@ export const Review = ({ state }) => {
                   handleEditModalOpen={handleEditModalOpen}
                   clicked={clicked}
                   i={i}
+                  setReviewRating={setReviewRating}
+                  setClicked={setClicked}
+                  reviewId={reviewId}
                 />
               )}
             </S.ReviewBox>

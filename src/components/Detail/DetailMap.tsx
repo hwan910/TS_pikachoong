@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react';
 import { Location } from '../../types/MapInterface';
+import * as S from '../../pages/DetailPage/style';
 
 const { kakao } = window;
 
@@ -29,7 +30,7 @@ const DetailMap = ({ location }: Props) => {
     });
   }, []);
 
-  return <div ref={mapRef} style={{ width: 800, height: 800 }} />;
+  return <S.DetailMapStyle ref={mapRef} />;
 };
 
 export default DetailMap;
