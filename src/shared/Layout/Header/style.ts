@@ -107,7 +107,7 @@ export const HeaderBtnBox = styled.div`
     top: 1%;
     right: 1%;
     background-color: 'white';
-    width: 140px;
+    /* width: 140px; */
   }
 `;
 
