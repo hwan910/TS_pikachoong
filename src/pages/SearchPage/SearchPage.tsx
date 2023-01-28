@@ -6,7 +6,7 @@ import { Container, Table, MainTitle, TableHead, TableBody } from './style';
 import { Item } from '../../types/MapInterface';
 import { PageBtnBox } from '../../shared/Layout/Header/style';
 import { useNavigate, useParams } from 'react-router-dom';
-import PageNation from '../../components/PageNation';
+import PageNation from '../../components/Search/PageNation';
 import { auth } from '../../common/firebase';
 
 export const SearchPage = () => {
@@ -49,7 +49,6 @@ export const SearchPage = () => {
       : pageNum.slice(5 * i, Math.ceil(pageNum.length / 10));
 
   const user: any = auth.currentUser;
-  console.log(user);
 
   return (
     <Container>

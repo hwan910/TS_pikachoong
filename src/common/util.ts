@@ -1,8 +1,3 @@
-// 로그인, 회원가입 유효성 검증
-export const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-export const pwRegex =
-  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-
 // 사용할 컴포넌트에서 postTime import 하고 사용
 // const dateString  = postTime();
 export const postTime = () => {

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import Profile from './Profile';
-import { useAppSelector } from '../hooks/useRedux';
+import { useAppSelector } from '../../hooks/useRedux';
 
 const ProfileTap = () => {
-  const user = useAppSelector(state => state.login.user)
+  const user = useAppSelector((state) => state.login.user);
 
   return (
     <div>

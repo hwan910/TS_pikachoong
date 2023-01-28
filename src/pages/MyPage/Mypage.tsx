@@ -2,13 +2,11 @@ import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { app } from '../../common/firebase';
-import Button from '../../components/Button';
-import MyReview from '../../components/MyReview';
-import PasswordModal from '../../components/PasswordModal';
-import Profile from '../../components/Profile';
-import ProfileModal from '../../components/ProfileModal';
-import ProfileTap from '../../components/ProfileTap';
+import Button from '../../components/MyPage/Button';
+import MyReview from '../../components/MyPage/MyReview';
+import Profile from '../../components/MyPage/Profile';
+import ProfileModal from '../../components/MyPage/ProfileModal';
+import ProfileTap from '../../components/MyPage/ProfileTap';
 
 export const Mypage = () => {
   // 모달창 노출 여부 state

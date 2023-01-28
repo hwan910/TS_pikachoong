@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import * as S from './style';
+import * as S from '../../pages/DetailPage/style';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '../../common/firebase';
 import { FaStar } from 'react-icons/fa';
