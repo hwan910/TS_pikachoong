@@ -1,24 +1,20 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import Button from '../../components/Button';
-import MyReview from '../../components/MyReview';
-import PasswordModal from '../../components/PasswordModal';
-import Profile from '../../components/Profile';
-import ProfileModal from '../../components/ProfileModal';
-import ProfileTap from '../../components/ProfileTap';
+import Button from '../../components/profile/Button';
+import MyReview from '../../components/review/MyReview';
+import Profile from '../../components/profile/Profile';
+import ProfileModal from '../../components/profile/ProfileModal';
+import ProfileTap from '../../components/profile/ProfileTap';
 
 export const Mypage = () => {
   // 모달창 노출 여부 state
   const [profileModalOpen, setProfileModalOpen] = useState(false);
-  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
 
   // 모달창 노출
   const showProfileModal = () => {
     setProfileModalOpen(true);
   };
-  const showPasswordModal = () => {
-    setPasswordModalOpen(true);
-  };
+
   return (
     <StyledMyPage>
       <StyledMyProfile>

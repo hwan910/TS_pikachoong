@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { auth } from '../common/firebase';
+import { auth } from '../../common/firebase';
 
 interface Props {
   url: any;
@@ -11,7 +11,7 @@ const Profile = ({ url }: Props) => {
   return (
     <StyledProfileDiv>
       <StyledImg
-        src={`${url === null ? require('../assets/x.png') : url}`}
+        src={`${url === null ? require('../../assets/girl.png') : url}`}
         alt="프로필 사진"
       />
       <StyledTextDiv></StyledTextDiv>

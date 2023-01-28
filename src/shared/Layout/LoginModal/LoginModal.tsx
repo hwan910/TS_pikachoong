@@ -8,8 +8,9 @@ import {
   GithubAuthProvider,
   updateProfile,
 } from 'firebase/auth';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface Props {
   setLoginModalOpen: any;
@@ -19,6 +20,7 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
   const [pageNumber, setPageNumber] = useState(0);
   const [nickname, setNickname] = useState('');
   const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
   const closeModal = () => {
     setLoginModalOpen(false);
     setPageNumber(0);
@@ -74,18 +76,51 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
 
   const userProfile: any = auth.currentUser;
 
-  // 사용자 프로필 업데이트
-  const nicknameHandler = () => {
+  // 닉네임 변경 함수
+  const nickNameChange = () => {
     updateProfile(userProfile, {
       displayName: nickname,
     })
       .then(() => {
         alert('변경완료');
+      })
+      .catch((e) => console.log('e:', e));
+  };
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  // 사용자 프로필 업데이트
+  const nicknameHandler = () => {
+    // 유효성 검사
+    if (nickname === '') {
+      alert('닉네임이 비어있습니다.');
+      inputRef.current?.focus();
+      return;
+    }
+    if (nickname.length > 7) {
+      alert('글자 수 7자를 초과하였습니다.');
+      setNickname('');
+      inputRef.current?.focus();
+      return;
+    }
+    updateProfile(userProfile, {
+      displayName: nickname,
+    })
+      .then(() => {
+        alert('닉네임이 설정되었습니다.');
+        if (inputRef.current !== null) {
+          inputRef.current.focus();
+        }
         setPageNumber(2);
       })
       .catch((e) => console.log('e:', e));
   };
 
+  const closeModalX = () => {
+    setLoginModalOpen(false);
+  };
   return (
     <div>
       <StyledLoginModalBackground>
@@ -129,6 +164,9 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
             />
             <StyledNicknameInput
               value={nickname}
+              ref={inputRef}
+              autoFocus
+              maxLength={8}
               onChange={(event) => {
                 setNickname(event.target.value);
                 console.log(nickname);

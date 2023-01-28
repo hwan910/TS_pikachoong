@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Profile from './Profile';
-import { auth } from '../common/firebase';
+import { auth } from '../../common/firebase';
 import { updateProfile } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   setProfileModalOpen: any;
@@ -10,12 +11,43 @@ interface Props {
 
 const ProfileModal = ({ setProfileModalOpen }: Props) => {
   const [nickname, setNickname] = useState('');
+  const navigate = useDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
   const userProfile: any = auth.currentUser;
-  console.log(userProfile);
-
-  // 모달 끄기
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
   const closeModal = () => {
+    setTimeout(function () {
+      if (inputRef.current !== null) {
+        inputRef.current.focus();
+      }
+      // 유효성 검사
+      if (nickname === '') {
+        alert('닉네임이 비어있습니다.');
+      } else {
+        if (nickname.length < 8) {
+          setProfileModalOpen(false);
+          nickNameChange();
+        } else {
+          alert('글자 수 7자를 초과하였습니다.');
+          setNickname('');
+        }
+      }
+    }, 100);
+  };
+
+  const closeModalX = () => {
     setProfileModalOpen(false);
+  };
+
+  // 사용자 프로필 업데이트
+  const nicknameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(event.target.value);
+  };
+
+  // 닉네임 변경 함수
+  const nickNameChange = () => {
     updateProfile(userProfile, {
       displayName: nickname,
     })
@@ -25,23 +57,21 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
       .catch((e) => console.log('e:', e));
   };
 
-  // 사용자 프로필 업데이트
-  const nicknameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(event.target.value);
-  };
-
   return (
     <StyledProfileModalBackground>
       <StyledProfileModalDiv>
         <StyledH2>프로필 수정</StyledH2>
         <Profile url={userProfile.photoURL} />
         <StyledX
-          onClick={closeModal}
-          src={require('../assets/x.png')}
+          onClick={closeModalX}
+          src={require('../../assets/x.png')}
           alt="X"
         />
         <StyledInput
           value={nickname}
+          ref={inputRef}
+          autoFocus
+          maxLength={8}
           onChange={(e) => {
             nicknameHandler(e);
           }}

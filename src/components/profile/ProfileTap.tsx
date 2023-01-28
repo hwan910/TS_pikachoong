@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ProfileImg } from '../pages/DetailPage/style';
+import { ProfileImg } from '../../pages/DetailPage/style';
 import Profile from './Profile';
-import { auth } from '../common/firebase';
+import { auth } from '../../common/firebase';
 
 const ProfileTap = () => {
   const user = auth?.currentUser;
