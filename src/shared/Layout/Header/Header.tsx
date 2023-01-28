@@ -10,6 +10,7 @@ import {
   LogoText,
   LogoBox,
   SearchSelect,
+  HeaderDiv,
 } from './style';
 import { useEffect, useRef, useState } from 'react';
 import LoginModal from '../LoginModal/LoginModal';
@@ -87,60 +88,71 @@ const Header = () => {
           <LogoText>피카츙</LogoText>
           <Logo src={require('../../../assets/Logo.png')} />
         </LogoBox>
-
-        <SearchBox>
-          <SearchSelect>
-            <select
-              style={{
-                border: 'none',
-                borderRadius: 5,
-              }}
-              onChange={z2ListHandler}
-              ref={select1InputRef}
-            >
-              <option value="none">=1차분류=</option>
-              {z1List.map((item, i) => (
-                <option value={item.split(':')[0]} key={i}>
-                  {item.split(':')[1]}
-                </option>
-              ))}
-            </select>
-            <select
-              style={{ border: 'none', borderRadius: 5 }}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                setZ2(e.target.value)
-              }
-              ref={select2InputRef}
-            >
-              <option value="none">=2차분류=</option>
-              {z2List.map((item, i) => (
-                <option value={item.split(':')[0]} key={i}>
-                  {item.split(':')[1]}
-                </option>
-              ))}
-            </select>
-          </SearchSelect>
-          <SearchBtn>
-            <IoSearchCircle
-              color="red"
-              size={'2.6em'}
-              onClick={searchResultHandler}
-            />
-          </SearchBtn>
-        </SearchBox>
-        <HeaderBtnBox>
-          {!user.uid ? (
-            <HeaderBtn onClick={showLoginModal}>LOGIN</HeaderBtn>
-          ) : (
-            <>
-              <HeaderBtn onClick={() => navigate('/my')}>마이페이지</HeaderBtn>
-              <HeaderBtn onClick={onClickLogout}>LOGOUT</HeaderBtn>
-            </>
-          )}
-          {loginModalOpen && (
-            <LoginModal setLoginModalOpen={setLoginModalOpen} />
-          )}
-        </HeaderBtnBox>
+        <HeaderDiv>
+          <SearchBox>
+            <SearchSelect>
+              <select
+                style={{
+                  border: 'none',
+                  borderRadius: 15,
+                  width: 130,
+                  textAlign: 'center',
+                  marginRight: 10,
+                }}
+                onChange={z2ListHandler}
+                ref={select1InputRef}
+              >
+                <option value="none">=1차분류=</option>
+                {z1List.map((item, i) => (
+                  <option value={item.split(':')[0]} key={i}>
+                    {item.split(':')[1]}
+                  </option>
+                ))}
+              </select>
+              <select
+                style={{
+                  border: 'none',
+                  borderRadius: 15,
+                  width: 130,
+                  textAlign: 'center',
+                }}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  setZ2(e.target.value)
+                }
+                ref={select2InputRef}
+              >
+                <option value="none">=2차분류=</option>
+                {z2List.map((item, i) => (
+                  <option value={item.split(':')[0]} key={i}>
+                    {item.split(':')[1]}
+                  </option>
+                ))}
+              </select>
+              <SearchBtn>
+                <IoSearchCircle
+                  color="red"
+                  size={'2.6em'}
+                  onClick={searchResultHandler}
+                />
+              </SearchBtn>
+            </SearchSelect>
+          </SearchBox>
+          <HeaderBtnBox>
+            {!user.uid ? (
+              <HeaderBtn onClick={showLoginModal}>LOGIN</HeaderBtn>
+            ) : (
+              <>
+                <HeaderBtn onClick={() => navigate('/my')}>
+                  마이페이지
+                </HeaderBtn>
+                <HeaderBtn onClick={onClickLogout}>LOGOUT</HeaderBtn>
+              </>
+            )}
+            {loginModalOpen && (
+              <LoginModal setLoginModalOpen={setLoginModalOpen} />
+            )}
+          </HeaderBtnBox>
+        </HeaderDiv>
       </HeaderContainer>
     </StyledHeader>
   );

@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 interface Props {
   allpage: number[];
   page: number;
@@ -7,10 +9,10 @@ interface Props {
 const PageNation = ({ allpage, page, setPage }: Props) => {
   return (
     <>
-      <div>
+      <PageListBox>
         {allpage?.map((v: number, i: number) => {
           return (
-            <button
+            <PageBtn
               style={{
                 color: v - 1 === page ? 'black' : 'gray',
                 fontWeight: v - 1 === page ? 700 : 300,
@@ -19,12 +21,31 @@ const PageNation = ({ allpage, page, setPage }: Props) => {
               key={i}
             >
               {v}
-            </button>
+            </PageBtn>
           );
         })}
-      </div>
+      </PageListBox>
     </>
   );
 };
 
 export default PageNation;
+
+const PageListBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3px;
+  padding: 3px;
+  width: 100px;
+  @media screen and (max-width: 500px) {
+    font-size: 13px;
+  }
+`;
+
+const PageBtn = styled.button`
+  all: unset;
+  padding-right: 4px;
+  padding-left: 4px;
+  cursor: pointer;
+`;
