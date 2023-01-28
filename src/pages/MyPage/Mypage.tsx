@@ -39,9 +39,19 @@ const StyledMyProfile = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  @media screen and (max-width: 768px) {
+    position: relative;
+    bottom: 4rem;
+  }
 `;
 
 const StyledMyPage = styled.div`
   display: flex;
   margin-top: 5rem;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 `;

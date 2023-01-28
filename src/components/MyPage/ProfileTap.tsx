@@ -6,15 +6,20 @@ const ProfileTap = () => {
   const user = useAppSelector((state) => state.login.user);
 
   return (
-    <div>
+    <StyledProfileDiv>
       <Profile />
       <StyledTextH4>{user.displayName}</StyledTextH4>
       <StyledTextP>{user.email}</StyledTextP>
-    </div>
+    </StyledProfileDiv>
   );
 };
 
 export default ProfileTap;
+
+const StyledProfileDiv = styled.div`
+  @media screen and (max-width: 768px) {
+  }
+`;
 
 const StyledTextH4 = styled.h4`
   color: #6a6969;
