@@ -17,6 +17,7 @@ export const getData = async ({ queryKey }: DataKey) => {
 };
 
 const pageNo = 1;
+
 export const getChargerinfo = (zcode: any, zscode: any): any => {
   return axios.get(
     `${SERVER_URL}&numOfRows=3000&zcode=${zcode}&zscode=${zscode}&pageNo=${pageNo}`,

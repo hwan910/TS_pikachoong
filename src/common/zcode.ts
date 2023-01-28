@@ -1,4 +1,5 @@
 import { Zcode } from '../types/MapInterface';
+import { Szcode } from '../types/SearchInterface';
 
 export const zcode: Zcode = {
   서울: '11',
@@ -300,7 +301,7 @@ export const zcode50: Zcode = {
   서귀포시: '50130',
 };
 
-export const szcode: any = {
+export const szcode: Szcode = {
   11: '서울특별시',
   26: '부산광역시',
   27: '대구광역시',
@@ -320,7 +321,7 @@ export const szcode: any = {
   50: '제주특별자치도',
 };
 
-export const szscode: any = {
+export const szscode: Szcode = {
   11110: '종로구',
   11140: '중구',
   11170: '용산구',
