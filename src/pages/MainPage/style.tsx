@@ -110,7 +110,7 @@ const StyledSlider = styled(Slider)`
     width: 800px;
   }
   @media screen and (max-width: 600px) {
-    width: 500px;
+    width: 420px;
   }
   @media screen and (max-width: 500px) {
     width: 380px;

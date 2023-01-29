@@ -15,12 +15,14 @@ interface Props {
 export default function MainItem({ item, data }: Props) {
   const navigate = useNavigate();
 
+  // 충전기 전체 개수와 사용가능한 개수를 나타내기 위한 필터링
   const allCharge = data?.filter((x: Item) => x.statId === item.statId).length;
   const okCharge = data?.filter(
     (x: Item) => x.statId === item.statId && x.stat === '2',
   ).length;
 
   return (
+    // 클릭하면 디테일 페이지로 이동
     <NearbyChargingStationCard
       onClick={() => {
         navigate(`${item.statId}`, {

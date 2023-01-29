@@ -118,14 +118,12 @@ const Map = ({
       }
     }
 
+    // 맵에 반 경 1km를 지정해준다.
+
     let circle = new kakao.maps.Circle({
       map: map,
       center: new kakao.maps.LatLng(myLocation.lat, myLocation.lng),
       radius: 1000,
-      strokeWeight: 2,
-      strokeOpacity: 0,
-      strokeStyle: 'dashed',
-      fillOpacity: 0,
     });
 
     let center = circle.getPosition();
