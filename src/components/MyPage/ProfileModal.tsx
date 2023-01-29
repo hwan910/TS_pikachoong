@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { auth, storage } from '../../common/firebase';
-import { updateProfile } from 'firebase/auth';
+import { updateProfile, User } from 'firebase/auth';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { uuidv4 } from '@firebase/util';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
@@ -35,7 +35,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
   };
 
   // 프로필 변경
-  const userProfile: any = auth.currentUser;
+  const userProfile = auth.currentUser;
 
   const uploadImg = async () => {
     const imgRef = ref(storage, `profile/${uuidv4()}`);
@@ -56,15 +56,17 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
     } else {
       if (nickname.length < 8) {
         setProfileModalOpen(false);
-        updateProfile(userProfile, {
-          displayName: nickname,
-          photoURL: x,
-        })
-          .then(() => {
-            alert('변경완료!');
-            closeModal();
+        if (userProfile) {
+          updateProfile(userProfile, {
+            displayName: nickname,
+            photoURL: x,
           })
-          .catch((e) => console.log('e:', e));
+            .then(() => {
+              alert('변경완료!');
+              closeModal();
+            })
+            .catch((e) => console.log('e:', e));
+        }
         dispatch(isLogin({ ...user, displayName: nickname, photoURL: x }));
       } else {
         alert('글자 수 7자를 초과하였습니다.');
@@ -74,7 +76,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
 
   const submitChange = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    if (photoURL === userProfile.photoURL) {
+    if (photoURL === userProfile?.photoURL) {
       changeProfile();
     } else {
       uploadImg()
