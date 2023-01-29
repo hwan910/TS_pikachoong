@@ -44,18 +44,6 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
     }
   };
 
-  const nickNameChange = (x: string = photoURL) => {
-    updateProfile(userProfile, {
-      displayName: nickname,
-      photoURL: x,
-    })
-      .then(() => {
-        alert('변경완료!');
-        closeModal();
-      })
-      .catch((e) => console.log('e:', e));
-  };
-
   const changeProfile = (x: string = photoURL) => {
     if (inputRef.current !== null) {
       inputRef.current?.focus();
@@ -66,7 +54,15 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
     } else {
       if (nickname.length < 8) {
         setProfileModalOpen(false);
-        nickNameChange();
+        updateProfile(userProfile, {
+          displayName: nickname,
+          photoURL: x,
+        })
+          .then(() => {
+            alert('변경완료!');
+            closeModal();
+          })
+          .catch((e) => console.log('e:', e));
         dispatch(isLogin({ ...user, displayName: nickname, photoURL: x }));
       } else {
         alert('글자 수 7자를 초과하였습니다.');
@@ -141,6 +137,7 @@ const StyledProfileModalBackground = styled.div`
   bottom: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.8);
+  z-index: 999;
 `;
 
 const StyledProfileModalDiv = styled.div`

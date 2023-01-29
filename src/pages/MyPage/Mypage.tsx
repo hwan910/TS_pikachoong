@@ -79,7 +79,8 @@ const StyledH1 = styled.h1`
     /* position: relative; */
     /* right: -2rem; */
     font-size: large;
-    z-index: -10;
+    z-index: -1;
+    margin-top: 3rem;
     /* top: 0rem; */
   }
 `;
@@ -87,4 +88,7 @@ const StyledH1 = styled.h1`
 const StyledMyReviewContainer = styled.div`
   overflow-y: scroll;
   height: 25rem;
+  @media screen and (max-width: 768px) {
+    /* z-index: -11; */
+  }
 `;

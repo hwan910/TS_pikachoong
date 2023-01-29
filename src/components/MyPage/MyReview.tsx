@@ -31,14 +31,9 @@ const MyReview = () => {
       {myReview.length === 0 ? (
         <StyledNullDiv>
           <StyledNullText>
-            <h3>어디로 가야할지 모르겠어요...</h3>
-            <h4>나 진짜 길 찾는데...</h4>
-            <h5>정말인데...</h5>
-            <h6>데...</h6>
-            <p>..</p>
-            <p>.</p>
+            <StyledNullTextH2>작성한 댓글이 없습니다.</StyledNullTextH2>
           </StyledNullText>
-          <StyledNullImg src={require('../../assets/pointer.png')} alt="" />
+          <StyledNullImg src={require('../../assets/comment.png')} alt="" />
         </StyledNullDiv>
       ) : (
         myReview.map((x) => {
@@ -96,6 +91,10 @@ const StyledNullText = styled.div`
   }
 `;
 
+const StyledNullTextH2 = styled.h2`
+  margin-top: 3rem;
+`;
+
 const StyledNullImg = styled.img`
   width: 10rem;
   object-fit: cover;
@@ -104,6 +103,7 @@ const StyledNullImg = styled.img`
   left: 9.5rem;
   bottom: 1rem;
   z-index: -10;
+  margin-top: 2rem;
   @media screen and (max-width: 768px) {
     position: relative;
     left: 5rem;
