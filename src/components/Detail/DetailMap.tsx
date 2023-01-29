@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from 'react';
-import { Location } from '../types/MapInterface';
+import { useEffect, useRef } from 'react';
+import { Location } from '../../types/MapInterface';
+import * as S from '../../pages/DetailPage/style';
 
 const { kakao } = window;
 
@@ -9,8 +10,6 @@ interface Props {
 }
 
 const DetailMap = ({ location }: Props) => {
-  // const [map, setMap] = useState<any>('');
-
   const mapRef = useRef(null);
   const detailLocation = new kakao.maps.LatLng(location.lat, location.lng);
 
@@ -21,7 +20,6 @@ const DetailMap = ({ location }: Props) => {
     };
 
     const map = new kakao.maps.Map(mapRef.current, options);
-    // setMap(map);
 
     const zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
@@ -32,7 +30,7 @@ const DetailMap = ({ location }: Props) => {
     });
   }, []);
 
-  return <div ref={mapRef} style={{ width: 800, height: 800 }} />;
+  return <S.DetailMapStyle ref={mapRef} />;
 };
 
 export default DetailMap;
