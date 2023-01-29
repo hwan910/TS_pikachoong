@@ -5,9 +5,12 @@ import { FiMapPin, FiPhone, FiClock } from 'react-icons/fi';
 import { RiParkingFill } from 'react-icons/ri';
 import { FaBolt } from 'react-icons/fa';
 import { Review } from '../../components/Detail/Review';
+import { Item } from '../../types/MapInterface';
 
 export const Detailpage = () => {
   const { state } = useLocation();
+  const checkParkingFree = state[0].parkingFree === "Y"
+  const checkCharge = state.filter((item: Item) => item.stat === '2').length > 0
 
   return (
     <S.DetailPageMain>
@@ -28,11 +31,11 @@ export const Detailpage = () => {
           </div>
           <div style={{ marginBottom: '33px' }}>
             <RiParkingFill style={{ marginRight: '10px' }} />
-            무료
+            {checkParkingFree ? "무료" : "유료"}
           </div>
           <div>
             <FaBolt style={{ marginRight: '10px' }} />
-            충전가능
+            {checkCharge ? "충전가능" : "충전불가"}
           </div>
         </S.ChargingStationInfo>
 
