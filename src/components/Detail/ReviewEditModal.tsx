@@ -52,7 +52,7 @@ function ReviewEditModal({
   return (
     <S.ReviewBox key={`${i.reviewId}`}>
       <S.ReviewDetail>
-        <div style={{ display: 'flex', backgroundColor: 'white' }}>
+        <S.EditModalBox>
           <S.ProfileImg src={`${i.profileImg}`} />
           <div
             style={{
@@ -84,7 +84,7 @@ function ReviewEditModal({
                 onChange={(e) => handleEditComment(e)}
                 defaultValue={`${i.review}`}
               />
-              <S.ReviewBtn
+              <S.ReviewBtn2
                 onClick={() => {
                   editReview(`${i.reviewId}`);
                   handleEditModalOpen();
@@ -92,10 +92,10 @@ function ReviewEditModal({
               >
                 {/* type="submit" */}
                 수정
-              </S.ReviewBtn>
+              </S.ReviewBtn2>
             </div>
           </div>
-        </div>
+        </S.EditModalBox>
       </S.ReviewDetail>
     </S.ReviewBox>
   );
