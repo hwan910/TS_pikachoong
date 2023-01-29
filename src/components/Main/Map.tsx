@@ -3,9 +3,15 @@ import { useRef, useEffect, useState } from 'react';
 import { Item, MapProps, MarkerLocation } from '../../types/MapInterface';
 import { useNavigate } from 'react-router-dom';
 import Main from './Main';
-import { Container } from '../../pages/MainPage/style';
+import {
+  Container,
+  HeaderForm,
+  HeaderInput,
+  HeaderTitle,
+  HeaderWrap,
+  MapWrap,
+} from '../../pages/MainPage/style';
 import useSearchMap from '../../hooks/useSearchMap';
-import styled from 'styled-components';
 import { IoSearchCircle } from 'react-icons/io5';
 import { SearchBtn } from '../../shared/Layout/Header/style';
 
@@ -28,13 +34,15 @@ const Map = ({
   let arrFilter: Item[] = [];
   let markerLocation: MarkerLocation[] = [];
 
-  const uniqueStats = data?.items.item.filter(
-    (stat: Item, idx: number, allStats: Item[]) => {
-      return allStats.findIndex((item) => item.statId === stat.statId) === idx;
-    },
-  );
-
   useEffect(() => {
+    const uniqueStats = data?.items.item.filter(
+      (stat: Item, idx: number, allStats: Item[]) => {
+        return (
+          allStats.findIndex((item) => item.statId === stat.statId) === idx
+        );
+      },
+    );
+
     const location = new kakao.maps.LatLng(myLocation.lat, myLocation.lng);
 
     const options = {
@@ -109,9 +117,7 @@ const Map = ({
         );
       }
     }
-  }, []);
 
-  useEffect(() => {
     let circle = new kakao.maps.Circle({
       map: map,
       center: new kakao.maps.LatLng(myLocation.lat, myLocation.lng),
@@ -187,97 +193,10 @@ const Map = ({
           </SearchBtn>
         </HeaderForm>
       </HeaderWrap>
-
       <MapWrap ref={mapRef} />
-      {/* <button>주소로 검색하기^_^</button>
-      <form onSubmit={onSubmit}>
-        <button>확인</button>
-      </form> */}
       <Main filterData={arrFilter} />
     </Container>
   );
 };
 
 export default Map;
-
-const MapWrap = styled.div`
-  width: 1300px;
-  height: 500px;
-  @media screen and (max-width: 1200px) {
-    width: 1000px;
-    height: 300px;
-  }
-  @media screen and (max-width: 1000px) {
-    width: 800px;
-  }
-  @media screen and (max-width: 600px) {
-    width: 500px;
-  }
-  @media screen and (max-width: 400px) {
-    width: 380px;
-  }
-`;
-
-const HeaderWrap = styled.div`
-  width: 1300px;
-  height: 50px;
-  border-bottom: 1px solid #fad61d;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  @media screen and (max-width: 1200px) {
-    width: 1000px;
-  }
-  @media screen and (max-width: 1000px) {
-    width: 800px;
-  }
-  @media screen and (max-width: 600px) {
-    width: 500px;
-  }
-  @media screen and (max-width: 400px) {
-    width: 360px;
-  }
-`;
-
-const HeaderTitle = styled.span`
-  font-size: 30px;
-  font-weight: bold;
-  @media screen and (max-width: 1200px) {
-    font-size: 25px;
-  }
-  @media screen and (max-width: 1000px) {
-    font-size: 22px;
-  }
-  @media screen and (max-width: 600px) {
-    font-size: 20px;
-  }
-  @media screen and (max-width: 400px) {
-    font-size: 18px;
-  }
-`;
-
-const HeaderForm = styled.form`
-  display: flex;
-`;
-
-const HeaderInput = styled.input`
-  padding: 15px;
-  width: 300px;
-  height: 1px;
-  background: rgba(250, 214, 29, 0.2);
-  border-radius: 24px;
-  border: none;
-  ::placeholder {
-    opacity: 0.5;
-  }
-  @media screen and (max-width: 1200px) {
-    width: 200px;
-  }
-  @media screen and (max-width: 1000px) {
-    width: 150px;
-  }
-  @media screen and (max-width: 600px) {
-    width: 100px;
-  }
-`;

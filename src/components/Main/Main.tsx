@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import MainItem from './MainItem';
 import { Item } from '../../types/MapInterface';
 import {

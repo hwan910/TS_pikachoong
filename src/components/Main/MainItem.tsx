@@ -20,21 +20,6 @@ export default function MainItem({ item, data }: Props) {
     (x: Item) => x.statId === item.statId && x.stat === '2',
   ).length;
 
-  // const newData = newMarkerLocation.map((x: MarkerLocation) => {
-  //   if (
-  //     Number(item.lat).toFixed(10) === x.Ma.toFixed(10) &&
-  //     Number(item.lng).toFixed(10) === x.La.toFixed(10)
-  //   ) {
-  //     return x.dist;
-  //   } else return undefined;
-  // });
-
-  // let distArr: (number | undefined)[] = Array.from(new Set(newData)).filter(
-  //   (x: number | undefined) => !!x,
-  // );
-
-  // item.dist = distArr[0];
-
   return (
     <NearbyChargingStationCard
       onClick={() => {
