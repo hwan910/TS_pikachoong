@@ -1,3 +1,17 @@
+export interface MapProps {
+  data: Data | undefined;
+  myLocation: Location;
+  level: number;
+  setLevel: React.Dispatch<React.SetStateAction<number>>;
+  setLocation: (location: Location) => void;
+  setMyLocation: React.Dispatch<
+    React.SetStateAction<{
+      lat: number | string;
+      lng: number | string;
+    }>
+  >;
+}
+
 export interface Data {
   resultMsg: string;
   totalCount: number;
@@ -55,7 +69,7 @@ export interface GeoAddress {
 }
 
 export interface Item {
-  [key: string]: string;
+  [key: string]: string | number;
 }
 
 export interface Zcode {

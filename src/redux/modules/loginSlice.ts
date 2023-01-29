@@ -19,7 +19,7 @@ const login = createSlice({
       state.user.displayName = action.payload.displayName;
       state.user.email = action.payload.email;
       state.user.photoURL = action.payload.photoURL;
-      state.user.uid = action.payload.uid
+      state.user.uid = action.payload.uid;
     },
     notLogin: (state) => {
       state.isLogin = false;
