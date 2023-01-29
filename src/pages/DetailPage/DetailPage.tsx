@@ -33,7 +33,7 @@ export const Detailpage = () => {
 
   return (
     <DetailPageMain>
-      <InfoArea style={{ marginLeft: '40px' }}>
+      <InfoArea style={{}}>
         <ChargingStationInfo>
           <ChargingStationName>{state[0].statNm}</ChargingStationName>
           <div style={{ marginBottom: '41px' }}>

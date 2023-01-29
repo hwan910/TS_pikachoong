@@ -5,9 +5,23 @@ import styled from 'styled-components';
 
 //디테일페이지 전체
 export const DetailPageMain = styled.div`
+  max-width: 100%;
   display: flex;
 
+  @media screen and (max-width: 1600px) and (min-width: 1024px) {
+    //지도 이때부터 사이즈가 조금씩 줄었으면 좋겠어요......근데 어케하는거지
+  }
+
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    background-color: blue;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+
   @media screen and (max-width: 768px) {
+    background-color: gray;
     display: flex;
     flex-direction: column-reverse;
     justify-content: center;
@@ -19,6 +33,7 @@ export const InfoArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* max-width: 100%; */
   width: 520px;
   height: 770px;
   margin-top: 40px;
@@ -41,27 +56,44 @@ export const InfoArea = styled.div`
     // 스크롤바 트랙 설정
   }
 
+  @media screen and (max-width: 1024px) {
+    min-width: 90%;
+    height: auto;
+  }
   @media screen and (max-width: 768px) {
+    width: 85%;
+    height: auto;
   }
 `;
 
 export const DetailMapWrap = styled.div`
   margin: 40px;
+  /* height: 100%; */
+  /* overflow: hidden; */
 `;
 
 // DetailMap.tsx 지도태그
 export const DetailMapStyle = styled.div`
-  width: 400px;
-  min-width: 50%;
-  height: 400px;
-  min-height: 50%;
+  max-width: 800px;
+  max-height: 800px;
+  /* width: 100%; */
+  /* height: 100%; */
+
   // 1024px
-  /* @media screen and (max-width: 768px) {
-  } */
+  @media screen and (max-width: 1024px) {
+    width: 50%;
+    height: 50%;
+  }
+  @media screen and (max-width: 768px) {
+    width: 400px;
+    height: 400px;
+  }
 `;
 
 //좌측상단 info박스
 export const ChargingStationInfo = styled.div`
+  max-width: 100%;
+  /* min-width: 90%; */
   width: 430px;
   height: 405px;
   background-color: white;
@@ -69,6 +101,15 @@ export const ChargingStationInfo = styled.div`
   box-shadow: 2px 2px 8px lightgrey;
   padding: 30px;
   margin-bottom: 50px;
+
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    min-width: 90%;
+    height: auto;
+  }
+  @media screen and (max-width: 768px) {
+    width: 85%;
+    height: auto;
+  }
 `;
 
 export const ChargingStationName = styled.div`
@@ -80,6 +121,18 @@ export const ChargingStationName = styled.div`
 // 리뷰입력+리뷰리스트 전체
 export const ReviewContainer = styled.div`
   padding: 0px 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    min-width: 90%;
+    height: auto;
+  }
+  @media screen and (max-width: 768px) {
+    width: 85%;
+    height: auto;
+  }
 `;
 
 //이용후기 타이틀
@@ -97,18 +150,27 @@ export const ScoreAvg = styled.div`
 //리뷰쓰기 별점+리뷰창+버튼
 export const ReviewInput = styled.div`
   margin-bottom: 40px;
+  /* max-width:100% */
 `;
 
 export const ReviewStarRating = styled.div``;
 export const ReviewTextInput = styled.textarea`
   resize: none;
   margin-top: 10px;
+  max-width: 100%;
   width: 350px;
   height: 47px;
   background-color: #e0e0e0;
   border-style: none;
   border-radius: 5px;
   padding: 10px;
+
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    width: 80%;
+  }
+  @media screen and (max-width: 768px) {
+    width: 75%;
+  }
 `;
 
 //등록버튼
@@ -133,6 +195,15 @@ export const ReviewDetail = styled.div`
   padding: 30px 15px;
   width: 420px;
   border-top: solid 2px #e0e0e0;
+
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    min-width: 90%;
+    height: auto;
+  }
+  @media screen and (max-width: 768px) {
+    width: 85%;
+    height: auto;
+  }
 `;
 
 export const ReviewBox = styled.div`

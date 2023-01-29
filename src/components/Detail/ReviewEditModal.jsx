@@ -14,6 +14,8 @@ function ReviewEditModal({
   setReviewRating,
   setClicked,
   reviewId,
+  editClicked,
+  setEditClicked,
 }) {
   const [editComment, setEditComment] = useState(i.review);
   const [editRating, setEditRating] = useState(i.reviewRating); // 별점수정
@@ -44,9 +46,9 @@ function ReviewEditModal({
     reviewHandler();
   };
 
-  const [editClicked, setEditClicked] = useState(reviewId);
   const handleEditStarClick = (index) => {
-    let clickStates = [...clicked];
+    let clickStates = [...editClicked];
+
     for (let i = 0; i < 5; i++) {
       clickStates[i] = i <= index ? true : false;
     }
@@ -76,7 +78,7 @@ function ReviewEditModal({
                       size="20"
                       onClick={() => {
                         handleEditStarClick(el);
-                        console.log(editClicked); // 왜 직전에 클릭했던 배열이 찍힐까요?ㅠ
+                        // console.log(editClicked); // 왜 직전에 클릭했던 배열이 찍힐까요?ㅠ
                       }}
                       className={editClicked[el] && 'yellowStar'}
                       // defaultValue={i.editClicked} //  별점수정
