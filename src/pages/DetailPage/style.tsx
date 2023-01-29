@@ -8,12 +8,11 @@ export const DetailPageMain = styled.div`
   max-width: 100%;
   display: flex;
 
-  @media screen and (max-width: 1600px) and (min-width: 1024px) {
+  @media screen and (max-width: 1600px) and (min-width: 1100px) {
     //지도 이때부터 사이즈가 조금씩 줄었으면 좋겠어요......근데 어케하는거지
   }
 
-  @media screen and (max-width: 1024px) and (min-width: 768px) {
-    background-color: blue;
+  @media screen and (max-width: 1100px) and (min-width: 768px) {
     display: flex;
     flex-direction: column-reverse;
     justify-content: center;
@@ -21,7 +20,6 @@ export const DetailPageMain = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    background-color: gray;
     display: flex;
     flex-direction: column-reverse;
     justify-content: center;
@@ -55,7 +53,7 @@ export const InfoArea = styled.div`
     // 스크롤바 트랙 설정
   }
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1100px) and (min-width: 768px) {
     min-width: 90%;
     height: auto;
   }
@@ -69,23 +67,29 @@ export const DetailMapWrap = styled.div`
   margin: 40px;
   /* height: 100%; */
   /* overflow: hidden; */
+
+  @media screen and (max-width: 1100px) and (min-width: 768px) {
+    margin: 40px auto 10px auto;
+  }
+
+  @media screen and (max-width: 768px) {
+    margin: 40px auto 10px auto;
+  }
 `;
 
 // DetailMap.tsx 지도태그
 export const DetailMapStyle = styled.div`
   width: 800px;
   height: 800px;
-  /* max-width: 500vw;
-  max-height: 500vw; */
+  max-width: 45vw;
+  max-height: 45vw;
 
   // 1024px
-  @media screen and (max-width: 1024px) {
-    width: 500px;
-    height: 500px;
-  }
-  @media screen and (max-width: 768px) {
-    width: 400px;
-    height: 400px;
+  @media screen and (max-width: 1100px) {
+    /* width: 500px; */
+    max-width: 70vw;
+    /* height: 500px; */
+    max-height: 70vw;
   }
 `;
 
@@ -101,7 +105,7 @@ export const ChargingStationInfo = styled.div`
   padding: 30px;
   margin-bottom: 50px;
 
-  @media screen and (max-width: 1024px) and (min-width: 768px) {
+  @media screen and (max-width: 1100px) and (min-width: 768px) {
     min-width: 90%;
     height: auto;
   }
@@ -117,6 +121,19 @@ export const ChargingStationName = styled.div`
   margin-bottom: 64px;
 `;
 
+// export const DetailMapStyle = styled.div`
+//   width: 800px;
+//   height: 800px;
+//   max-width: 45vw;
+//   max-height: 45vw;
+
+//   // 1024px
+//   @media screen and (max-width: 1100px) {
+//     /* width: 500px; */
+//     max-width: 70vw;
+//     /* height: 500px; */
+//     max-height: 70vw;
+
 // 리뷰입력+리뷰리스트 전체
 export const ReviewContainer = styled.div`
   padding: 0px 20px 0px 20px;
@@ -124,7 +141,7 @@ export const ReviewContainer = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  @media screen and (max-width: 1024px) and (min-width: 768px) {
+  @media screen and (max-width: 1100px) and (min-width: 768px) {
     min-width: 90%;
     height: auto;
   }
@@ -154,21 +171,27 @@ export const ReviewInput = styled.div`
 
 export const ReviewStarRating = styled.div``;
 export const ReviewTextInput = styled.textarea`
-  resize: none;
+  /* resize: none; */
   margin-top: 10px;
-  max-width: 100%;
+  /* max-width: 100%; */
   width: 350px;
+  max-width: 50vw;
   height: 47px;
   background-color: #e0e0e0;
   border-style: none;
   border-radius: 5px;
   padding: 10px;
 
-  @media screen and (max-width: 1024px) and (min-width: 768px) {
-    width: 80%;
-  }
+  /* @media screen and (max-width: 1024px) {
+    min-width: 80%;
+  } */
+  /* @media screen and (max-width: 1100px) {
+    width: 350px;
+    min-width: 40vw;
+  } */
   @media screen and (max-width: 768px) {
-    width: 75%;
+    width: 300px;
+    min-width: 35vw;
   }
 `;
 
@@ -180,6 +203,10 @@ export const ReviewBtn = styled.button`
   border-style: none;
   border-radius: 20px;
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    margin-left: 20px;
+  }
 `;
 
 export const ReviewList = styled.div``;
@@ -195,7 +222,7 @@ export const ReviewDetail = styled.div`
   width: 420px;
   border-top: solid 2px #e0e0e0;
 
-  @media screen and (max-width: 1024px) and (min-width: 768px) {
+  @media screen and (max-width: 1100px) and (min-width: 768px) {
     min-width: 90%;
     height: auto;
   }
@@ -229,6 +256,26 @@ export const OptionModal = styled.div`
   left: 410px;
   top: 55px;
   /* justify-content: space-evenly; */
+
+  @media screen and (max-width: 1100px) {
+    width: 60px;
+    /* background-color: lightgrey; */
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 490px;
+    top: 55px;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 60px;
+    /* background-color: lightgrey; */
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    left: 330px;
+    top: 55px;
+  }
 `;
 
 export const EditBtn = styled.button`

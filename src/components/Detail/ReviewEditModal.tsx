@@ -6,12 +6,12 @@ import { FaStar } from 'react-icons/fa';
 import { ReviewType } from './Review';
 
 interface Props {
-  reviewHandler: () => Promise<void>,
-  ratingArr: number[],
-  handleEditModalOpen: (reviewId?: string, reviewRating?: number) => void,
-  i: ReviewType,
-  editClicked: boolean[],
-  setEditClicked: React.Dispatch<React.SetStateAction<boolean[]>>,
+  reviewHandler: () => Promise<void>;
+  ratingArr: number[];
+  handleEditModalOpen: (reviewId?: string, reviewRating?: number) => void;
+  i: ReviewType;
+  editClicked: boolean[];
+  setEditClicked: React.Dispatch<React.SetStateAction<boolean[]>>;
 }
 
 function ReviewEditModal({

@@ -290,9 +290,10 @@ export const Review = ({ state }: Props) => {
                   >
                     <div>{i.nickName}</div>
                     <div>
-                      {'⭐'.repeat(Number(i.reviewRating))}
-                      &nbsp;&nbsp;|&nbsp;&nbsp;
-                      {i.createdTime}
+                      <div>{'⭐'.repeat(Number(i.reviewRating))}</div>
+                      <div style={{ marginTop: '5px' }}>
+                        |&nbsp; {i.createdTime}
+                      </div>
                     </div>
                     <div>{i.review}</div>
                   </div>
