@@ -1,40 +1,19 @@
-import React, { ReactElement, useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import DetailMap from '../../components/Detail/DetailMap';
-import {
-  InfoArea,
-  ChargingStationInfo,
-  ChargingStationName,
-  DetailMapWrap,
-  DetailPageMain,
-} from './style';
+import * as S from './style';
 import { FiMapPin, FiPhone, FiClock } from 'react-icons/fi';
 import { RiParkingFill } from 'react-icons/ri';
 import { FaBolt } from 'react-icons/fa';
 import { Review } from '../../components/Detail/Review';
 
 export const Detailpage = () => {
-  // const [rating, setRating] = useState(null);
-  // const [hover, setHover] = useState(null);
-
-  const [text, setText] = useState('');
   const { state } = useLocation();
-  // const newReview = {
-  //   comment: newComment,
-  //   rating:ratings,
-  //   commentId: uuidv4(),
-  // }
-
-  // const addReview = async() => {
-  //   setReview
-
-  // }
 
   return (
-    <DetailPageMain>
-      <InfoArea style={{}}>
-        <ChargingStationInfo>
-          <ChargingStationName>{state[0].statNm}</ChargingStationName>
+    <S.DetailPageMain>
+      <S.InfoArea style={{}}>
+        <S.ChargingStationInfo>
+          <S.ChargingStationName>{state[0].statNm}</S.ChargingStationName>
           <div style={{ marginBottom: '33px' }}>
             <FiMapPin style={{ marginRight: '10px' }} />
             {state[0].addr}
@@ -55,14 +34,14 @@ export const Detailpage = () => {
             <FaBolt style={{ marginRight: '10px' }} />
             충전가능
           </div>
-        </ChargingStationInfo>
+        </S.ChargingStationInfo>
 
         <Review state={state[0]} />
-      </InfoArea>
+      </S.InfoArea>
 
-      <DetailMapWrap>
+      <S.DetailMapWrap>
         <DetailMap location={{ lat: state[0].lat, lng: state[0].lng }} />
-      </DetailMapWrap>
-    </DetailPageMain>
+      </S.DetailMapWrap>
+    </S.DetailPageMain>
   );
 };

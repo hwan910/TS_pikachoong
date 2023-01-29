@@ -23,6 +23,7 @@ export const SearchPage = () => {
     refetch();
     setPage(0);
     setI(0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [z2]);
 
   if (isLoading) {

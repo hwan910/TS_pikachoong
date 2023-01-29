@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import MainItem from './MainItem';
 import { Item } from '../../types/MapInterface';
-import {
-  NearbyChargingStationWrap,
-  StyledSlider,
-} from '../../pages/MainPage/style';
+import * as S from '../../pages/MainPage/style';
 
 interface Props {
   filterData: Item[];
@@ -13,7 +10,7 @@ interface Props {
 export default function Main({ filterData }: Props) {
   // 반경 1km 내에 있는 데이터를 props로 받아 useState에 저장해줌
   // slides가 화면 크기에 따라 나타나는 개수를 정해줌
-  const [data, setData] = useState(filterData);
+  const [data] = useState(filterData);
   const [settings, setSettings] = useState({
     dots: false,
     infinite: true,
@@ -45,18 +42,18 @@ export default function Main({ filterData }: Props) {
   // 주변 데이터가 없을 때
   if (newData.length === 0) {
     return (
-      <NearbyChargingStationWrap>
+      <S.NearbyChargingStationWrap>
         ☠️ 주변에 데이터가 없다 ☠️
-      </NearbyChargingStationWrap>
+      </S.NearbyChargingStationWrap>
     );
   }
 
   // 슬라이더 부분
   return (
-    <StyledSlider {...settings}>
+    <S.StyledSlider {...settings}>
       {newData.map((item: Item) => {
         return <MainItem data={data} item={item} key={item.statId} />;
       })}
-    </StyledSlider>
+    </S.StyledSlider>
   );
 }

@@ -1,11 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Item } from '../../types/MapInterface';
-import {
-  NearbyChargingStationCard,
-  NearbyChargingStationCardTextWrap,
-  NearbyChargingStationCardTitle,
-  NearbyChargingStationCardContent,
-} from '../../pages/MainPage/style';
+import * as S from '../../pages/MainPage/style';
 
 interface Props {
   item: Item;
@@ -23,27 +18,27 @@ export default function MainItem({ item, data }: Props) {
 
   return (
     // 클릭하면 디테일 페이지로 이동
-    <NearbyChargingStationCard
+    <S.NearbyChargingStationCard
       onClick={() => {
         navigate(`${item.statId}`, {
           state: data?.filter((y) => y.statId === item.statId),
         });
       }}
     >
-      <NearbyChargingStationCardTextWrap>
-        <NearbyChargingStationCardTitle>
+      <S.NearbyChargingStationCardTextWrap>
+        <S.NearbyChargingStationCardTitle>
           {item.statNm}
-        </NearbyChargingStationCardTitle>
-      </NearbyChargingStationCardTextWrap>
-      <NearbyChargingStationCardTextWrap>
-        <NearbyChargingStationCardContent>
+        </S.NearbyChargingStationCardTitle>
+      </S.NearbyChargingStationCardTextWrap>
+      <S.NearbyChargingStationCardTextWrap>
+        <S.NearbyChargingStationCardContent>
           {item.addr} / {Math.floor(Number(item.dist)) + 'm'}
-        </NearbyChargingStationCardContent>
-        <NearbyChargingStationCardContent>
+        </S.NearbyChargingStationCardContent>
+        <S.NearbyChargingStationCardContent>
           전체 충전기 : {allCharge} / 충전 가능 :{' '}
           {okCharge > 0 ? `${okCharge}` : 0}
-        </NearbyChargingStationCardContent>
-      </NearbyChargingStationCardTextWrap>
-    </NearbyChargingStationCard>
+        </S.NearbyChargingStationCardContent>
+      </S.NearbyChargingStationCardTextWrap>
+    </S.NearbyChargingStationCard>
   );
 }
