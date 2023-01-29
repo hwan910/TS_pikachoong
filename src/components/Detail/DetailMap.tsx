@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react';
 import { Location } from '../../types/MapInterface';
+import * as S from '../../pages/DetailPage/style';
 
 const { kakao } = window;
 
@@ -27,9 +28,14 @@ const DetailMap = ({ location }: Props) => {
       map: map,
       position: detailLocation,
     });
+
+    // setTimeout(function () {
+    // map.relayout();
+    // }, 0);
+    // 지도 반응형 리사이징
   }, []);
 
-  return <div ref={mapRef} style={{ width: 800, height: 800 }} />;
+  return <S.DetailMapStyle ref={mapRef} />;
 };
 
 export default DetailMap;

@@ -6,6 +6,7 @@ import {
   ChargingStationInfo,
   ChargingStationName,
   DetailMapWrap,
+  DetailPageMain,
 } from './style';
 import { FiMapPin, FiPhone, FiClock } from 'react-icons/fi';
 import { RiParkingFill } from 'react-icons/ri';
@@ -31,8 +32,8 @@ export const Detailpage = () => {
   // }
 
   return (
-    <div style={{ display: 'flex' }}>
-      <InfoArea style={{ marginLeft: '40px' }}>
+    <DetailPageMain>
+      <InfoArea style={{}}>
         <ChargingStationInfo>
           <ChargingStationName>{state[0].statNm}</ChargingStationName>
           <div style={{ marginBottom: '41px' }}>
@@ -63,6 +64,6 @@ export const Detailpage = () => {
       <DetailMapWrap>
         <DetailMap location={{ lat: state[0].lat, lng: state[0].lng }} />
       </DetailMapWrap>
-    </div>
+    </DetailPageMain>
   );
 };
