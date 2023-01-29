@@ -4,6 +4,7 @@ import { getData } from '../../common/api';
 import { useEffect } from 'react';
 import { Data, Location } from '../../types/MapInterface';
 import { useAppSelector } from '../../hooks/useRedux';
+import { Loading } from './style';
 
 interface Props {
   myLocation: Location;
@@ -41,24 +42,9 @@ export const MainPage = ({
   useEffect(() => {
     queryClient.removeQueries([zc, zsc]);
     refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [zc, zsc]);
 
-  if (isLoading)
-    return (
-      <div
-        style={{
-          width: '100vw',
-          height: '80vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: '3rem',
-        }}
-      >
-        ☠️로딩중이다☠️
-      </div>
-    );
+  if (isLoading) return <Loading>☠️로딩중이다☠️</Loading>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
