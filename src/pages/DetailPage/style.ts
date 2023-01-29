@@ -33,13 +33,12 @@ export const InfoArea = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* max-width: 100%; */
+  max-width: 100%;
   width: 520px;
   height: 770px;
   margin-top: 40px;
   padding: 10px;
 
-  overflow-y: auto;
   // -ms-overflow-style: none; /* 인터넷 익스플로러 */
   // scrollbar-width: none; /* 파이어폭스 */
   &::-webkit-scrollbar {
@@ -74,15 +73,15 @@ export const DetailMapWrap = styled.div`
 
 // DetailMap.tsx 지도태그
 export const DetailMapStyle = styled.div`
-  max-width: 800px;
-  max-height: 800px;
-  /* width: 100%; */
-  /* height: 100%; */
+  width: 800px;
+  height: 800px;
+  /* max-width: 500vw;
+  max-height: 500vw; */
 
   // 1024px
   @media screen and (max-width: 1024px) {
-    width: 50%;
-    height: 50%;
+    width: 500px;
+    height: 500px;
   }
   @media screen and (max-width: 768px) {
     width: 400px;
