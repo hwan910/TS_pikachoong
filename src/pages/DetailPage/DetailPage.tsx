@@ -19,7 +19,6 @@ export const Detailpage = () => {
 
   const [text, setText] = useState('');
   const { state } = useLocation();
-  console.log(state);
   // const newReview = {
   //   comment: newComment,
   //   rating:ratings,
@@ -36,19 +35,19 @@ export const Detailpage = () => {
       <InfoArea style={{}}>
         <ChargingStationInfo>
           <ChargingStationName>{state[0].statNm}</ChargingStationName>
-          <div style={{ marginBottom: '41px' }}>
+          <div style={{ marginBottom: '33px' }}>
             <FiMapPin style={{ marginRight: '10px' }} />
             {state[0].addr}
           </div>
-          <div style={{ marginBottom: '41px' }}>
+          <div style={{ marginBottom: '33px' }}>
             <FiPhone style={{ marginRight: '10px' }} />
             {state[0].busiCall}
           </div>
-          <div style={{ marginBottom: '41px' }}>
+          <div style={{ marginBottom: '33px' }}>
             <FiClock style={{ marginRight: '10px' }} />
             {state[0].useTime}
           </div>
-          <div style={{ marginBottom: '41px' }}>
+          <div style={{ marginBottom: '33px' }}>
             <RiParkingFill style={{ marginRight: '10px' }} />
             무료
           </div>

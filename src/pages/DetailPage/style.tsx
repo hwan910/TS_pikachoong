@@ -171,7 +171,7 @@ export const ReviewInput = styled.div`
 
 export const ReviewStarRating = styled.div``;
 export const ReviewTextInput = styled.textarea`
-  /* resize: none; */
+  resize: none;
   margin-top: 10px;
   /* max-width: 100%; */
   width: 350px;
@@ -181,6 +181,7 @@ export const ReviewTextInput = styled.textarea`
   border-style: none;
   border-radius: 5px;
   padding: 10px;
+  margin-right: 10px;
 
   /* @media screen and (max-width: 1024px) {
     min-width: 80%;
@@ -207,6 +208,26 @@ export const ReviewBtn = styled.button`
   @media screen and (max-width: 768px) {
     margin-left: 20px;
   }
+  @media screen and (max-width: 768px) {
+    margin-left: 20px;
+  }
+`;
+
+export const ReviewBtn2 = styled.button`
+  width: 60px;
+  height: 40px;
+  background-color: #fad61d;
+  border-style: none;
+  border-radius: 20px;
+  cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    margin-left: 20px;
+  }
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    right: -4%;
+  }
 `;
 
 export const ReviewList = styled.div``;
@@ -230,6 +251,11 @@ export const ReviewDetail = styled.div`
     width: 85%;
     height: auto;
   }
+`;
+
+export const EditModalBox = styled.div`
+  display: flex;
+  background-color: white;
 `;
 
 export const ReviewBox = styled.div`
@@ -363,6 +389,10 @@ export const EditReviewTextInput = styled.textarea`
   background-color: #e0e0e0;
   border-style: none;
   border-radius: 5px;
+  @media screen and (max-width: 768px) {
+    left: 1%;
+    width: 200px;
+  }
 `;
 
 export const DeleteCheck = styled.div``;
