@@ -1,29 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import * as S from '../../pages/DetailPage/style';
-import {
-  addDoc,
-  setDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import * as F from 'firebase/firestore';
 import { db, auth } from '../../common/firebase';
 import { SlOptions } from 'react-icons/sl';
 import { uuidv4 } from '@firebase/util';
 import { FaStar } from 'react-icons/fa';
-import { getAuth } from 'firebase/auth';
-import { toEditorSettings } from 'typescript';
 import ReviewEditModal from './ReviewEditModal';
 import { Item } from '../../types/MapInterface';
-// import EditDeleteModal from './EditDeleteModal';
 
 interface Props {
   state: any;
@@ -33,7 +18,7 @@ export const Review = ({ state }: Props) => {
   const currentUser = auth?.currentUser;
 
   const [reviewRating, setReviewRating] = useState<any>(0);
-  const [newReview, setNewReview] = useState<any>('');
+  const [newReview, setNewReview] = useState<string>('');
   const [reviewList, setReviewList] = useState<any>([]);
 
   const [reviewId, setReviewId] = useState<any>('');
@@ -121,18 +106,17 @@ export const Review = ({ state }: Props) => {
 
   // type IdType = { id: number | string };
   const reviewHandler = async () => {
-    const q = query(
-      collection(db, 'reviews'),
-      where('statId', '==', id),
-      orderBy('createdTime', 'desc'),
+    const q = F.query(
+      F.collection(db, 'reviews'),
+      F.where('statId', '==', id),
+      F.orderBy('createdTime', 'desc'),
     );
     const reviews:Item[] = [];
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await F.getDocs(q);
     querySnapshot.forEach((doc) => reviews.push({ ...doc.data() }));
     return setReviewList(reviews);
   };
 
-  console.log(doc);
   // 리뷰추가
   const addReview = async () => {
     const uuid = uuidv4();
@@ -178,7 +162,7 @@ export const Review = ({ state }: Props) => {
     } else if (reviewRating && !newReview) {
       alert('댓글을 입력해 주세요');
     } else {
-      await setDoc(doc(db, 'reviews', uuid), newReviewData);
+      await F.setDoc(F.doc(db, 'reviews', uuid), newReviewData);
       setReviewRating('');
       setNewReview('');
       reviewHandler();
@@ -197,7 +181,7 @@ export const Review = ({ state }: Props) => {
     newReviewList[idx].isEdit = !newReviewList[idx].isEdit;
     setReviewList(newReviewList);
     // const idx = reviewList.findIndex((review) => review.reviewId === reviewId);
-    await updateDoc(doc(db, 'reviews', reviewId), {
+    await F.updateDoc(F.doc(db, 'reviews', reviewId), {
       isEdit: !reviewList[idx].isEdit,
     });
     reviewHandler();
@@ -211,7 +195,7 @@ export const Review = ({ state }: Props) => {
     setReviewList((prev: any) =>
       prev.filter((t: any) => t.reviewId !== reviewId),
     );
-    await deleteDoc(doc(db, 'reviews', reviewId));
+    await F.deleteDoc(F.doc(db, 'reviews', reviewId));
   };
 
   // 별점핸들링
@@ -259,7 +243,7 @@ export const Review = ({ state }: Props) => {
                 size="25"
                 onClick={() => handleStarClick(el)}
                 className={clicked[el] ? 'yellowStar':""}
-                value={clicked}
+                values={clicked}
                 // onChange={(e) => handleNewReview(e)}
                 // setReviewList={setReviewList}
               />
@@ -275,10 +259,8 @@ export const Review = ({ state }: Props) => {
         >
           <S.ReviewTextInput
             placeholder="의견 남기기"
-            type="text"
             value={newReview}
             onChange={(e) => handleNewReview(e)}
-            setReviewList={setReviewList}
           />
           <S.ReviewBtn onClick={addReview}>등록</S.ReviewBtn>
         </div>
@@ -287,7 +269,7 @@ export const Review = ({ state }: Props) => {
       {/* 리뷰리스트 */}
 
       <S.ReviewList>
-        {reviewList.map((i: number) => {
+        {reviewList.map((i: Item) => {
           return (
             <S.ReviewBox key={i.reviewId}>
               <S.ReviewDetail
@@ -299,11 +281,11 @@ export const Review = ({ state }: Props) => {
                       : 'flex',
                 }}
                 onClick={() => {
-                  handleDeleteModalOpen(false);
+                  handleDeleteModalOpen(`${i.reviewId}`);
                 }}
               >
                 <div style={{ display: 'flex', width: 410 }}>
-                  <S.ProfileImg src={i.profileImg} />
+                  <S.ProfileImg src={`${i.profileImg}`} />
                   <div
                     style={{
                       display: 'flex',
@@ -313,7 +295,7 @@ export const Review = ({ state }: Props) => {
                   >
                     <div>{i.nickName}</div>
                     <div>
-                      {'⭐'.repeat(i.reviewRating)}
+                      {'⭐'.repeat(Number(i.reviewRating))}
                       &nbsp;&nbsp;|&nbsp;&nbsp;
                       {i.createdTime}
                     </div>
@@ -331,7 +313,7 @@ export const Review = ({ state }: Props) => {
                     onClick={
                       deleteModal.id === i.reviewId && deleteModal.isOpen
                         ? () => {}
-                        : () => handleModalOpen(i.reviewId)
+                        : () => handleModalOpen(`${i.reviewId}`)
                     }
                     style={{
                       cursor:
@@ -349,17 +331,17 @@ export const Review = ({ state }: Props) => {
                 <S.OptionModal>
                   <S.EditBtn
                     onClick={() => {
-                      handleEditModalOpen(i.reviewId, i.reviewRating);
-                      setEdit(i.reviewId);
-                      handleModalOpen(false);
+                      handleEditModalOpen(`${i.reviewId}`, Number(i.reviewRating));
+                      setEdit(`${i.reviewId}`);
+                      handleModalOpen(`${i.reviewId}`);
                     }}
-                  >>
+                  >
                     수정
                   </S.EditBtn>
                   <S.DeleteBtn
                     onClick={() => {
-                      handleDeleteModalOpen(i.reviewId);
-                      handleModalOpen(false);
+                      handleDeleteModalOpen(`${i.reviewId}`);
+                      handleModalOpen(`${i.reviewId}`);
                     }}
                   >
                     삭제
@@ -374,12 +356,12 @@ export const Review = ({ state }: Props) => {
                   <div style={{ display: 'flex', gap: 10 }}>
                     <S.DeleteCancelBtn
                       onClick={() => {
-                        handleDeleteModalOpen(false);
+                        handleDeleteModalOpen(`${i.reviewId}`);
                       }}
                     >
                       취소
                     </S.DeleteCancelBtn>
-                    <S.DeleteCancelBtn onClick={({}:any) => deleteReview(i.reviewId)}>
+                    <S.DeleteCancelBtn onClick={() => deleteReview(`${i.reviewId}`)}>
                       삭제
                     </S.DeleteCancelBtn>
                   </div>
