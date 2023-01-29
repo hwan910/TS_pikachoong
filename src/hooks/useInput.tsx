@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+// 내용 변경 커스텀훅
 const useInput = (initialValue: string) => {
   const [value, setValue] = useState(initialValue);
 
@@ -8,10 +9,10 @@ const useInput = (initialValue: string) => {
   };
 
   const reset = () => {
-    setValue("")
+    setValue('');
   };
 
-  return [value, onChange, reset] as const
+  return [value, onChange, reset] as const;
 };
 
 export default useInput;
