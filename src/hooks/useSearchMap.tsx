@@ -15,6 +15,7 @@ interface Element {
   >;
 }
 
+// 지도에서 주소로 검색하는 커스텀훅
 const useSearchMap = ({ map, marker, setLocation, setMyLocation }: Element) => {
   const [searchByAddress, onChangeSearch, resetSearch] = useInput('');
 

@@ -15,14 +15,16 @@ import { isLogin, notLogin } from '../redux/modules/loginSlice';
 
 const Router = () => {
   const dispatch = useAppDispatch();
+  // 지도 현재 위치, 지도 확대 축소 범위
   const [myLocation, setMyLocation] = useState<Location>({
     lat: 37.49810223154336,
     lng: 127.0327612337389,
   });
   const [level, setLevel] = useState(2);
-
+  // 커스텀훅
   const [zcode, zscode, setLocation] = useMyLocation();
 
+  // 내 위치 정보 불러오기
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -31,10 +33,11 @@ const Router = () => {
         setMyLocation({ lat, lng });
       });
     } else {
-      window.alert('위치정보를 불러올 수 없습니다.');
+      window.alert('현재 위치정보를 불러올 수 없습니다.');
     }
   }, []);
 
+  // 파이어베이스 로그인 확인 후 필요한 데이터 리덕스로 옮김
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {

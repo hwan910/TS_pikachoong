@@ -1,46 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import * as S from '../../pages/DetailPage/style';
-import {
-  addDoc,
-  setDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import * as F from 'firebase/firestore';
 import { db, auth } from '../../common/firebase';
 import { SlOptions } from 'react-icons/sl';
 import { uuidv4 } from '@firebase/util';
 import { FaStar } from 'react-icons/fa';
-import { getAuth } from 'firebase/auth';
-import { toEditorSettings } from 'typescript';
 import ReviewEditModal from './ReviewEditModal';
 import { Item } from '../../types/MapInterface';
-// import EditDeleteModal from './EditDeleteModal';
 
 interface Props {
-  state: any;
+  state: Item;
+}
+
+export interface ReviewType {
+  [key: string]: string | number | boolean;
 }
 
 export const Review = ({ state }: Props) => {
   const currentUser = auth?.currentUser;
 
-  const [reviewRating, setReviewRating] = useState<any>(0);
-  const [newReview, setNewReview] = useState<any>('');
-  const [reviewList, setReviewList] = useState<any>([]);
+  const [reviewRating, setReviewRating] = useState(0);
+  const [newReview, setNewReview] = useState('');
+  const [reviewList, setReviewList] = useState<ReviewType[]>([]);
 
-  const [reviewId, setReviewId] = useState<any>('');
-  const [getProfileImg, setGetProfileImg] = useState<any>('');
-  const [getReviewList, setGetReviewList] = useState<any>('');
-
-  const [editClicked, setEditClicked] = useState<any>([
+  const [editClicked, setEditClicked] = useState<boolean[]>([
     false,
     false,
     false,
@@ -77,37 +62,45 @@ export const Review = ({ state }: Props) => {
     id: 0,
     isOpen: false,
   }); // 수정버튼 누르면
-  const handleEditModalOpen = (reviewId: string, reviewRating: number) => {
+  const handleEditModalOpen = (reviewId?: string, reviewRating?: number) => {
     // reviewRating을 내려줘야 리뷰 수정 시 직전 별점 수정모달에 띄울 수 있음!
-    if (editModal.id !== reviewId && !editModal.isOpen) {
-      setEditModal({ id: reviewId, isOpen: true });
-    } else if (editModal.id !== reviewId && editModal.isOpen) {
-      setEditModal({ id: reviewId, isOpen: true });
-    } else if (editModal.id === reviewId && editModal.isOpen) {
+    if (reviewId) {
+      if (editModal.id !== reviewId && !editModal.isOpen) {
+        setEditModal({ id: reviewId, isOpen: true });
+      } else if (editModal.id !== reviewId && editModal.isOpen) {
+        setEditModal({ id: reviewId, isOpen: true });
+      } else if (editModal.id === reviewId && editModal.isOpen) {
+        setEditModal({ id: 0, isOpen: false });
+      }
+    } else {
       setEditModal({ id: 0, isOpen: false });
     }
 
     // 리뷰 수정 시 직전 별점 수정모달에 띄움
-
-    let clickStates = [...editClicked];
-    for (let i = 0; i < 5; i++) {
-      clickStates[i] = i < reviewRating ? true : false;
+    if (reviewRating) {
+      let clickStates = [...editClicked];
+      for (let i = 0; i < 5; i++) {
+        clickStates[i] = i < reviewRating ? true : false;
+      }
+      setEditClicked(clickStates);
     }
-    setEditClicked(clickStates);
   };
 
   //삭제 확인 모달
-  type Information = { id: number | string; isOpen: boolean };
   const [deleteModal, setDeleteModal] = useState<ModalInfo>({
     id: 0,
     isOpen: false,
   });
-  const handleDeleteModalOpen = (reviewId: string) => {
-    if (deleteModal.id !== reviewId && !deleteModal.isOpen) {
-      setDeleteModal({ id: reviewId, isOpen: true });
-    } else if (deleteModal.id !== reviewId && deleteModal.isOpen) {
-      setDeleteModal({ id: reviewId, isOpen: true });
-    } else if (deleteModal.id === reviewId && deleteModal.isOpen) {
+  const handleDeleteModalOpen = (reviewId?: string) => {
+    if (reviewId) {
+      if (deleteModal.id !== reviewId && !deleteModal.isOpen) {
+        setDeleteModal({ id: reviewId, isOpen: true });
+      } else if (deleteModal.id !== reviewId && deleteModal.isOpen) {
+        setDeleteModal({ id: reviewId, isOpen: true });
+      } else if (deleteModal.id === reviewId && deleteModal.isOpen) {
+        setDeleteModal({ id: 0, isOpen: false });
+      }
+    } else {
       setDeleteModal({ id: 0, isOpen: false });
     }
   };
@@ -116,23 +109,22 @@ export const Review = ({ state }: Props) => {
 
   useEffect(() => {
     reviewHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // 리뷰리스트의 값이 변할때마다 핸들러 함수 실행
   // 리뷰핸들러 -> 리뷰리스트 -> 유즈이펙트 -> 리뷰핸들러 무한반복이라 [setReviewList] -> [] 로 수정
 
-  // type IdType = { id: number | string };
   const reviewHandler = async () => {
-    const q = query(
-      collection(db, 'reviews'),
-      where('statId', '==', id),
-      orderBy('createdTime', 'desc'),
+    const q = F.query(
+      F.collection(db, 'reviews'),
+      F.where('statId', '==', id),
+      F.orderBy('createdTime', 'desc'),
     );
-    const reviews:Item[] = [];
-    const querySnapshot = await getDocs(q);
+    const reviews: ReviewType[] = [];
+    const querySnapshot = await F.getDocs(q);
     querySnapshot.forEach((doc) => reviews.push({ ...doc.data() }));
     return setReviewList(reviews);
   };
 
-  console.log(doc);
   // 리뷰추가
   const addReview = async () => {
     const uuid = uuidv4();
@@ -148,9 +140,9 @@ export const Review = ({ state }: Props) => {
     interface FireStoreData {
       statNm: string;
       uid: string;
-      statId: any | null;
+      statId?: string;
       review: string;
-      profileImg: any | null;
+      profileImg: string | null;
       nickName: string | null;
       reviewId: string;
       createdTime: string;
@@ -159,7 +151,7 @@ export const Review = ({ state }: Props) => {
     }
 
     const newReviewData: FireStoreData = {
-      statNm: state.statNm,
+      statNm: `${state.statNm}`,
       uid: currentUser.uid,
       statId: id,
       review: newReview,
@@ -178,12 +170,11 @@ export const Review = ({ state }: Props) => {
     } else if (reviewRating && !newReview) {
       alert('댓글을 입력해 주세요');
     } else {
-      await setDoc(doc(db, 'reviews', uuid), newReviewData);
-      setReviewRating('');
+      await F.setDoc(F.doc(db, 'reviews', uuid), newReviewData);
+      setReviewRating(0);
       setNewReview('');
       reviewHandler();
       setClicked([false, false, false, false, false]);
-      // setreviewRating(0);}
     }
   };
 
@@ -192,26 +183,24 @@ export const Review = ({ state }: Props) => {
     const newReviewList = [...reviewList];
     const idx = newReviewList.findIndex(
       (review) => review.reviewId === reviewId,
-      // (reviewRating) => reviewRating.reviewId === reviewId, // 별점수정
     );
     newReviewList[idx].isEdit = !newReviewList[idx].isEdit;
     setReviewList(newReviewList);
-    // const idx = reviewList.findIndex((review) => review.reviewId === reviewId);
-    await updateDoc(doc(db, 'reviews', reviewId), {
+    await F.updateDoc(F.doc(db, 'reviews', reviewId), {
       isEdit: !reviewList[idx].isEdit,
     });
     reviewHandler();
   };
 
-  const handleNewReview = (e:any) => {
+  const handleNewReview = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewReview(e.target.value);
   };
 
   const deleteReview = async (reviewId: string) => {
-    setReviewList((prev: any) =>
-      prev.filter((t: any) => t.reviewId !== reviewId),
+    setReviewList((prev: ReviewType[]) =>
+      prev.filter((t: ReviewType) => t.reviewId !== reviewId),
     );
-    await deleteDoc(doc(db, 'reviews', reviewId));
+    await F.deleteDoc(F.doc(db, 'reviews', reviewId));
   };
 
   // 별점핸들링
@@ -227,13 +216,6 @@ export const Review = ({ state }: Props) => {
     setReviewRating(clickStates.filter((x) => x === true).length);
     setClicked(clickStates);
   };
-
-  // useEffect(() => {
-  //   sendReview();
-  // }, [clicked]);
-  // const sendReview = () => {
-  //   let score = clicked.filter(Boolean).length;
-  // };
 
   return (
     <S.ReviewContainer>
@@ -258,10 +240,7 @@ export const Review = ({ state }: Props) => {
                 key={idx}
                 size="25"
                 onClick={() => handleStarClick(el)}
-                className={clicked[el] ? 'yellowStar':""}
-                value={clicked}
-                // onChange={(e) => handleNewReview(e)}
-                // setReviewList={setReviewList}
+                className={clicked[el] ? 'yellowStar' : ''}
               />
             );
           })}
@@ -275,10 +254,8 @@ export const Review = ({ state }: Props) => {
         >
           <S.ReviewTextInput
             placeholder="의견 남기기"
-            type="text"
             value={newReview}
             onChange={(e) => handleNewReview(e)}
-            setReviewList={setReviewList}
           />
           <S.ReviewBtn onClick={addReview}>등록</S.ReviewBtn>
         </div>
@@ -287,9 +264,9 @@ export const Review = ({ state }: Props) => {
       {/* 리뷰리스트 */}
 
       <S.ReviewList>
-        {reviewList.map((i: number) => {
+        {reviewList.map((i: ReviewType) => {
           return (
-            <S.ReviewBox key={i.reviewId}>
+            <S.ReviewBox key={`${i.reviewId}`}>
               <S.ReviewDetail
                 style={{
                   display:
@@ -299,11 +276,11 @@ export const Review = ({ state }: Props) => {
                       : 'flex',
                 }}
                 onClick={() => {
-                  handleDeleteModalOpen(false);
+                  handleDeleteModalOpen();
                 }}
               >
                 <div style={{ display: 'flex', width: 410 }}>
-                  <S.ProfileImg src={i.profileImg} />
+                  <S.ProfileImg src={`${i.profileImg}`} />
                   <div
                     style={{
                       display: 'flex',
@@ -313,7 +290,7 @@ export const Review = ({ state }: Props) => {
                   >
                     <div>{i.nickName}</div>
                     <div>
-                      {'⭐'.repeat(i.reviewRating)}
+                      {'⭐'.repeat(Number(i.reviewRating))}
                       &nbsp;&nbsp;|&nbsp;&nbsp;
                       {i.createdTime}
                     </div>
@@ -331,7 +308,7 @@ export const Review = ({ state }: Props) => {
                     onClick={
                       deleteModal.id === i.reviewId && deleteModal.isOpen
                         ? () => {}
-                        : () => handleModalOpen(i.reviewId)
+                        : () => handleModalOpen(`${i.reviewId}`)
                     }
                     style={{
                       cursor:
@@ -349,17 +326,20 @@ export const Review = ({ state }: Props) => {
                 <S.OptionModal>
                   <S.EditBtn
                     onClick={() => {
-                      handleEditModalOpen(i.reviewId, i.reviewRating);
-                      setEdit(i.reviewId);
-                      handleModalOpen(false);
+                      handleEditModalOpen(
+                        `${i.reviewId}`,
+                        Number(i.reviewRating),
+                      );
+                      setEdit(`${i.reviewId}`);
+                      handleModalOpen(`${i.reviewId}`);
                     }}
-                  >>
+                  >
                     수정
                   </S.EditBtn>
                   <S.DeleteBtn
                     onClick={() => {
-                      handleDeleteModalOpen(i.reviewId);
-                      handleModalOpen(false);
+                      handleDeleteModalOpen(`${i.reviewId}`);
+                      handleModalOpen(`${i.reviewId}`);
                     }}
                   >
                     삭제
@@ -374,12 +354,14 @@ export const Review = ({ state }: Props) => {
                   <div style={{ display: 'flex', gap: 10 }}>
                     <S.DeleteCancelBtn
                       onClick={() => {
-                        handleDeleteModalOpen(false);
+                        handleDeleteModalOpen(`${i.reviewId}`);
                       }}
                     >
                       취소
                     </S.DeleteCancelBtn>
-                    <S.DeleteCancelBtn onClick={({}:any) => deleteReview(i.reviewId)}>
+                    <S.DeleteCancelBtn
+                      onClick={() => deleteReview(`${i.reviewId}`)}
+                    >
                       삭제
                     </S.DeleteCancelBtn>
                   </div>
@@ -392,13 +374,8 @@ export const Review = ({ state }: Props) => {
                 <ReviewEditModal
                   reviewHandler={reviewHandler}
                   ratingArr={ratingArr}
-                  handleStarClick={handleStarClick}
                   handleEditModalOpen={handleEditModalOpen}
-                  clicked={clicked}
                   i={i}
-                  setReviewRating={setReviewRating}
-                  setClicked={setClicked}
-                  reviewId={reviewId}
                   editClicked={editClicked}
                   setEditClicked={setEditClicked}
                 />
@@ -410,6 +387,3 @@ export const Review = ({ state }: Props) => {
     </S.ReviewContainer>
   );
 };
-
-// http://localhost:3000/KE000642
-// 서울강남역두산위브센티움

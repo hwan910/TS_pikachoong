@@ -28,7 +28,13 @@ const StyledProfileDiv = styled.div`
 const StyledImg = styled.img`
   border-radius: 50%;
   width: 13rem;
+  height: 13rem;
+  object-fit: contain;
   /* margin-top: 3rem; */
+  @media screen and (max-width: 768px) {
+    width: 8rem;
+    height: 8rem;
+  }
 `;
 
 const StyledTextDiv = styled.div`

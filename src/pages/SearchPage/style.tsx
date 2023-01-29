@@ -11,9 +11,16 @@ export const MainTitle = styled.div`
   font-weight: 700;
   padding-bottom: 5px;
   margin-bottom: 10px;
+  @media screen and (max-width: 500px) {
+    font-size: 17px;
+  }
 `;
 
-export const Table = styled.article``;
+export const Table = styled.article`
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
+  }
+`;
 
 export const TableHead = styled.div`
   display: flex;
@@ -30,4 +37,12 @@ export const TableBody = styled.div`
   align-items: center;
   border-bottom: 1px dotted lightgray;
   margin-bottom: 3px;
+`;
+
+export const PageBtn = styled.button`
+  all: unset;
+  cursor: pointer;
+  @media screen and (max-width: 500px) {
+    font-size: 13px;
+  }
 `;

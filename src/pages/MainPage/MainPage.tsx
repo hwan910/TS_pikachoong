@@ -4,6 +4,7 @@ import { getData } from '../../common/api';
 import { useEffect } from 'react';
 import { Data, Location } from '../../types/MapInterface';
 import { useAppSelector } from '../../hooks/useRedux';
+import { Loading } from './style';
 
 interface Props {
   myLocation: Location;
@@ -29,6 +30,7 @@ export const MainPage = ({
   const zc = useAppSelector((state) => state.location.zcode);
   const zsc = useAppSelector((state) => state.location.zscode);
 
+  // GET DATA
   const { isLoading, isError, data, error, refetch } = useQuery<
     Data,
     Error,
@@ -36,13 +38,13 @@ export const MainPage = ({
     [string, string]
   >([zc, zsc], getData);
 
+  // 지역코드나 지역코드가 바뀌면 refetch
   useEffect(() => {
     queryClient.removeQueries([zc, zsc]);
     refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [zc, zsc]);
 
-  if (isLoading) return <div>로딩중</div>;
+  if (isLoading) return <Loading>☠️로딩중이다☠️</Loading>;
   if (isError) return <div>Error: {error.message}</div>;
 
   return (

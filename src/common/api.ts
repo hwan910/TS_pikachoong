@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Data } from '../types/MapInterface';
+import { code } from '../types/SearchInterface';
 
 const SERVER_URL = `https://apis.data.go.kr/B552584/EvCharger/getChargerInfo?serviceKey=${process.env.REACT_APP_API_KEY}`;
 
@@ -18,7 +19,7 @@ export const getData = async ({ queryKey }: DataKey) => {
 
 const pageNo = 1;
 
-export const getChargerinfo = (zcode: any, zscode: any): any => {
+export const getChargerinfo = (zcode: code, zscode: code) => {
   return axios.get(
     `${SERVER_URL}&numOfRows=3000&zcode=${zcode}&zscode=${zscode}&pageNo=${pageNo}`,
   );

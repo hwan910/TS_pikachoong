@@ -1,52 +1,45 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import * as S from '../../pages/DetailPage/style';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db, auth } from '../../common/firebase';
+import { db } from '../../common/firebase';
 import { FaStar } from 'react-icons/fa';
+import { ReviewType } from './Review';
+
+interface Props {
+  reviewHandler: () => Promise<void>,
+  ratingArr: number[],
+  handleEditModalOpen: (reviewId?: string, reviewRating?: number) => void,
+  i: ReviewType,
+  editClicked: boolean[],
+  setEditClicked: React.Dispatch<React.SetStateAction<boolean[]>>,
+}
 
 function ReviewEditModal({
   reviewHandler,
   ratingArr,
-  handleStarClick,
   handleEditModalOpen,
-  clicked,
   i,
-  setReviewRating,
-  setClicked,
-  reviewId,
   editClicked,
   setEditClicked,
-}) {
+}: Props) {
   const [editComment, setEditComment] = useState(i.review);
   const [editRating, setEditRating] = useState(i.reviewRating); // 별점수정
 
-  const handleEditComment = (e) => {
+  const handleEditComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditComment(e.target.value);
   }; // 리뷰 수정모달 input(textarea) onChange={(e) => handleEditReview(e)
 
-  const handleEditRating = (e) => {
-    setEditRating(e.target.value);
-  }; // 별점수정
-
-  const editReview = async (reviewId) => {
-    // const newReviewList = [...reviewList];
-    // const idx = newReviewList.findIndex(
-    //   (review) => review.reviewId === reviewId,
-    // );
-    // newReviewList[idx].newReview = editComment;
-    // newReviewList[idx].isEdit = false;
-    // setReviewList(newReviewList);
+  const editReview = async (reviewId: string) => {
     await updateDoc(doc(db, 'reviews', reviewId), {
       review: editComment,
       reviewRating: editRating, // 별점수정
       isEdit: false,
     });
     setEditComment('');
-    // setEditRating([false, false, false, false, false]); // 별점수정
     reviewHandler();
   };
 
-  const handleEditStarClick = (index) => {
+  const handleEditStarClick = (index: number) => {
     let clickStates = [...editClicked];
 
     for (let i = 0; i < 5; i++) {
@@ -57,10 +50,10 @@ function ReviewEditModal({
   };
 
   return (
-    <S.ReviewBox key={i.reviewId}>
+    <S.ReviewBox key={`${i.reviewId}`}>
       <S.ReviewDetail>
         <div style={{ display: 'flex', backgroundColor: 'white' }}>
-          <S.ProfileImg src={i.profileImg} />
+          <S.ProfileImg src={`${i.profileImg}`} />
           <div
             style={{
               display: 'flex',
@@ -78,11 +71,8 @@ function ReviewEditModal({
                       size="20"
                       onClick={() => {
                         handleEditStarClick(el);
-                        // console.log(editClicked); // 왜 직전에 클릭했던 배열이 찍힐까요?ㅠ
                       }}
-                      className={editClicked[el] && 'yellowStar'}
-                      // defaultValue={i.editClicked} //  별점수정
-                      // defaultValue={i.reviewRating} //별점수정
+                      className={editClicked[el] ? 'yellowStar' : ''}
                     />
                   );
                 })}
@@ -92,13 +82,12 @@ function ReviewEditModal({
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <S.EditReviewTextInput
                 onChange={(e) => handleEditComment(e)}
-                defaultValue={i.review}
+                defaultValue={`${i.review}`}
               />
               <S.ReviewBtn
                 onClick={() => {
-                  editReview(i.reviewId);
-                  handleEditModalOpen(false);
-                  // console.log('ㅑ');
+                  editReview(`${i.reviewId}`);
+                  handleEditModalOpen();
                 }}
               >
                 {/* type="submit" */}
