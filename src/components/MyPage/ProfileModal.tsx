@@ -8,7 +8,7 @@ import { isLogin } from '../../redux/modules/loginSlice';
 import useInput from '../../hooks/useInput';
 import useImgInput from '../../hooks/useImgInput';
 import { COLOR } from '../../common/color';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 interface Props {
   setProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,10 +17,12 @@ interface Props {
 const ProfileModal = ({ setProfileModalOpen }: Props) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.login.user);
+  const inputRef = useRef<HTMLInputElement>(null);
+  // 커스텀 훅
   const [nickname, nicknameHandler, nicknameReset] = useInput(user.displayName);
   const [photoURL, miribogi, resetImg] = useImgInput(user.photoURL);
-  const inputRef = useRef<HTMLInputElement>(null);
 
+  // 리셋
   const reset = () => {
     resetImg();
     nicknameReset();
@@ -68,7 +70,6 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
         dispatch(isLogin({ ...user, displayName: nickname, photoURL: x }));
       } else {
         alert('글자 수 7자를 초과하였습니다.');
-        // nicknameReset();
       }
     }
   };

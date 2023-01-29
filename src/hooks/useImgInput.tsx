@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
+// 이미지 변경 커스텀훅
 const useImgInput = (initialState: string) => {
   const [img, setImg] = useState(initialState);
 
@@ -17,10 +18,10 @@ const useImgInput = (initialState: string) => {
   };
 
   const reset = () => {
-    setImg("")
-  }
+    setImg('');
+  };
 
-  return [img, onImageChange, reset] as const
-}
+  return [img, onImageChange, reset] as const;
+};
 
-export default useImgInput
+export default useImgInput;

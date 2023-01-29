@@ -7,6 +7,7 @@ import { useAppSelector } from '../../hooks/useRedux';
 
 const MyReview = () => {
   const user = useAppSelector((state) => state.login.user);
+  // 내가 쓴 글만 불러오기
   const [myReview, setMyReview] = useState<Item[]>([]);
 
   const reviewHandler = async () => {
@@ -36,15 +37,15 @@ const MyReview = () => {
           <StyledNullImg src={require('../../assets/comment.png')} alt="" />
         </StyledNullDiv>
       ) : (
-        myReview.map((x) => {
+        myReview.map((review) => {
           return (
-            <StyledReview>
-              <StyledReviewBox key={x.reviewId}>
-                <StyledReviewBoxH3>{x.statNm}</StyledReviewBoxH3>
+            <StyledReview key={review.reviewId}>
+              <StyledReviewBox>
+                <StyledReviewBoxH3>{review.statNm}</StyledReviewBoxH3>
                 <div>
-                  {'⭐'.repeat(Number(x.reviewRating))} | {x.createdTime}
+                  {'⭐'.repeat(Number(review.reviewRating))} | {review.createdTime}
                 </div>
-                <h4>{x.review}</h4>
+                <h4>{review.review}</h4>
               </StyledReviewBox>
             </StyledReview>
           );

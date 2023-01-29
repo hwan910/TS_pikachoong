@@ -1,12 +1,14 @@
-import { useState } from "react";
-import { Location, Result } from "../types/MapInterface";
-import * as Z from "../common/zcode";
+import { useState } from 'react';
+import { Location, Result } from '../types/MapInterface';
+import * as Z from '../common/zcode';
 
 const { kakao } = window;
 
+// 현재 위치를 변경핧때마다 zcode(지역코드), zscode(지역상세코드)가 동적으로 변하게 만든 커스텀훅
+// setLocation({lat, lng})를 사용하면 zcode, zscode가 변함
 const useMyLocation = () => {
-  const [zcode, setZcode] = useState("");
-  const [zscode, setZscode] = useState("");
+  const [zcode, setZcode] = useState('');
+  const [zscode, setZscode] = useState('');
 
   const geocoder = new kakao.maps.services.Geocoder();
 
@@ -14,58 +16,58 @@ const useMyLocation = () => {
     if (status === kakao.maps.services.Status.OK) {
       const arr = { ...result };
       const doe = arr[0].address.region_1depth_name;
-      const sigungu = arr[0].address.region_2depth_name.split(" ")[0]
+      const sigungu = arr[0].address.region_2depth_name.split(' ')[0];
       setZcode(Z.zcode[doe]);
       switch (true) {
-        case doe === "서울":
+        case doe === '서울':
           setZscode(Z.zcode11[sigungu]);
           break;
-        case doe === "부산":
+        case doe === '부산':
           setZscode(Z.zcode26[sigungu]);
           break;
-        case doe === "대구":
+        case doe === '대구':
           setZscode(Z.zcode27[sigungu]);
           break;
-        case doe === "인천":
+        case doe === '인천':
           setZscode(Z.zcode28[sigungu]);
           break;
-        case doe === "광주":
+        case doe === '광주':
           setZscode(Z.zcode29[sigungu]);
           break;
-        case doe === "대전":
+        case doe === '대전':
           setZscode(Z.zcode30[sigungu]);
           break;
-        case doe === "울산":
+        case doe === '울산':
           setZscode(Z.zcode31[sigungu]);
           break;
-        case doe === "세종특별자치시":
+        case doe === '세종특별자치시':
           setZscode(Z.zcode36[sigungu]);
           break;
-        case doe === "경기":
+        case doe === '경기':
           setZscode(Z.zcode41[sigungu]);
           break;
-        case doe === "강원":
+        case doe === '강원':
           setZscode(Z.zcode42[sigungu]);
           break;
-        case doe === "충북":
+        case doe === '충북':
           setZscode(Z.zcode43[sigungu]);
           break;
-        case doe === "충남":
+        case doe === '충남':
           setZscode(Z.zcode44[sigungu]);
           break;
-        case doe === "전북":
+        case doe === '전북':
           setZscode(Z.zcode45[sigungu]);
           break;
-        case doe === "전남":
+        case doe === '전남':
           setZscode(Z.zcode46[sigungu]);
           break;
-        case doe === "경북":
+        case doe === '경북':
           setZscode(Z.zcode47[sigungu]);
           break;
-        case doe === "경남":
+        case doe === '경남':
           setZscode(Z.zcode48[sigungu]);
           break;
-        case doe === "제주특별자치도":
+        case doe === '제주특별자치도':
           setZscode(Z.zcode50[sigungu]);
           break;
       }
@@ -73,13 +75,13 @@ const useMyLocation = () => {
   };
 
   const setLocation = (location: Location) => {
-    const loc = new kakao.maps.LatLng(location.lat, location.lng)
+    const loc = new kakao.maps.LatLng(location.lat, location.lng);
     if (loc) {
       geocoder.coord2Address(loc.getLng(), loc.getLat(), callback);
     }
   };
 
-  return [zcode, zscode, setLocation] as const
+  return [zcode, zscode, setLocation] as const;
 };
 
 export default useMyLocation;

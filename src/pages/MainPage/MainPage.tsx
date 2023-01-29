@@ -29,6 +29,7 @@ export const MainPage = ({
   const zc = useAppSelector((state) => state.location.zcode);
   const zsc = useAppSelector((state) => state.location.zscode);
 
+  // GET DATA
   const { isLoading, isError, data, error, refetch } = useQuery<
     Data,
     Error,
@@ -36,6 +37,7 @@ export const MainPage = ({
     [string, string]
   >([zc, zsc], getData);
 
+  // 지역코드나 지역코드가 바뀌면 refetch
   useEffect(() => {
     queryClient.removeQueries([zc, zsc]);
     refetch();
