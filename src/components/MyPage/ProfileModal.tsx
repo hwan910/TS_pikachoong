@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { isLogin } from '../../redux/modules/loginSlice';
 import useInput from '../../hooks/useInput';
 import useImgInput from '../../hooks/useImgInput';
+import { COLOR } from '../../common/color';
+import { useRef, useState } from 'react';
 
 interface Props {
   setProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,6 +19,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
   const user = useAppSelector((state) => state.login.user);
   const [nickname, nicknameHandler, nicknameReset] = useInput(user.displayName);
   const [photoURL, miribogi, resetImg] = useImgInput(user.photoURL);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const reset = () => {
     resetImg();
@@ -42,16 +45,30 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
   };
 
   const changeProfile = (x: string = photoURL) => {
-    dispatch(isLogin({ ...user, displayName: nickname, photoURL: x }));
-    updateProfile(userProfile, {
-      displayName: nickname,
-      photoURL: x,
-    })
-      .then(() => {
-        alert('변경완료!');
-        closeModal();
-      })
-      .catch((e) => console.log('e:', e));
+    if (inputRef.current !== null) {
+      inputRef.current?.focus();
+    }
+    // 유효성 검사
+    if (nickname === '') {
+      alert('닉네임이 비어있습니다.');
+    } else {
+      if (nickname.length < 8) {
+        setProfileModalOpen(false);
+        updateProfile(userProfile, {
+          displayName: nickname,
+          photoURL: x,
+        })
+          .then(() => {
+            alert('변경완료!');
+            closeModal();
+          })
+          .catch((e) => console.log('e:', e));
+        dispatch(isLogin({ ...user, displayName: nickname, photoURL: x }));
+      } else {
+        alert('글자 수 7자를 초과하였습니다.');
+        // nicknameReset();
+      }
+    }
   };
 
   const submitChange = (e: React.MouseEvent<HTMLElement>) => {
@@ -95,6 +112,9 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
         />
         <StyledInput
           value={nickname}
+          ref={inputRef}
+          maxLength={8}
+          autoFocus
           onChange={(e) => {
             nicknameHandler(e);
           }}
@@ -117,10 +137,11 @@ const StyledProfileModalBackground = styled.div`
   bottom: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.8);
+  z-index: 999;
 `;
 
 const StyledProfileModalDiv = styled.div`
-  background-color: #fffae3;
+  background-color: #fad61d;
   width: 30rem;
   height: 30rem;
   padding: 2rem 0;
@@ -133,6 +154,10 @@ const StyledProfileModalDiv = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
+  @media screen and (max-width: 768px) {
+    width: 25rem;
+    height: 28rem;
+  }
 `;
 
 const StyledH2 = styled.h2`
@@ -150,11 +175,14 @@ const StyledProfileDiv = styled.div`
 `;
 
 const StyledImg = styled.img`
-  border: 1px solid rgb(250, 214, 29);
+  /* border: 1px solid black; */
   border-radius: 50%;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  /* border: 1px solid lightgray; */
+  background-color: white;
+
   /* margin-top: 3rem; */
 `;
 
@@ -174,7 +202,8 @@ const CameraDiv = styled.div`
 `;
 
 const Camera = styled.img`
-  background-color: rgb(250, 214, 29);
+  /* border: 1px solid black; */
+  background-color: #f1f1f1;
   border-radius: 50%;
   padding: 5px;
   margin: 10px;
@@ -207,12 +236,17 @@ const StyledButtonChange = styled.button`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: rgb(250, 214, 29);
+  background-color: black;
+  :hover {
+    background-color: ${COLOR.RED};
+  }
   padding: 1rem 3rem;
   border: none;
   cursor: pointer;
   border-radius: 30px;
   margin-top: 1rem;
   font-size: medium;
+  font-weight: 700;
   margin-bottom: 0.7rem;
+  color: white;
 `;
