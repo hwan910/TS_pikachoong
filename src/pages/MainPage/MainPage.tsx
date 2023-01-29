@@ -40,6 +40,7 @@ export const MainPage = ({
   useEffect(() => {
     queryClient.removeQueries([zc, zsc]);
     refetch();
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [zc, zsc]);
 
   if (isLoading) return <Loading>☠️로딩중이다☠️</Loading>;

@@ -28,7 +28,7 @@ const NearbyChargingStationCard = styled.div`
     width: 300px;
   }
   @media screen and (max-width: 500px) {
-    width: 300px;
+    width: 250px;
   }
 `;
 
@@ -58,12 +58,10 @@ const NearbyChargingStationCardContent = styled.span`
 
 const NearbyChargingStationWrap = styled.div`
   font-size: 1.5rem;
-  width: 1300px;
+  width: 70%;
   height: 170px;
   display: flex;
-  margin-left: 10px;
   justify-content: center;
-  background-color: white;
   align-items: center;
 `;
 
@@ -113,7 +111,7 @@ const StyledSlider = styled(Slider)`
     width: 420px;
   }
   @media screen and (max-width: 500px) {
-    width: 380px;
+    width: 320px;
   }
 `;
 
@@ -131,7 +129,7 @@ const MapWrap = styled.div`
     width: 500px;
   }
   @media screen and (max-width: 500px) {
-    width: 400px;
+    width: 300px;
   }
 `;
 
@@ -153,7 +151,7 @@ const HeaderWrap = styled.div`
     width: 500px;
   }
   @media screen and (max-width: 500px) {
-    width: 400px;
+    width: 300px;
   }
 `;
 
