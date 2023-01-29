@@ -128,14 +128,14 @@ const Map = ({
       }
     }
 
-    // 맵에 반 경 1km를 지정해준다.
-
+    // 맵에 반경 1km를 지정해준다.
     let circle = new kakao.maps.Circle({
       map: map,
       center: new kakao.maps.LatLng(myLocation.lat, myLocation.lng),
       radius: 1000,
     });
 
+    // 맵의 내 위치, 반경, 선
     let center = circle.getPosition();
     let radius = circle.getRadius();
     let line = new kakao.maps.Polyline();
@@ -144,10 +144,8 @@ const Map = ({
 
     markers?.forEach(function (marker) {
       // 마커의 위치와 원의 중심을 경로로 하는 폴리라인 설정
-
       let markerPosition = marker.getPosition();
       let path = [markerPosition, center];
-
       line.setPath(path);
 
       // 마커와 원의 중심 사이의 거리
@@ -155,10 +153,12 @@ const Map = ({
 
       // 이 거리가 원의 반지름보다 작거나 같다면
       if (dist <= radius) {
+        // 거리를 배열에 넣어줌, 마커의 경도/위도를 배열에 넣어줌
         distArr.push(dist);
         markerLocation.push(markerPosition);
       }
     });
+    // 마커의 위치를 아이템에서 찾아줌 : 마커에는 데이터 값이 경도/위도 밖에 없기 때문에
     for (const markerLocate of markerLocation) {
       let coords = new kakao.maps.Coords(markerLocate.La, markerLocate.Ma);
       let La = coords.La.toFixed(10);
@@ -173,6 +173,7 @@ const Map = ({
         arrFilter.push(filters);
       }
     }
+    // 위의 아이템에 마커와 내 위치의 거리를 계산한 값을 넣어줌
     for (let i = 0; i < arrFilter.length; i++) {
       arrFilter[i].dist = distArr[i];
     }
