@@ -1,19 +1,29 @@
-// import React, { useState } from 'react';
-import styled from 'styled-components';
 import { auth, providerGithub } from '../../../common/firebase';
 import { provider } from '../../../common/firebase';
-import { COLOR } from '../../../common/color';
-import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  GithubAuthProvider,
-  updateProfile,
-} from 'firebase/auth';
+import { signInWithPopup, updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  StyledLoginModalBackground,
+  StyledLoginModalDiv,
+  StyledX,
+  StyledLoginDiv,
+  StyledLoginGoogleButton,
+  StyledLoginGoogle,
+  StyledLoginGoogleImg,
+  StyledLoginTextDiv,
+  StyledLoginText,
+  StyledLoginGithubButton,
+  StyledLoginGithub,
+  StyledLoginGithubImg,
+  StyledLoginGithubTextDiv,
+  StyledLoginGithubText,
+  StyledNicknameInput,
+  StyledButtonButton,
+} from '../../../pages/MyPage/style';
 
 interface Props {
-  setLoginModalOpen: any;
+  setLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const LoginModal = ({ setLoginModalOpen }: Props) => {
@@ -26,52 +36,24 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
   };
   const userProfile: any = auth.currentUser;
 
+  // 구글 로그인
   const onClickGoogleLogin = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential: any = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
         setPageNumber(2);
-
-        // ...
       })
       .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
         alert('로그인이 실패 하였습니다.');
-        // ...
       });
   };
 
+  // 깃허브 로그인
   const onClickGithubLogin = () => {
     signInWithPopup(auth, providerGithub)
       .then((result) => {
-        // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-        const credential: any = GithubAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-
-        // The signed-in user info.
-        const user = result.user;
         setPageNumber(2);
-        // ...
       })
       .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GithubAuthProvider.credentialFromError(error);
-        // ...
         console.log(error.message);
       });
   };
@@ -99,14 +81,14 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
             </h2>
             <StyledX
               onClick={closeModal}
-              src={require('../../../assets/x.png')}
+              src={require('../../../assets/MyPage/x.png')}
               alt="X"
             />
             <StyledLoginDiv>
               <StyledLoginGoogleButton onClick={onClickGoogleLogin}>
                 <StyledLoginGoogle>
                   <StyledLoginGoogleImg
-                    src={require('../../../assets/google.png')}
+                    src={require('../../../assets/MyPage/google.png')}
                     alt=""
                   />
                   <StyledLoginTextDiv>
@@ -117,7 +99,7 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
               <StyledLoginGithubButton onClick={onClickGithubLogin}>
                 <StyledLoginGithub>
                   <StyledLoginGithubImg
-                    src={require('../../../assets/github.png')}
+                    src={require('../../../assets/MyPage/github.png')}
                     alt=""
                   />
                   <StyledLoginGithubTextDiv>
@@ -133,7 +115,7 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
             <h1>닉네임을 입력해주세요.</h1>
             <StyledX
               onClick={closeModal}
-              src={require('../../../assets/x.png')}
+              src={require('../../../assets/MyPage/x.png')}
               alt="X"
             />
             <StyledNicknameInput
@@ -144,7 +126,9 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
               }}
               type="text"
             />
-            <StyledButton onClick={nicknameHandler}>확인</StyledButton>
+            <StyledButtonButton onClick={nicknameHandler}>
+              확인
+            </StyledButtonButton>
           </StyledLoginModalDiv>
         )}
         {pageNumber === 2 && (
@@ -152,10 +136,10 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
             <h1>로그인이 완료되었습니다.</h1>
             <StyledX
               onClick={closeModal}
-              src={require('../../../assets/x.png')}
+              src={require('../../../assets/MyPage/x.png')}
               alt="X"
             />
-            <StyledButton
+            <StyledButtonButton
               onClick={() => {
                 setPageNumber(0);
                 setLoginModalOpen(false);
@@ -163,7 +147,7 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
               }}
             >
               확인
-            </StyledButton>
+            </StyledButtonButton>
           </StyledLoginModalDiv>
         )}
       </StyledLoginModalBackground>
@@ -172,148 +156,3 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
 };
 
 export default LoginModal;
-
-const StyledLoginModalBackground = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 999;
-`;
-
-const StyledLoginModalDiv = styled.div`
-  background-color: ${COLOR.YELLOW};
-  width: 30rem;
-  height: 30rem;
-  padding: 2rem 0;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  @media screen and (max-width: 768px) {
-    width: 25rem;
-    height: 25rem;
-  }
-`;
-
-const StyledX = styled.img`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  cursor: pointer;
-`;
-
-const StyledLoginDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 2rem;
-`;
-
-const StyledLoginGoogleButton = styled.button`
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-`;
-
-const StyledLoginGoogle = styled.div`
-  display: flex;
-  /* border: 1px solid ${COLOR.RED}; */
-  background-color: white;
-  width: 14rem;
-  /* height: 70px; */
-  height: auto;
-  padding: 1rem 2rem;
-  border-radius: 45px;
-  padding-left: 18px;
-`;
-
-const StyledLoginGoogleImg = styled.img`
-  /* background-color: white; */
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-`;
-
-const StyledLoginTextDiv = styled.div`
-  margin-left: 1.2rem;
-  display: flex;
-  align-items: center;
-`;
-
-const StyledLoginText = styled.h3`
-  color: black;
-  font-weight: 700;
-  margin-left: 20px;
-`;
-
-const StyledLoginGithubButton = styled.button`
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  margin-top: 0.5rem;
-`;
-
-const StyledLoginGithub = styled.div`
-  display: flex;
-  /* border: 1px solid ${COLOR.RED}; */
-  background-color: white;
-  width: 14rem;
-  height: 3.9rem;
-  padding: 1rem 2rem;
-  border-radius: 45px;
-  padding-left: 18px;
-`;
-
-const StyledLoginGithubImg = styled.img`
-  /* background-color: white; */
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-`;
-
-const StyledLoginGithubTextDiv = styled.div`
-  margin-left: 1rem;
-  display: flex;
-  align-items: center;
-`;
-
-const StyledLoginGithubText = styled.h3`
-  color: black;
-  font-weight: 700;
-  margin-left: 15px;
-`;
-
-const StyledNicknameInput = styled.input`
-  padding: 1rem 3rem;
-  border: none;
-  outline: none;
-  font-size: large;
-  text-align: center;
-`;
-
-const StyledButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: #fffae3;
-  padding: 1rem 3rem;
-  border: none;
-  cursor: pointer;
-  border-radius: 30px;
-  margin-top: 1.5rem;
-  font-size: larger;
-  :hover {
-    background-color: ${COLOR.RED};
-    color: white;
-  }
-`;
