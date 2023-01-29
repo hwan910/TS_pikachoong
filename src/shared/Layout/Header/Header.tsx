@@ -1,17 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import {
-  StyledHeader,
-  HeaderContainer,
-  Logo,
-  HeaderBtnBox,
-  HeaderBtn,
-  SearchBox,
-  SearchBtn,
-  LogoText,
-  LogoBox,
-  SearchSelect,
-  HeaderDiv,
-} from './style';
+import * as S from './style';
 import { useEffect, useRef, useState } from 'react';
 import LoginModal from '../LoginModal/LoginModal';
 import { IoSearchCircle } from 'react-icons/io5';
@@ -27,22 +15,30 @@ const Header = () => {
   const [z1List, setZ1List] = useState<string[]>([]);
   const [z2List, setZ2List] = useState<string[]>([]);
   const [z2, setZ2] = useState('');
-  const select1InputRef = useRef<any>(null);
-  const select2InputRef = useRef<any>(null);
+  const select1InputRef = useRef<HTMLSelectElement>(null);
+  const select2InputRef = useRef<HTMLSelectElement>(null);
 
-  const searchResultHandler = () => {
+  const searchResultHandler = (e: React.MouseEvent<SVGElement, MouseEvent>) => {
+    e.preventDefault();
     z2 === '' ? alert('2차분류를 선택해주세요') : navigate(`/search/${z2}`);
   };
 
   useEffect(() => {
     const arr = [];
+    // object 를 array 로 변경함
     for (const [key, value] of Object.entries(szcode)) {
       arr.push(`${key}:${value}`);
     }
     setZ1List(arr);
   }, []);
 
+  //z1 state 에 따라 z2 리스트 가 결정되는 함수
   const z2ListHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    //z1 값 이 바뀌면 z2 값 초기화
+    if (select2InputRef.current) {
+      select2InputRef.current.value = 'none';
+    }
+    // object 를 array 로 변경함
     const arr = [];
     for (const [key, value] of Object.entries(szscode)) {
       if (key.slice(0, 2) === e.target.value) {
@@ -74,7 +70,7 @@ const Header = () => {
   const backtoMainPage = () => {
     setZ2List([]);
     setZ2('');
-    if (select1InputRef.current) {
+    if (select1InputRef.current && select2InputRef.current) {
       select1InputRef.current.value = 'none';
       select2InputRef.current.value = 'none';
     }
@@ -82,15 +78,15 @@ const Header = () => {
   };
 
   return (
-    <StyledHeader>
-      <HeaderContainer>
-        <LogoBox onClick={backtoMainPage}>
-          <LogoText>피카츙</LogoText>
-          <Logo src={require('../../../assets/Logo.png')} />
-        </LogoBox>
-        <HeaderDiv>
-          <SearchBox>
-            <SearchSelect>
+    <S.StyledHeader>
+      <S.HeaderContainer>
+        <S.LogoBox onClick={backtoMainPage}>
+          <S.LogoText>피카츙</S.LogoText>
+          <S.Logo src={require('../../../assets/Logo.png')} />
+        </S.LogoBox>
+        <S.HeaderDiv>
+          <S.SearchBox>
+            <S.SearchSelect>
               <select
                 style={{
                   border: 'none',
@@ -128,33 +124,33 @@ const Header = () => {
                   </option>
                 ))}
               </select>
-              <SearchBtn>
+              <S.SearchBtn>
                 <IoSearchCircle
                   color="red"
                   size={'2.6em'}
-                  onClick={searchResultHandler}
+                  onClick={(e) => searchResultHandler(e)}
                 />
-              </SearchBtn>
-            </SearchSelect>
-          </SearchBox>
-          <HeaderBtnBox>
+              </S.SearchBtn>
+            </S.SearchSelect>
+          </S.SearchBox>
+          <S.HeaderBtnBox>
             {!user.uid ? (
-              <HeaderBtn onClick={showLoginModal}>LOGIN</HeaderBtn>
+              <S.HeaderBtn onClick={showLoginModal}>LOGIN</S.HeaderBtn>
             ) : (
               <>
-                <HeaderBtn onClick={() => navigate('/my')}>
+                <S.HeaderBtn onClick={() => navigate('/my')}>
                   마이페이지
-                </HeaderBtn>
-                <HeaderBtn onClick={onClickLogout}>LOGOUT</HeaderBtn>
+                </S.HeaderBtn>
+                <S.HeaderBtn onClick={onClickLogout}>LOGOUT</S.HeaderBtn>
               </>
             )}
             {loginModalOpen && (
               <LoginModal setLoginModalOpen={setLoginModalOpen} />
             )}
-          </HeaderBtnBox>
-        </HeaderDiv>
-      </HeaderContainer>
-    </StyledHeader>
+          </S.HeaderBtnBox>
+        </S.HeaderDiv>
+      </S.HeaderContainer>
+    </S.StyledHeader>
   );
 };
 
