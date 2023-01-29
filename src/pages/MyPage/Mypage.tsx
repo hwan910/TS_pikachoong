@@ -67,16 +67,20 @@ const StyledMyreviewCon = styled.div`
   @media screen and (max-width: 768px) {
     position: relative;
     bottom: 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 `;
 
 const StyledH1 = styled.h1`
+  margin-left: 1rem;
   @media screen and (max-width: 768px) {
-    position: relative;
-    right: -2rem;
+    /* position: relative; */
+    /* right: -2rem; */
     font-size: large;
-    z-index: -1;
-    top: 0rem;
+    z-index: -10;
+    /* top: 0rem; */
   }
 `;
 

@@ -197,6 +197,10 @@ const StyledLoginModalDiv = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  @media screen and (max-width: 768px) {
+    width: 25rem;
+    height: 25rem;
+  }
 `;
 
 const StyledX = styled.img`

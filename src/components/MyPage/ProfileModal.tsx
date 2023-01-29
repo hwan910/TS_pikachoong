@@ -158,7 +158,7 @@ const StyledProfileModalDiv = styled.div`
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
   @media screen and (max-width: 768px) {
-    width: 20rem;
+    width: 25rem;
     height: 28rem;
   }
 `;

@@ -85,8 +85,6 @@ const StyledNullDiv = styled.div`
   @media screen and (max-width: 768px) {
     width: 20rem;
     height: 22.5rem;
-    position: relative;
-    right: 1rem;
     overflow: hidden;
   }
 `;
@@ -118,24 +116,22 @@ const StyledReview = styled.div`
   justify-content: center;
   flex-direction: column;
   @media screen and (max-width: 768px) {
-    position: relative;
-    right: 6rem;
-    margin: 0;
+    width: 23rem;
+    height: 12rem;
+    overflow: hidden;
   }
 `;
 
 const StyledReviewBox = styled.div`
-  margin: 1rem 0;
   background-color: rgb(217, 217, 217, 0.2);
-  padding: 1rem;
+  padding: 0.1rem 1.5rem;
+  margin: 1rem;
   width: 30rem;
+  height: 12rem;
+  position: relative;
   @media screen and (max-width: 768px) {
-    padding: 0.3rem;
-    width: 20rem;
-    height: 10rem;
     position: relative;
-    left: 3rem;
-    top: 6rem;
+    left: 5rem;
   }
 `;
 
