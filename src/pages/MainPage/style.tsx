@@ -27,7 +27,7 @@ const NearbyChargingStationCard = styled.div`
   @media screen and (max-width: 1000px) {
     width: 300px;
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 500px) {
     width: 300px;
   }
 `;
@@ -57,7 +57,7 @@ const NearbyChargingStationCardContent = styled.span`
 `;
 
 const NearbyChargingStationWrap = styled.div`
-  font-size: 48px;
+  font-size: 1.5rem;
   width: 1300px;
   height: 170px;
   display: flex;
@@ -110,8 +110,102 @@ const StyledSlider = styled(Slider)`
     width: 800px;
   }
   @media screen and (max-width: 600px) {
+    width: 420px;
+  }
+  @media screen and (max-width: 500px) {
+    width: 380px;
+  }
+`;
+
+const MapWrap = styled.div`
+  width: 1300px;
+  height: 500px;
+  @media screen and (max-width: 1200px) {
+    width: 1000px;
+    height: 300px;
+  }
+  @media screen and (max-width: 1000px) {
+    width: 800px;
+  }
+  @media screen and (max-width: 600px) {
     width: 500px;
   }
+  @media screen and (max-width: 500px) {
+    width: 400px;
+  }
+`;
+
+const HeaderWrap = styled.div`
+  width: 1300px;
+  height: 50px;
+  border-bottom: 1px solid #fad61d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  @media screen and (max-width: 1200px) {
+    width: 1000px;
+  }
+  @media screen and (max-width: 1000px) {
+    width: 800px;
+  }
+  @media screen and (max-width: 600px) {
+    width: 500px;
+  }
+  @media screen and (max-width: 500px) {
+    width: 400px;
+  }
+`;
+
+const HeaderTitle = styled.span`
+  font-size: 30px;
+  font-weight: bold;
+  @media screen and (max-width: 1200px) {
+    font-size: 25px;
+  }
+  @media screen and (max-width: 1000px) {
+    font-size: 22px;
+  }
+  @media screen and (max-width: 600px) {
+    font-size: 20px;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 18px;
+  }
+`;
+
+const HeaderForm = styled.form`
+  display: flex;
+`;
+
+const HeaderInput = styled.input`
+  padding: 15px;
+  width: 300px;
+  height: 1px;
+  background: rgba(250, 214, 29, 0.2);
+  border-radius: 24px;
+  border: none;
+  ::placeholder {
+    opacity: 0.5;
+  }
+  @media screen and (max-width: 1200px) {
+    width: 200px;
+  }
+  @media screen and (max-width: 1000px) {
+    width: 150px;
+  }
+  @media screen and (max-width: 600px) {
+    width: 100px;
+  }
+`;
+
+const Loading = styled.div`
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
 `;
 
 export {
@@ -124,4 +218,10 @@ export {
   NearbyChargingStationTitleWrap,
   NearbyChargingStationTitle,
   StyledSlider,
+  MapWrap,
+  HeaderInput,
+  HeaderForm,
+  HeaderTitle,
+  HeaderWrap,
+  Loading,
 };

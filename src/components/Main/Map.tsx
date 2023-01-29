@@ -3,9 +3,15 @@ import { useRef, useEffect, useState } from 'react';
 import { Item, MapProps, MarkerLocation } from '../../types/MapInterface';
 import { useNavigate } from 'react-router-dom';
 import Main from './Main';
-import { Container } from '../../pages/MainPage/style';
+import {
+  Container,
+  HeaderForm,
+  HeaderInput,
+  HeaderTitle,
+  HeaderWrap,
+  MapWrap,
+} from '../../pages/MainPage/style';
 import useSearchMap from '../../hooks/useSearchMap';
-import styled from 'styled-components';
 import { IoSearchCircle } from 'react-icons/io5';
 import { SearchBtn } from '../../shared/Layout/Header/style';
 
@@ -28,13 +34,16 @@ const Map = ({
   let arrFilter: Item[] = [];
   let markerLocation: MarkerLocation[] = [];
 
-  const uniqueStats = data?.items.item.filter(
-    (stat: Item, idx: number, allStats: Item[]) => {
-      return allStats.findIndex((item) => item.statId === stat.statId) === idx;
-    },
-  );
-
   useEffect(() => {
+    const uniqueStats = data?.items.item.filter(
+      (stat: Item, idx: number, allStats: Item[]) => {
+        return (
+          allStats.findIndex((item) => item.statId === stat.statId) === idx
+        );
+      },
+    );
+
+    //지도 중앙 위치
     const location = new kakao.maps.LatLng(myLocation.lat, myLocation.lng);
 
     const options = {
@@ -42,23 +51,25 @@ const Map = ({
       level: level,
     };
 
+    // 지도 생성 + 설정
     const map = new kakao.maps.Map(mapRef.current, options);
-    map.setMaxLevel(8);
-    setMap(map);
 
+    map.setMaxLevel(8);
     const zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
 
-    const thunderimageSrc = require('../../assets/map/thunder.png');
-    const thunderoffimageSrc = require('../../assets/map/thunderoff.png');
-    const imageSize = new kakao.maps.Size(48, 48);
+    setMap(map);
+    
+    // 마커 관련
+
+    // 현재위치마커
     const myMarker = new kakao.maps.Marker({
       map: map,
       position: location,
       clickable: true,
     });
-
     setMarker(myMarker);
+    // 마커 이동시 이벤트
     kakao.maps.event.addListener(map, 'dragend', () => {
       const level = map.getLevel();
       const latlng = map.getCenter();
@@ -68,7 +79,10 @@ const Map = ({
       setLocation({ lat: latlng.Ma, lng: latlng.La });
       setMyLocation({ lat: latlng.Ma, lng: latlng.La });
     });
-
+    // 충전소 마커 생성
+    const thunderimageSrc = require('../../assets/map/thunder.png');
+    const thunderoffimageSrc = require('../../assets/map/thunderoff.png');
+    const imageSize = new kakao.maps.Size(48, 48);
     const thunderImage = new kakao.maps.MarkerImage(thunderimageSrc, imageSize);
     const thunderoffImage = new kakao.maps.MarkerImage(
       thunderoffimageSrc,
@@ -79,13 +93,15 @@ const Map = ({
         const checkStatus = !!data?.items.item.filter(
           (item) => item.statId === stat.statId && item.stat === '2',
         ).length;
-        const content = `<div style="background: white; border: 1px solid black;"><span>${stat.statNm}</span></div>`;
         const position = new kakao.maps.LatLng(stat.lat, stat.lng);
+        // 오버레이
+        const content = `<div style="background: white; border: 1px solid black;"><span>${stat.statNm}</span></div>`;
         const overlay = new kakao.maps.CustomOverlay({
           position,
           content,
           yAnchor: 3.5,
         });
+        // 마커 생성 충전가능 체크해서 이미지 변경
         const marker = new kakao.maps.Marker({
           map: map,
           position,
@@ -94,12 +110,14 @@ const Map = ({
 
         markers.push(marker);
 
+        // 마커에 마우스 올리면 오버레이 생성 마우스벗어나면 사라짐
         kakao.maps.event.addListener(marker, 'mouseover', () => {
           overlay.setMap(map);
         });
         kakao.maps.event.addListener(marker, 'mouseout', () => {
           overlay.setMap(null);
         });
+        // 클릭시 Detail페이지로 전환
         kakao.maps.event.addListener(marker, 'click', () =>
           navigate(`${stat.statId}`, {
             state: data?.items.item.filter(
@@ -109,17 +127,13 @@ const Map = ({
         );
       }
     }
-  }, []);
 
-  useEffect(() => {
+    // 맵에 반 경 1km를 지정해준다.
+
     let circle = new kakao.maps.Circle({
       map: map,
       center: new kakao.maps.LatLng(myLocation.lat, myLocation.lng),
       radius: 1000,
-      strokeWeight: 2,
-      strokeOpacity: 0,
-      strokeStyle: 'dashed',
-      fillOpacity: 0,
     });
 
     let center = circle.getPosition();
@@ -164,6 +178,7 @@ const Map = ({
     }
   }, []);
 
+  // 커스텀훅
   const [searchByAddress, onChangeSearch, onSubmit] = useSearchMap({
     map,
     marker,
@@ -187,88 +202,10 @@ const Map = ({
           </SearchBtn>
         </HeaderForm>
       </HeaderWrap>
-
       <MapWrap ref={mapRef} />
-      {/* <button>주소로 검색하기^_^</button>
-      <form onSubmit={onSubmit}>
-        <button>확인</button>
-      </form> */}
       <Main filterData={arrFilter} />
     </Container>
   );
 };
 
 export default Map;
-
-const MapWrap = styled.div`
-  width: 1300px;
-  height: 500px;
-  @media screen and (max-width: 1200px) {
-    width: 1000px;
-    height: 300px;
-  }
-  @media screen and (max-width: 1000px) {
-    width: 800px;
-  }
-  @media screen and (max-width: 600px) {
-    width: 500px;
-  }
-`;
-
-const HeaderWrap = styled.div`
-  width: 1300px;
-  height: 50px;
-  border-bottom: 1px solid #fad61d;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  @media screen and (max-width: 1200px) {
-    width: 1000px;
-    @media screen and (max-width: 1000px) {
-      width: 800px;
-    }
-    @media screen and (max-width: 600px) {
-      width: 500px;
-    }
-  }
-`;
-
-const HeaderTitle = styled.span`
-  font-size: 30px;
-  font-weight: bold;
-  @media screen and (max-width: 1200px) {
-    font-size: 25px;
-  }
-  @media screen and (max-width: 1000px) {
-    font-size: 22px;
-  }
-  @media screen and (max-width: 600px) {
-    font-size: 20px;
-  }
-`;
-
-const HeaderForm = styled.form`
-  display: flex;
-`;
-
-const HeaderInput = styled.input`
-  padding: 15px;
-  width: 300px;
-  height: 1px;
-  background: rgba(250, 214, 29, 0.2);
-  border-radius: 24px;
-  border: none;
-  ::placeholder {
-    opacity: 0.5;
-  }
-  @media screen and (max-width: 1200px) {
-    width: 200px;
-  }
-  @media screen and (max-width: 1000px) {
-    width: 150px;
-  }
-  @media screen and (max-width: 600px) {
-    width: 100px;
-  }
-`;

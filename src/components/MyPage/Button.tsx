@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledButton } from './style';
+import { StyledButton } from '../../pages/MyPage/style';
 
 interface Props {
   children: React.ReactNode;

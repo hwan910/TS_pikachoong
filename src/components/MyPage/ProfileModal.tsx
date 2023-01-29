@@ -1,18 +1,18 @@
-import { auth, storage } from '../../../common/firebase';
+import { auth, storage } from '../../common/firebase';
 import { updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { uuidv4 } from '@firebase/util';
-import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
-import { isLogin } from '../../../redux/modules/loginSlice';
-import useInput from '../../../hooks/useInput';
-import useImgInput from '../../../hooks/useImgInput';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { isLogin } from '../../redux/modules/loginSlice';
+import useInput from '../../hooks/useInput';
+import useImgInput from '../../hooks/useImgInput';
 import { useRef } from 'react';
 import {
   StyledProfileModalBackground,
   StyledProfileModalDiv,
   StyledH2,
-  StyledProfileDiv,
-  StyledImg,
+  StyledProfileDivDiv,
+  StyledImage,
   StyledImageLabel,
   CameraDiv,
   Camera,
@@ -20,7 +20,7 @@ import {
   StyledX,
   StyledInput,
   StyledButtonChange,
-} from './style';
+} from '../../pages/MyPage/style';
 
 interface Props {
   setProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,11 +29,12 @@ interface Props {
 const ProfileModal = ({ setProfileModalOpen }: Props) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.login.user);
+  const inputRef = useRef<HTMLInputElement>(null);
+  // 커스텀 훅
   const [nickname, nicknameHandler, nicknameReset] = useInput(user.displayName);
   const [photoURL, miribogi, resetImg] = useImgInput(user.photoURL);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  // 이미지, 닉네임 초기화
+  // 리셋
   const reset = () => {
     resetImg();
     nicknameReset();
@@ -46,7 +47,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
   };
 
   // 프로필 변경
-  const userProfile: any = auth.currentUser;
+  const userProfile = auth.currentUser;
 
   // 이미지 업로드
   const uploadImg = async () => {
@@ -69,15 +70,17 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
     } else {
       if (nickname.length < 8) {
         setProfileModalOpen(false);
-        updateProfile(userProfile, {
-          displayName: nickname,
-          photoURL: x,
-        })
-          .then(() => {
-            alert('변경완료!');
-            closeModal();
+        if (userProfile) {
+          updateProfile(userProfile, {
+            displayName: nickname,
+            photoURL: x,
           })
-          .catch((e) => console.log('e:', e));
+            .then(() => {
+              alert('변경완료!');
+              closeModal();
+            })
+            .catch((e) => console.log('e:', e));
+        }
         dispatch(isLogin({ ...user, displayName: nickname, photoURL: x }));
       } else {
         alert('글자 수 7자를 초과하였습니다.');
@@ -88,7 +91,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
   // 프로필 변경
   const submitChange = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    if (photoURL === userProfile.photoURL) {
+    if (photoURL === userProfile?.photoURL) {
       changeProfile();
     } else {
       uploadImg()
@@ -104,8 +107,8 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
       <StyledProfileModalDiv>
         <StyledH2>프로필 수정</StyledH2>
         <StyledImageLabel>
-          <StyledProfileDiv>
-            <StyledImg src={photoURL} alt="프로필 사진" />
+          <StyledProfileDivDiv>
+            <StyledImage src={photoURL} alt="프로필 사진" />
             <StyledImageUploader
               type="file"
               accept="image/*"
@@ -114,15 +117,15 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
             />
             <CameraDiv>
               <Camera
-                src={require('../../../assets/MyPage/camera.png')}
+                src={require('../../assets/MyPage/camera.png')}
                 alt="카메라"
               />
             </CameraDiv>
-          </StyledProfileDiv>
+          </StyledProfileDivDiv>
         </StyledImageLabel>
         <StyledX
           onClick={() => closeModal()}
-          src={require('../../../assets/MyPage/x.png')}
+          src={require('../../assets/MyPage/x.png')}
           alt="X"
         />
         <StyledInput

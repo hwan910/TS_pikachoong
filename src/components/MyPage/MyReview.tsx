@@ -1,8 +1,8 @@
-import { db } from '../../../common/firebase';
+import { db } from '../../common/firebase';
 import { useEffect, useState } from 'react';
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
-import { Item } from '../../../types/MapInterface';
-import { useAppSelector } from '../../../hooks/useRedux';
+import { Item } from '../../types/MapInterface';
+import { useAppSelector } from '../../hooks/useRedux';
 import {
   StyledView,
   StyledNullDiv,
@@ -12,7 +12,7 @@ import {
   StyledReview,
   StyledReviewBox,
   StyledReviewBoxH3,
-} from './style';
+} from '../../pages/MyPage/style';
 
 const MyReview = () => {
   const user = useAppSelector((state) => state.login.user);
@@ -42,7 +42,7 @@ const MyReview = () => {
             <StyledNullTextH2>작성한 댓글이 없습니다.</StyledNullTextH2>
           </StyledNullText>
           <StyledNullImg
-            src={require('../../../assets/MyPage/comment.png')}
+            src={require('../../assets/MyPage/comment.png')}
             alt=""
           />
         </StyledNullDiv>

@@ -19,8 +19,8 @@ import {
   StyledLoginGithubTextDiv,
   StyledLoginGithubText,
   StyledNicknameInput,
-  StyledButton,
-} from './style';
+  StyledButtonButton,
+} from '../../../pages/MyPage/style';
 
 interface Props {
   setLoginModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -126,7 +126,9 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
               }}
               type="text"
             />
-            <StyledButton onClick={nicknameHandler}>확인</StyledButton>
+            <StyledButtonButton onClick={nicknameHandler}>
+              확인
+            </StyledButtonButton>
           </StyledLoginModalDiv>
         )}
         {pageNumber === 2 && (
@@ -137,7 +139,7 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
               src={require('../../../assets/MyPage/x.png')}
               alt="X"
             />
-            <StyledButton
+            <StyledButtonButton
               onClick={() => {
                 setPageNumber(0);
                 setLoginModalOpen(false);
@@ -145,7 +147,7 @@ const LoginModal = ({ setLoginModalOpen }: Props) => {
               }}
             >
               확인
-            </StyledButton>
+            </StyledButtonButton>
           </StyledLoginModalDiv>
         )}
       </StyledLoginModalBackground>

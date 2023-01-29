@@ -1,16 +1,20 @@
-import Profile from '../Profile/Profile';
-import { useAppSelector } from '../../../hooks/useRedux';
-import { StyledProfileDiv, StyledTextH4, StyledTextP } from './style';
+import Profile from './Profile';
+import { useAppSelector } from '../../hooks/useRedux';
+import {
+  StyledProfileDivDivDiv,
+  StyledTextH4,
+  StyledTextP,
+} from '../../pages/MyPage/style';
 
 const ProfileTap = () => {
   const user = useAppSelector((state) => state.login.user);
 
   return (
-    <StyledProfileDiv>
+    <StyledProfileDivDivDiv>
       <Profile />
       <StyledTextH4>{user.displayName}</StyledTextH4>
       <StyledTextP>{user.email}</StyledTextP>
-    </StyledProfileDiv>
+    </StyledProfileDivDivDiv>
   );
 };
 

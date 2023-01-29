@@ -1,5 +1,9 @@
-import { useAppSelector } from '../../../hooks/useRedux';
-import { StyledProfileDiv, StyledImg, StyledTextDiv } from './style';
+import { useAppSelector } from '../../hooks/useRedux';
+import {
+  StyledProfileDiv,
+  StyledImg,
+  StyledTextDiv,
+} from '../../pages/MyPage/style';
 
 const Profile = () => {
   const user = useAppSelector((state) => state.login.user);
@@ -8,9 +12,7 @@ const Profile = () => {
     <StyledProfileDiv>
       <StyledImg
         src={
-          !!user.photoURL
-            ? user.photoURL
-            : require('../../../assets/MyPage/x.png')
+          !!user.photoURL ? user.photoURL : require('../../assets/MyPage/x.png')
         }
         alt="프로필 사진"
       />
