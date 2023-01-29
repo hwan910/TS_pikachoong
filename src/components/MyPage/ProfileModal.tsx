@@ -7,20 +7,7 @@ import { isLogin } from '../../redux/modules/loginSlice';
 import useInput from '../../hooks/useInput';
 import useImgInput from '../../hooks/useImgInput';
 import { useRef } from 'react';
-import {
-  StyledProfileModalBackground,
-  StyledProfileModalDiv,
-  StyledH2,
-  StyledProfileDivDiv,
-  StyledImage,
-  StyledImageLabel,
-  CameraDiv,
-  Camera,
-  StyledImageUploader,
-  StyledX,
-  StyledInput,
-  StyledButtonChange,
-} from '../../pages/MyPage/style';
+import * as S from '../../pages/MyPage/style';
 
 interface Props {
   setProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -103,32 +90,32 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
   };
 
   return (
-    <StyledProfileModalBackground>
-      <StyledProfileModalDiv>
-        <StyledH2>프로필 수정</StyledH2>
-        <StyledImageLabel>
-          <StyledProfileDivDiv>
-            <StyledImage src={photoURL} alt="프로필 사진" />
-            <StyledImageUploader
+    <S.StyledProfileModalBackground>
+      <S.StyledProfileModalDiv>
+        <S.StyledH2>프로필 수정</S.StyledH2>
+        <S.StyledImageLabel>
+          <S.StyledProfileDivDiv>
+            <S.StyledImage src={photoURL} alt="프로필 사진" />
+            <S.StyledImageUploader
               type="file"
               accept="image/*"
               onChange={(e) => miribogi(e)}
               id="img"
             />
-            <CameraDiv>
-              <Camera
+            <S.CameraDiv>
+              <S.Camera
                 src={require('../../assets/MyPage/camera.png')}
                 alt="카메라"
               />
-            </CameraDiv>
-          </StyledProfileDivDiv>
-        </StyledImageLabel>
-        <StyledX
+            </S.CameraDiv>
+          </S.StyledProfileDivDiv>
+        </S.StyledImageLabel>
+        <S.StyledX
           onClick={() => closeModal()}
           src={require('../../assets/MyPage/x.png')}
           alt="X"
         />
-        <StyledInput
+        <S.StyledInput
           value={nickname}
           ref={inputRef}
           maxLength={8}
@@ -138,11 +125,11 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
           }}
           type="text"
         />
-        <StyledButtonChange onClick={(e) => submitChange(e)}>
+        <S.StyledButtonChange onClick={(e) => submitChange(e)}>
           수정완료
-        </StyledButtonChange>
-      </StyledProfileModalDiv>
-    </StyledProfileModalBackground>
+        </S.StyledButtonChange>
+      </S.StyledProfileModalDiv>
+    </S.StyledProfileModalBackground>
   );
 };
 

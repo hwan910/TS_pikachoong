@@ -24,7 +24,7 @@ export const Review = ({ state }: Props) => {
   const [reviewRating, setReviewRating] = useState(0);
   const [newReview, setNewReview] = useState('');
   const [reviewList, setReviewList] = useState<ReviewType[]>([]);
-
+  const [avgReviewRating, setAvg] = useState<number>(0);
   const [editClicked, setEditClicked] = useState<boolean[]>([
     false,
     false,
@@ -217,6 +217,18 @@ export const Review = ({ state }: Props) => {
     setClicked(clickStates);
   };
 
+  useEffect(() => {
+    if (!!reviewList.length) {
+      setAvg(
+        Number(
+          reviewList
+            .map((x) => x.reviewRating)
+            .reduce((a, b) => Number(a) + Number(b)),
+        ) / reviewList.length,
+      );
+    }
+  }, [reviewList]);
+
   return (
     <S.ReviewContainer>
       <div
@@ -226,7 +238,7 @@ export const Review = ({ state }: Props) => {
         }}
       >
         <S.ReviewHeadTitle>이용 후기</S.ReviewHeadTitle>
-        <S.ScoreAvg>⭐️ {}4.0</S.ScoreAvg>
+        <S.ScoreAvg>⭐️ {avgReviewRating.toFixed(2)}</S.ScoreAvg>
       </div>
       <S.ReviewInput>
         <S.Rating>

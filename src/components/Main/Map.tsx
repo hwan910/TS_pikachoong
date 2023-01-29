@@ -3,14 +3,7 @@ import { useRef, useEffect, useState } from 'react';
 import { Item, MapProps, MarkerLocation } from '../../types/MapInterface';
 import { useNavigate } from 'react-router-dom';
 import Main from './Main';
-import {
-  Container,
-  HeaderForm,
-  HeaderInput,
-  HeaderTitle,
-  HeaderWrap,
-  MapWrap,
-} from '../../pages/MainPage/style';
+import * as S from '../../pages/MainPage/style';
 import useSearchMap from '../../hooks/useSearchMap';
 import { IoSearchCircle } from 'react-icons/io5';
 import { SearchBtn } from '../../shared/Layout/Header/style';
@@ -43,7 +36,7 @@ const Map = ({
       },
     );
 
-    //지도 중앙 위치
+    // 지도 중앙 위치
     const location = new kakao.maps.LatLng(myLocation.lat, myLocation.lng);
 
     const options = {
@@ -59,7 +52,7 @@ const Map = ({
     map.addControl(zoomControl, kakao.maps.ControlPosition.LEFT);
 
     setMap(map);
-    
+
     // 마커 관련
 
     // 현재위치마커
@@ -133,6 +126,9 @@ const Map = ({
       map: map,
       center: new kakao.maps.LatLng(myLocation.lat, myLocation.lng),
       radius: 1000,
+      strokeOpacity: 0,
+      strokeStyle: 'dashed',
+      fillOpacity: 0,
     });
 
     // 맵의 내 위치, 반경, 선
@@ -188,11 +184,11 @@ const Map = ({
   });
 
   return (
-    <Container>
-      <HeaderWrap>
-        <HeaderTitle>인근 충전소</HeaderTitle>
-        <HeaderForm onSubmit={onSubmit}>
-          <HeaderInput
+    <S.Container>
+      <S.HeaderWrap>
+        <S.HeaderTitle>인근 충전소</S.HeaderTitle>
+        <S.HeaderForm onSubmit={onSubmit}>
+          <S.HeaderInput
             type="text"
             onChange={(e) => onChangeSearch(e)}
             value={searchByAddress}
@@ -201,11 +197,11 @@ const Map = ({
           <SearchBtn>
             <IoSearchCircle color="red" size={'2.6em'} />
           </SearchBtn>
-        </HeaderForm>
-      </HeaderWrap>
-      <MapWrap ref={mapRef} />
+        </S.HeaderForm>
+      </S.HeaderWrap>
+      <S.MapWrap ref={mapRef} />
       <Main filterData={arrFilter} />
-    </Container>
+    </S.Container>
   );
 };
 

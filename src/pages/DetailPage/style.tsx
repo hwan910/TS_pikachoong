@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-// import { COLOR } from '../../common/color';
 
-// DetailPage.jsx
+// DetailPage.tsx
 
 //디테일페이지 전체
 export const DetailPageMain = styled.div`
@@ -65,8 +64,6 @@ export const InfoArea = styled.div`
 
 export const DetailMapWrap = styled.div`
   margin: 40px;
-  /* height: 100%; */
-  /* overflow: hidden; */
 
   @media screen and (max-width: 1100px) and (min-width: 768px) {
     margin: 40px auto 10px auto;
@@ -86,9 +83,7 @@ export const DetailMapStyle = styled.div`
 
   // 1024px
   @media screen and (max-width: 1100px) {
-    /* width: 500px; */
     max-width: 70vw;
-    /* height: 500px; */
     max-height: 70vw;
   }
 `;
@@ -96,7 +91,6 @@ export const DetailMapStyle = styled.div`
 //좌측상단 info박스
 export const ChargingStationInfo = styled.div`
   max-width: 100%;
-  /* min-width: 90%; */
   width: 430px;
   height: 405px;
   background-color: white;
@@ -120,19 +114,6 @@ export const ChargingStationName = styled.div`
   font-weight: bold;
   margin-bottom: 64px;
 `;
-
-// export const DetailMapStyle = styled.div`
-//   width: 800px;
-//   height: 800px;
-//   max-width: 45vw;
-//   max-height: 45vw;
-
-//   // 1024px
-//   @media screen and (max-width: 1100px) {
-//     /* width: 500px; */
-//     max-width: 70vw;
-//     /* height: 500px; */
-//     max-height: 70vw;
 
 // 리뷰입력+리뷰리스트 전체
 export const ReviewContainer = styled.div`
@@ -166,14 +147,12 @@ export const ScoreAvg = styled.div`
 //리뷰쓰기 별점+리뷰창+버튼
 export const ReviewInput = styled.div`
   margin-bottom: 40px;
-  /* max-width:100% */
 `;
 
 export const ReviewStarRating = styled.div``;
 export const ReviewTextInput = styled.textarea`
   resize: none;
   margin-top: 10px;
-  /* max-width: 100%; */
   width: 350px;
   max-width: 50vw;
   height: 47px;
@@ -183,13 +162,6 @@ export const ReviewTextInput = styled.textarea`
   padding: 10px;
   margin-right: 10px;
 
-  /* @media screen and (max-width: 1024px) {
-    min-width: 80%;
-  } */
-  /* @media screen and (max-width: 1100px) {
-    width: 350px;
-    min-width: 40vw;
-  } */
   @media screen and (max-width: 768px) {
     width: 300px;
     min-width: 35vw;
@@ -236,7 +208,6 @@ export const ReviewList = styled.div``;
 
 //작성된 리뷰
 export const ReviewDetail = styled.div`
-  /* background-color: #e0e0e0; */
   display: flex;
   justify-content: space-between;
   padding: 30px 15px;
@@ -275,13 +246,11 @@ export const ProfileImg = styled.img`
 //리뷰 수정삭제 모달
 export const OptionModal = styled.div`
   width: 60px;
-  /* background-color: lightgrey; */
   position: absolute;
   display: flex;
   flex-direction: column;
   left: 410px;
   top: 55px;
-  /* justify-content: space-evenly; */
 
   @media screen and (max-width: 1100px) {
     width: 60px;
@@ -295,7 +264,6 @@ export const OptionModal = styled.div`
 
   @media screen and (max-width: 768px) {
     width: 60px;
-    /* background-color: lightgrey; */
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -367,10 +335,6 @@ export const Rating = styled.span`
     color: gray;
     cursor: pointer;
   }
-
-  /* :hover svg {
-    color: #fad61d;
-  } */
 
   & svg:hover ~ svg {
     color: gray;

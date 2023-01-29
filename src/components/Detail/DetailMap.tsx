@@ -28,11 +28,6 @@ const DetailMap = ({ location }: Props) => {
       map: map,
       position: detailLocation,
     });
-
-    // setTimeout(function () {
-    // map.relayout();
-    // }, 0);
-    // 지도 반응형 리사이징
   }, []);
 
   return <S.DetailMapStyle ref={mapRef} />;
