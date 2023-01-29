@@ -29,7 +29,12 @@ export const Mypage = () => {
           <ProfileModal setProfileModalOpen={setProfileModalOpen} />
         )}
       </StyledMyProfile>
-      <MyReview />
+      <StyledMyreviewCon>
+        <StyledH1>My Review</StyledH1>
+        <StyledMyReviewContainer>
+          <MyReview />
+        </StyledMyReviewContainer>
+      </StyledMyreviewCon>
     </StyledMyPage>
   );
 };
@@ -39,9 +44,51 @@ const StyledMyProfile = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  @media screen and (max-width: 768px) {
+    position: relative;
+    bottom: 4rem;
+  }
 `;
 
 const StyledMyPage = styled.div`
   display: flex;
   margin-top: 5rem;
+  flex-direction: row;
+  gap: 100px;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const StyledMyreviewCon = styled.div`
+  @media screen and (max-width: 768px) {
+    position: relative;
+    bottom: 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+`;
+
+const StyledH1 = styled.h1`
+  margin-left: 1rem;
+  @media screen and (max-width: 768px) {
+    /* position: relative; */
+    /* right: -2rem; */
+    font-size: large;
+    z-index: -1;
+    margin-top: 3rem;
+    /* top: 0rem; */
+  }
+`;
+
+const StyledMyReviewContainer = styled.div`
+  overflow-y: scroll;
+  height: 25rem;
+  @media screen and (max-width: 768px) {
+    /* z-index: -11; */
+  }
 `;

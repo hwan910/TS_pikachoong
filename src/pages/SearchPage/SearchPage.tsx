@@ -2,19 +2,11 @@ import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { getChargerinfo } from '../../common/api';
 import { szcode, szscode } from '../../common/zcode';
-import {
-  Container,
-  Table,
-  MainTitle,
-  TableHead,
-  TableBody,
-  PageBtn,
-} from './style';
+import * as S from './style';
 import { Item } from '../../types/MapInterface';
 import { PageBtnBox } from '../../shared/Layout/Header/style';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageNation from '../../components/Search/PageNation';
-import { auth } from '../../common/firebase';
 
 export const SearchPage = () => {
   const navigate = useNavigate();
@@ -37,48 +29,46 @@ export const SearchPage = () => {
     return <div>로딩중...</div>;
   }
 
-  const searchResult = data?.data.items[0].item
-    .filter((stat: Item, idx: number, arr: Item[]) => {
-      return arr.findIndex((item: Item) => item.statId === stat.statId) === idx;
-    })
-    .slice(10 * page, 10 * (page + 1));
-
+  //  statId가 같은 값들을 중복제거 함
   const pageResult = data?.data.items[0].item.filter(
     (stat: Item, idx: number, arr: Item[]) => {
       return arr.findIndex((item: Item) => item.statId === stat.statId) === idx;
     },
   );
+  const searchResult = pageResult.slice(10 * page, 10 * (page + 1));
 
   const pageNum = pageResult.map((x: string, i: number) => i + 1);
+
+  // 페이지 번호를 5개씩 노출되게 함
   const allpage =
     Math.ceil(pageNum.length / 10) > 5 * (i + 1)
       ? pageNum.slice(5 * i, 5 * (i + 1))
       : pageNum.slice(5 * i, Math.ceil(pageNum.length / 10));
 
   return (
-    <Container>
-      <MainTitle>
+    <S.Container>
+      <S.MainTitle>
         {`${
           szcode[typeof z2?.slice(0, 2) === 'string' ? z2?.slice(0, 2) : '11']
         } ${szscode[typeof z2 === 'string' ? z2 : '11680']} 검색결과`}
-      </MainTitle>
+      </S.MainTitle>
 
-      <Table>
-        <TableHead>
+      <S.Table>
+        <S.TableHead>
           <div style={{ width: '10%', textAlign: 'center' }}>번호</div>
           <div style={{ width: '60%' }}>충전소명</div>
           <div style={{ width: '30%', textAlign: 'center' }}>충전소정보</div>
-        </TableHead>
+        </S.TableHead>
         {searchResult?.map((v: Item, i: number) => {
-          const test = data?.data.items[0].item.filter(
+          const station = data?.data.items[0].item.filter(
             (a: Item) => a.statId === v.statId,
           );
-          const test1 = data?.data.items[0].item.filter(
+          const stationAvailable = data?.data.items[0].item.filter(
             (a: Item) => a.statId === v.statId && a.stat === '2',
           );
 
           return (
-            <TableBody
+            <S.TableBody
               onClick={() =>
                 navigate(`/${v.statId}`, {
                   state: data?.data.items[0].item.filter(
@@ -106,18 +96,22 @@ export const SearchPage = () => {
               </div>
               <div style={{ width: '30%', textAlign: 'center' }}>
                 <div style={{ color: 'gray', paddingBottom: 5 }}>
-                  전체 충전기:{test.length}
+                  전체 충전기:{station.length}
                 </div>
-                <div style={{ color: test1.length === 0 ? 'red' : 'blue' }}>
-                  사용가능:{test1.length}
+                <div
+                  style={{
+                    color: stationAvailable.length === 0 ? 'red' : 'blue',
+                  }}
+                >
+                  사용가능:{stationAvailable.length}
                 </div>
               </div>
-            </TableBody>
+            </S.TableBody>
           );
         })}
-      </Table>
+      </S.Table>
       <PageBtnBox>
-        <PageBtn
+        <S.PageBtn
           disabled={page === 0 ? true : false}
           onClick={() => {
             setPage(page - 1);
@@ -125,9 +119,9 @@ export const SearchPage = () => {
           }}
         >
           &lt; 이전
-        </PageBtn>
+        </S.PageBtn>
         <PageNation allpage={allpage} setPage={setPage} page={page} />
-        <PageBtn
+        <S.PageBtn
           disabled={page === Math.floor(pageResult?.length / 10) ? true : false}
           onClick={() => {
             setPage(page + 1);
@@ -135,8 +129,8 @@ export const SearchPage = () => {
           }}
         >
           다음 &gt;
-        </PageBtn>
+        </S.PageBtn>
       </PageBtnBox>
-    </Container>
+    </S.Container>
   );
 };

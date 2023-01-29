@@ -103,11 +103,13 @@ export const HeaderBtnBox = styled.div`
   flex-direction: row;
   margin-right: 5px;
   @media screen and (max-width: 800px) {
+    flex-direction: column;
     position: absolute;
     top: 1%;
     right: 1%;
     background-color: 'white';
-    width: 140px;
+    gap: 5px;
+    /* width: 140px; */
   }
 `;
 
