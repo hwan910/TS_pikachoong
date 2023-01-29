@@ -1,20 +1,4 @@
-import React from 'react';
 import styled from 'styled-components';
-
-interface Props {
-  children: any;
-  onClick: any;
-}
-
-const Button = ({ children, onClick }: Props) => {
-  return (
-    <div>
-      <StyledButton onClick={onClick}>{children}</StyledButton>
-    </div>
-  );
-};
-
-export default Button;
 
 const StyledButton = styled.button`
   display: flex;
@@ -29,8 +13,9 @@ const StyledButton = styled.button`
   position: relative;
   bottom: 5rem;
   @media screen and (max-width: 768px) {
-    /* margin-bottom: 3rem; */
     position: relative;
     bottom: 0rem;
   }
 `;
+
+export { StyledButton };

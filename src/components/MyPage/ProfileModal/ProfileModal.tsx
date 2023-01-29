@@ -1,14 +1,26 @@
-import styled from 'styled-components';
-import { auth, storage } from '../../common/firebase';
+import { auth, storage } from '../../../common/firebase';
 import { updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { uuidv4 } from '@firebase/util';
-import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { isLogin } from '../../redux/modules/loginSlice';
-import useInput from '../../hooks/useInput';
-import useImgInput from '../../hooks/useImgInput';
-import { COLOR } from '../../common/color';
-import { useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../hooks/useRedux';
+import { isLogin } from '../../../redux/modules/loginSlice';
+import useInput from '../../../hooks/useInput';
+import useImgInput from '../../../hooks/useImgInput';
+import { useRef } from 'react';
+import {
+  StyledProfileModalBackground,
+  StyledProfileModalDiv,
+  StyledH2,
+  StyledProfileDiv,
+  StyledImg,
+  StyledImageLabel,
+  CameraDiv,
+  Camera,
+  StyledImageUploader,
+  StyledX,
+  StyledInput,
+  StyledButtonChange,
+} from './style';
 
 interface Props {
   setProfileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,6 +33,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
   const [photoURL, miribogi, resetImg] = useImgInput(user.photoURL);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // 이미지, 닉네임 초기화
   const reset = () => {
     resetImg();
     nicknameReset();
@@ -35,6 +48,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
   // 프로필 변경
   const userProfile: any = auth.currentUser;
 
+  // 이미지 업로드
   const uploadImg = async () => {
     const imgRef = ref(storage, `profile/${uuidv4()}`);
     if (photoURL) {
@@ -44,6 +58,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
     }
   };
 
+  // 프로필 변경
   const changeProfile = (x: string = photoURL) => {
     if (inputRef.current !== null) {
       inputRef.current?.focus();
@@ -66,11 +81,11 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
         dispatch(isLogin({ ...user, displayName: nickname, photoURL: x }));
       } else {
         alert('글자 수 7자를 초과하였습니다.');
-        // nicknameReset();
       }
     }
   };
 
+  // 프로필 변경
   const submitChange = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (photoURL === userProfile.photoURL) {
@@ -99,7 +114,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
             />
             <CameraDiv>
               <Camera
-                src={require('../../assets/MyPage/camera.png')}
+                src={require('../../../assets/MyPage/camera.png')}
                 alt="카메라"
               />
             </CameraDiv>
@@ -107,7 +122,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
         </StyledImageLabel>
         <StyledX
           onClick={() => closeModal()}
-          src={require('../../assets/x.png')}
+          src={require('../../../assets/MyPage/x.png')}
           alt="X"
         />
         <StyledInput
@@ -129,124 +144,3 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
 };
 
 export default ProfileModal;
-
-const StyledProfileModalBackground = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 999;
-`;
-
-const StyledProfileModalDiv = styled.div`
-  background-color: #fad61d;
-  width: 30rem;
-  height: 30rem;
-  padding: 2rem 0;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 999;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  @media screen and (max-width: 768px) {
-    width: 25rem;
-    height: 28rem;
-  }
-`;
-
-const StyledH2 = styled.h2`
-  position: absolute;
-  top: 0.7rem;
-`;
-
-const StyledProfileDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-`;
-
-const StyledImg = styled.img`
-  /* border: 1px solid black; */
-  border-radius: 50%;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  /* border: 1px solid lightgray; */
-  background-color: white;
-
-  /* margin-top: 3rem; */
-`;
-
-const StyledImageLabel = styled.label`
-  cursor: pointer;
-  position: relative;
-  width: 13rem;
-  height: 13rem;
-`;
-
-const CameraDiv = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-`;
-
-const Camera = styled.img`
-  /* border: 1px solid black; */
-  background-color: #f1f1f1;
-  border-radius: 50%;
-  padding: 5px;
-  margin: 10px;
-`;
-
-const StyledImageUploader = styled.input`
-  display: none;
-`;
-
-const StyledX = styled.img`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  cursor: pointer;
-`;
-
-const StyledInput = styled.input`
-  margin: 0.7rem 0;
-  padding: 0.5rem 0.5rem;
-  text-align: center;
-  font-size: large;
-  border: none;
-  outline: none;
-  margin-top: 2rem;
-  border-radius: 3rem;
-`;
-
-const StyledButtonChange = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: black;
-  :hover {
-    background-color: ${COLOR.RED};
-  }
-  padding: 1rem 3rem;
-  border: none;
-  cursor: pointer;
-  border-radius: 30px;
-  margin-top: 1rem;
-  font-size: medium;
-  font-weight: 700;
-  margin-bottom: 0.7rem;
-  color: white;
-`;
