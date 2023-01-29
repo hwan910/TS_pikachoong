@@ -1,12 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  zcode: "11",
-  zscode: "11680",
+  zcode: '11',
+  zscode: '11680',
 };
 
 const location = createSlice({
-  name: "location",
+  name: 'location',
   initialState,
   reducers: {
     addMyLocation: (state, action) => {
