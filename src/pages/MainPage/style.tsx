@@ -197,15 +197,6 @@ const HeaderInput = styled.input`
   }
 `;
 
-const Loading = styled.div`
-  width: 100vw;
-  height: 80vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3rem;
-`;
-
 export {
   Container,
   NearbyChargingStationCard,
@@ -221,5 +212,4 @@ export {
   HeaderForm,
   HeaderTitle,
   HeaderWrap,
-  Loading,
 };

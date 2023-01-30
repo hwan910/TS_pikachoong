@@ -13,7 +13,7 @@ export default function Main({ filterData }: Props) {
   const [data] = useState(filterData);
   const [settings, setSettings] = useState({
     dots: false,
-    infinite: true,
+    infinite: false,
     slidesToShow:
       window.innerWidth > 1200 ? 3 : window.innerWidth > 600 ? 2 : 1,
     slidesToScroll:
@@ -31,7 +31,7 @@ export default function Main({ filterData }: Props) {
 
     const settings = {
       dots: false,
-      infinite: true,
+      infinite: false,
       slidesToShow: innerWidth > 1200 ? 3 : innerWidth > 600 ? 2 : 1,
       slidesToScroll: innerWidth > 1200 ? 3 : innerWidth > 600 ? 2 : 1,
     };
