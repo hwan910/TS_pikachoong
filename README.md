@@ -1,5 +1,15 @@
 # TS_pikachoong
 
+## Notion
+
+
+https://playful-napkin-967.notion.site/f6a45cb7494348d9a3717a6523220fe4
+
+### Web
+
+https://ts-pikachoong.vercel.app/
+
+
 ## 프로젝트 개요
 
 - **프로젝트명**
@@ -44,13 +54,6 @@
 ### 마이페이지
 <img width="1091" alt="image" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/886ffc74-f9ae-4886-9577-2b38696835c5/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230130T022106Z&X-Amz-Expires=86400&X-Amz-Signature=a1a6639c981dcc68171fc25b53057f95709e66fcfc9d8401521ca0fb5ad7edd1&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject">
 
-## Notion
 
-
-https://playful-napkin-967.notion.site/f6a45cb7494348d9a3717a6523220fe4
-
-### Web
-
-https://ts-pikachoong.vercel.app/
 
 
