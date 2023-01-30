@@ -4,7 +4,7 @@ import { getData } from '../../common/api';
 import { useEffect } from 'react';
 import { Data, Location } from '../../types/MapInterface';
 import { useAppSelector } from '../../hooks/useRedux';
-import { Loading } from './style';
+import Loader from '../../components/Loader';
 
 interface Props {
   myLocation: Location;
@@ -45,7 +45,7 @@ export const MainPage = ({
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [zc, zsc]);
 
-  if (isLoading) return <Loading>☠️로딩중이다☠️</Loading>;
+  if (isLoading) return <Loader />
   if (isError) return <div>Error: {error.message}</div>;
 
   return (

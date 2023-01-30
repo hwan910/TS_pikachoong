@@ -7,6 +7,7 @@ import { Item } from '../../types/MapInterface';
 import { PageBtnBox } from '../../shared/Layout/Header/style';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageNation from '../../components/Search/PageNation';
+import Loader from '../../components/Loader';
 
 export const SearchPage = () => {
   const navigate = useNavigate();
@@ -26,9 +27,7 @@ export const SearchPage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [z2]);
 
-  if (isLoading) {
-    return <div>로딩중...</div>;
-  }
+  if (isLoading) return <Loader />
 
   //  statId가 같은 값들을 중복제거 함
   const pageResult = data?.data.items[0].item.filter(
