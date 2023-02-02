@@ -38,9 +38,12 @@ const Router = () => {
   }, []);
 
   // 파이어베이스 로그인 확인 후 필요한 데이터 리덕스로 옮김
+  const [checkLogin, setCheckLogin] = useState(false)
+
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
+        setCheckLogin(true)
         dispatch(
           isLogin({
             displayName: user.displayName,
@@ -50,6 +53,7 @@ const Router = () => {
           }),
         );
       } else {
+        setCheckLogin(false)
         dispatch(notLogin());
       }
     });
@@ -80,7 +84,7 @@ const Router = () => {
             }
           />
           <Route path="/:id" element={<Detailpage />} />
-          <Route path="/my" element={<Mypage />} />
+          <Route path="/my" element={<Mypage checkLogin={checkLogin} />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/search/:z2" element={<SearchPage />} />
         </Routes>

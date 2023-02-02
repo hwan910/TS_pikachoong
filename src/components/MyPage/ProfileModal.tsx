@@ -38,11 +38,15 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
 
   // 이미지 업로드
   const uploadImg = async () => {
-    const imgRef = ref(storage, `profile/${uuidv4()}`);
-    if (photoURL) {
-      const response = await uploadString(imgRef, photoURL, 'data_url');
-      const downloadURL = await getDownloadURL(response.ref);
-      return downloadURL;
+    try {
+      const imgRef = ref(storage, `profile/${uuidv4()}`);
+      if (photoURL) {
+        const response = await uploadString(imgRef, photoURL, 'data_url');
+        const downloadURL = await getDownloadURL(response.ref);
+        return downloadURL;
+      }
+    } catch (error) {
+      console.log('error:', error);
     }
   };
 
@@ -66,7 +70,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
               alert('변경완료!');
               closeModal();
             })
-            .catch((e) => console.log('e:', e));
+            .catch((error) => console.log('error:', error));
         }
         dispatch(isLogin({ ...user, displayName: nickname, photoURL: x }));
       } else {
@@ -85,7 +89,7 @@ const ProfileModal = ({ setProfileModalOpen }: Props) => {
         .then((res) => {
           changeProfile(res);
         })
-        .catch((e) => console.log('e:', e));
+        .catch((error) => console.log('error:', error));
     }
   };
 

@@ -1,46 +1,59 @@
-# Getting Started with Create React App
+# TS_pikachoong
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Notion
 
-## Available Scripts
 
-In the project directory, you can run:
+https://playful-napkin-967.notion.site/f6a45cb7494348d9a3717a6523220fe4
 
-### `npm start`
+### Web
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+https://ts-pikachoong.vercel.app/
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+## 프로젝트 개요
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **프로젝트명**
+    
+    피카츙
+    
+- **목적**
+    
+    전국의 전기차 충전소를 공유한다.
+    
+- **기능**
+    
+    
+    충전소 정보를 `지역별`로 확인한다.
+    
+    충전소 정보를 지역/상세지역 나누기 위해 `2차분류`로 분류한다.
+    
+    `상세정보`를 확인하고, `후기&기대평`을 작성한다.
+    
+    원하는 충전소 지역을 `검색`한다.
+    
+    카카오map을 활용하여  `지도`를 보여주고 충전소 정보를 제공한다.
+    
+    인근 충전소 정보를 `지도` 로 보여준다.
+    
+    사용자가 작성한 댓글을  마이페이지에 `노출` 한다.
+    
+    `간편로그인`, `닉네임/프로필 사진 변경`가 가능하다.
 
-### `npm run build`
+## Design
+### 메인페이지
+<img width="1091" alt="image" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/dc08f65e-ceea-4319-a88b-330850005737/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230130T021944Z&X-Amz-Expires=86400&X-Amz-Signature=48df980bd7e2df5acedea4fd5b59e35ef3f075073d60d569dba7dfae5a68e14e&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject">
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 상세페이지
+<img width="1091" alt="image" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/cc03160f-7e5b-44a5-b8be-2a56b140d86e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230130T023120Z&X-Amz-Expires=86400&X-Amz-Signature=8d08dca4f02a590f3712c6f32db9318d4ade2eeeca563a4d1a4102e9638c6fc5&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject">
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 검색페이지
+<img width="1091" alt="image" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/979dc73a-d4fd-426d-bbad-cc7f7015af8a/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230130T023213Z&X-Amz-Expires=86400&X-Amz-Signature=4f3f6949f48437a2737db7224d6f5b1e6a4d70ac0dac575cffb7e58466ff198e&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject">
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 마이페이지
+<img width="1091" alt="image" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/886ffc74-f9ae-4886-9577-2b38696835c5/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230130%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230130T022106Z&X-Amz-Expires=86400&X-Amz-Signature=a1a6639c981dcc68171fc25b53057f95709e66fcfc9d8401521ca0fb5ad7edd1&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22Untitled.png%22&x-id=GetObject">
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
